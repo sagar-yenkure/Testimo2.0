@@ -3,38 +3,31 @@
 import Link from "next/link";
 import {
   ArrowRight, Play, Box, LockIcon, Video, PenTool, Bot, Filter, Globe, PieChart,
-  Share2, Code2, Settings2, Star, Check, X, Plus, Moon, Sun
+  Share2, Code2, Settings2, Star, Check, X, Plus
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
-  const [isDark, setIsDark] = useState(true); // Toggle default here
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const isDark = mounted ? resolvedTheme === "dark" : false;
+
   return (
     <div className={`min-h-screen overflow-hidden relative font-sans transition-colors duration-300 ${isDark ? 'bg-[#050505] text-white' : 'bg-[#f8faff] text-gray-900'}`}>
 
-      {/* Theme Toggle Button */}
-      <button
-        onClick={() => setIsDark(!isDark)}
-        className={`fixed bottom-8 left-8 z-50 p-3 rounded-full shadow-lg backdrop-blur-md transition-all border ${isDark
-            ? 'bg-white/10 border-white/20 text-white hover:bg-white/20'
-            : 'bg-white/80 border-gray-200 text-gray-800 hover:bg-white shadow-[0_8px_30px_rgb(0,0,0,0.12)]'
-          }`}
-      >
-        {isDark ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
-      </button>
 
-      {/* Soft background glows */}
-      <div className={`absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full filter blur-[100px] opacity-40 pointer-events-none transition-colors duration-500 ${isDark ? 'bg-blue-900/40 mix-blend-screen' : 'bg-blue-100 mix-blend-multiply'}`} />
-      <div className={`absolute top-0 right-1/4 w-[600px] h-[600px] rounded-full filter blur-[100px] opacity-40 pointer-events-none transition-colors duration-500 ${isDark ? 'bg-purple-900/30 mix-blend-screen' : 'bg-purple-100/50 mix-blend-multiply'}`} />
 
       {/* Navbar Fixed & Transparent */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 pointer-events-none ${scrolled ? "py-3" : "py-5"}`}>
@@ -54,7 +47,8 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
             <Link href="#" className={`text-[14px] font-medium transition-colors ${isDark ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>Sign in</Link>
             <Link href="#" className={`px-5 py-2.5 rounded-full text-[14px] font-medium transition-colors ${isDark ? 'bg-white text-black hover:bg-gray-200' : 'bg-[#121626] text-white hover:bg-black'
               }`}>
@@ -64,16 +58,16 @@ export default function Home() {
         </div>
       </nav>
 
-      <div className="pt-28">
+      <div className="pt-44">
         {/* Hero Section */}
-        <section className="relative z-10 flex flex-col items-center px-4 pb-18 text-center">
+        <section className="relative z-10 flex flex-col items-center px-4 pb-24 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className={`text-5xl md:text-6xl font-extrabold tracking-tight mb-5 max-w-3xl transition-colors ${isDark ? 'text-white' : 'text-[#111827]'}`}
+            className={`text-5xl md:text-6xl font-extrabold tracking-tight mb-5 max-w-4xl transition-colors ${isDark ? 'text-white' : 'text-[#111827]'}`}
           >
-            Testimonials that <span className="bg-gradient-to-r from-[#625AF8] to-[#9962FF] bg-clip-text text-transparent">think ahead.</span>
+            Collect stunning testimonials that <span className="text-[#625AF8]">grow your SaaS faster.</span>
           </motion.h1>
 
           <motion.p
@@ -134,7 +128,7 @@ export default function Home() {
         </section>
 
         {/* Trusted By Section */}
-        <section className={`py-8 border-t relative z-10 w-full backdrop-blur-sm transition-colors ${isDark ? 'border-white/5 bg-black/40' : 'border-gray-100 bg-white/50'
+        <section className={`py-24 border-t relative z-10 w-full backdrop-blur-sm transition-colors ${isDark ? 'border-white/5 bg-black/40' : 'border-gray-100 bg-white/50'
           }`}>
           <div className="max-w-4xl mx-auto text-center px-4">
             <h3 className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-6 transition-colors ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>
@@ -151,7 +145,7 @@ export default function Home() {
         </section>
 
         {/* Steps Section */}
-        <section className={`py-16 relative z-10 w-full transition-colors ${isDark ? 'bg-[#050505]' : 'bg-white'}`} id="how-it-works">
+        <section className={`py-24 relative z-10 w-full transition-colors ${isDark ? 'bg-[#050505]' : 'bg-white'}`} id="how-it-works">
           <div className="max-w-4xl mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className={`text-3xl font-bold mb-3 transition-colors ${isDark ? 'text-white' : 'text-gray-900'}`}>Three steps to collect testimonials</h2>
@@ -188,7 +182,7 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section className={`py-20 relative z-10 w-full border-y transition-colors ${isDark ? 'bg-[#0A0A0A] border-white/5' : 'bg-[#FAFAFA] border-gray-100'}`} id="features">
+        <section className={`py-24 relative z-10 w-full border-y transition-colors ${isDark ? 'bg-[#0A0A0A] border-white/5' : 'bg-[#FAFAFA] border-gray-100'}`} id="features">
           <div className="max-w-4xl mx-auto px-4">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
               <div>
@@ -229,7 +223,7 @@ export default function Home() {
         </section>
 
         {/* Pricing Section */}
-        <section className={`py-20 relative z-10 w-full transition-colors ${isDark ? 'bg-[#050505]' : 'bg-[#FAFAFA]'}`} id="pricing">
+        <section className={`py-24 relative z-10 w-full transition-colors ${isDark ? 'bg-[#050505]' : 'bg-[#FAFAFA]'}`} id="pricing">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className={`text-3xl font-bold mb-3 transition-colors ${isDark ? 'text-white' : 'text-gray-900'}`}>Simple, transparent pricing</h2>
             <p className={`text-sm mb-8 transition-colors ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Start for free, upgrade when you need more power. No credit card required.</p>
@@ -253,8 +247,8 @@ export default function Home() {
                 { name: 'Business', price: '79', target: 'Advanced features for large teams.', features: ['Unlimited Spaces', 'Team members', 'API Access', 'Priority Support'] }
               ].map((tier, idx) => (
                 <div key={idx} className={`rounded-[20px] p-8 shadow-sm flex flex-col relative w-full transition-colors ${tier.pop
-                    ? `border-2 border-[#2D6CFF] transform md:-translate-y-4 ${isDark ? 'bg-[#111] shadow-[0_20px_50px_-12px_rgba(45,108,255,0.25)]' : 'bg-white shadow-[0_20px_50px_-12px_rgba(45,108,255,0.15)]'}`
-                    : `border ${isDark ? 'bg-[#111] border-white/10' : 'bg-white border-gray-100'}`
+                  ? `border-2 border-[#2D6CFF] transform md:-translate-y-4 ${isDark ? 'bg-[#111] shadow-[0_20px_50px_-12px_rgba(45,108,255,0.25)]' : 'bg-white shadow-[0_20px_50px_-12px_rgba(45,108,255,0.15)]'}`
+                  : `border ${isDark ? 'bg-[#111] border-white/10' : 'bg-white border-gray-100'}`
                   }`}>
                   {tier.pop && <div className="absolute top-0 right-0 bg-[#2D6CFF] text-white text-[9px] font-bold px-3 py-1.5 rounded-bl-xl rounded-tr-[18px] tracking-widest uppercase">POPULAR</div>}
 
@@ -279,8 +273,8 @@ export default function Home() {
                   </div>
 
                   <button className={`w-full py-3.5 px-4 rounded-2xl font-bold text-sm transition-colors ${tier.pop
-                      ? 'bg-[#2D6CFF] hover:bg-[#2057d5] text-white shadow-lg shadow-blue-500/20'
-                      : (isDark ? 'border border-white/20 text-white hover:bg-white/5' : 'border border-gray-200 text-gray-900 hover:bg-gray-50')
+                    ? 'bg-[#2D6CFF] hover:bg-[#2057d5] text-white shadow-lg shadow-blue-500/20'
+                    : (isDark ? 'border border-white/20 text-white hover:bg-white/5' : 'border border-gray-200 text-gray-900 hover:bg-gray-50')
                     }`}>
                     {tier.pop ? 'Start Free Trial' : (tier.name === 'Business' ? 'Contact Sales' : 'Get Started')}
                   </button>
@@ -291,7 +285,7 @@ export default function Home() {
         </section>
 
         {/* FAQ Section */}
-        <section className={`py-20 relative z-10 w-full border-y transition-colors ${isDark ? 'bg-[#0A0A0A] border-white/5' : 'bg-white border-transparent'}`} id="faq">
+        <section className={`py-24 relative z-10 w-full border-y transition-colors ${isDark ? 'bg-[#0A0A0A] border-white/5' : 'bg-white border-transparent'}`} id="faq">
           <div className="max-w-3xl mx-auto px-4">
             <h2 className={`text-3xl font-bold mb-10 text-center transition-colors ${isDark ? 'text-white' : 'text-gray-900'}`}>Frequently Asked Questions</h2>
 
@@ -312,13 +306,12 @@ export default function Home() {
         </section>
 
         {/* Showcase / Wall of Love Section */}
-        <section className={`py-20 relative z-10 w-full px-4 transition-colors ${isDark ? 'bg-[#050505]' : 'bg-white'}`}>
+        <section className={`py-24 relative z-10 w-full px-4 transition-colors ${isDark ? 'bg-[#050505]' : 'bg-white'}`}>
           <div className="max-w-4xl mx-auto">
             <div className={`rounded-[32px] p-10 md:p-16 relative overflow-hidden transition-colors ${isDark ? 'bg-white' : 'bg-[#0b1021]'
               }`}>
 
-              <div className={`absolute -top-40 -left-40 w-96 h-96 rounded-full blur-[100px] transition-colors duration-500 ${isDark ? 'bg-blue-100/50' : 'bg-blue-600/30'}`} />
-              <div className={`absolute -bottom-40 -right-40 w-96 h-96 rounded-full blur-[100px] transition-colors duration-500 ${isDark ? 'bg-purple-100/50' : 'bg-purple-600/20'}`} />
+
 
               <div className="relative z-10 text-center mb-12">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-4 transition-colors ${isDark ? 'text-gray-900' : 'text-white'}`}>Ready to showcase your love?</h2>
@@ -358,6 +351,31 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Footer */}
+        <footer className={`py-12 border-t transition-colors ${isDark ? 'border-white/5 text-gray-400 bg-black/40' : 'border-gray-100 text-gray-500 bg-white/50'}`}>
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+              <div className="flex items-center gap-2">
+                <div className="bg-[#3B6FF1] p-1 rounded-md flex items-center justify-center">
+                  <Box className="w-4 h-4 text-white" />
+                </div>
+                <span className={`text-lg font-bold tracking-tight transition-colors ${isDark ? 'text-white' : 'text-gray-900'}`}>Testimo</span>
+              </div>
+              
+              <div className="flex flex-wrap justify-center gap-8 text-sm">
+                <Link href="#" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-gray-900'}`}>Product</Link>
+                <Link href="#" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-gray-900'}`}>Features</Link>
+                <Link href="#" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-gray-900'}`}>Pricing</Link>
+                <Link href="#" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-gray-900'}`}>Contact</Link>
+                <Link href="#" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-gray-900'}`}>Terms</Link>
+              </div>
+
+              <div className="text-xs">
+                © {new Date().getFullYear()} Testimo Inc. All rights reserved.
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );
