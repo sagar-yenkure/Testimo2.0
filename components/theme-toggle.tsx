@@ -64,7 +64,7 @@ export function ThemeToggle() {
       variant="outline"
       size="icon"
       onClick={toggleTheme}
-      className="rounded-full w-10 h-10 border-gray-200 dark:border-white/20 bg-white dark:bg-[#111] hover:bg-gray-100 dark:hover:bg-[#222] transition-all duration-300 relative overflow-hidden group"
+      className="rounded-full hover:cursor-pointer w-10 h-10 border-gray-200 dark:border-white/20 bg-white dark:bg-[#111] hover:bg-gray-100 dark:hover:bg-[#222] transition-all duration-300 relative overflow-hidden group"
     >
       <div className="relative w-full h-full flex items-center justify-center">
         <Sun className="h-[1.2rem] w-[1.2rem] transition-all scale-100 rotate-0 dark:scale-0 dark:-rotate-90 text-amber-500 absolute" />

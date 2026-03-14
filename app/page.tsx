@@ -7,11 +7,15 @@ import { Pricing } from "@/components/pricing";
 import { FAQ } from "@/components/faq";
 import { Footer } from "@/components/footer";
 import { TrustedBy } from "@/components/trusted-by";
+import { auth } from "@clerk/nextjs/server";
 
-export default function Home() {
+export default async function Home() {
+  // check if user is authenticated for navbar
+  const { isAuthenticated } = await auth();
+
   return (
     <div className="min-h-screen overflow-hidden relative font-sans bg-[#f8faff] text-gray-900 dark:bg-[#050505] dark:text-white transition-colors duration-300">
-      <Navbar />
+      <Navbar isAuthenticated={isAuthenticated} />
       <main>
         <Hero />
         <TrustedBy />

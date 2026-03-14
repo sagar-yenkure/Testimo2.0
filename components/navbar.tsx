@@ -5,7 +5,8 @@ import { Box } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "./theme-toggle";
 
-export function Navbar() {
+export function Navbar({ isAuthenticated }: { isAuthenticated: boolean }) {
+
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -31,12 +32,14 @@ export function Navbar() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 pointer-events-none ${scrolled ? "py-3" : "py-5"}`}>
       <div className="flex items-center justify-between px-4 md:px-8 mx-auto max-w-7xl pointer-events-auto">
-        <div className="flex items-center gap-2">
-          <div className="bg-[#3B6FF1] p-1.5 rounded-md flex items-center justify-center">
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="bg-[#3B6FF1] p-1.5 rounded-md flex items-center justify-center transition-transform group-hover:scale-110">
             <Box className="w-5 h-5 text-white" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white transition-colors">Testimo</span>
-        </div>
+          <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white transition-colors">
+            Testimo
+          </span>
+        </Link>
 
         <div className="hidden md:flex items-center gap-1 text-[14px] font-medium px-2 py-1.5 rounded-full shadow-sm backdrop-blur-md border bg-white/60 border-gray-200/50 text-gray-600 dark:bg-white/10 dark:border-white/10 dark:text-gray-300 transition-colors">
           {navLinks.map(item => (
@@ -53,10 +56,15 @@ export function Navbar() {
 
         <div className="flex items-center gap-2 md:gap-4">
           <ThemeToggle />
-          <Link href="#" className="hidden sm:block text-[14px] font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">Sign in</Link>
-          <Link href="#" className="px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[13px] md:text-[14px] font-medium bg-[#121626] text-white hover:bg-black dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors">
-            Get Started
-          </Link>
+
+          {!isAuthenticated ? <div className="flex items-center gap-2 md:gap-4">
+            <Link href="/auth/sign-in" className="hidden sm:block text-[14px] font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">Sign in</Link>
+            <Link href="/auth/sign-up" className="px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[13px] md:text-[14px] font-medium bg-[#121626] text-white hover:bg-black dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors">
+              Get Started
+            </Link>
+          </div> : <div><Link href="/dashboard" className="px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[13px] md:text-[14px] font-medium bg-[#121626] text-white hover:bg-black dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors">
+            Dashboard
+          </Link></div>}
         </div>
       </div>
     </nav>
