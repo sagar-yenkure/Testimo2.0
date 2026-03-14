@@ -27,7 +27,7 @@ export function FAQ() {
   ];
 
   return (
-    <section className="py-24 md:py-32 relative z-10 w-full transition-colors bg-white dark:bg-[#050505]" id="faq">
+    <section className="py-24 md:py-32 relative z-10 w-full transition-colors duration-300 bg-background" id="faq">
       <div className="max-w-5xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div>
@@ -45,7 +45,7 @@ export function FAQ() {
               className={`rounded-[24px] overflow-hidden border transition-all duration-300 ${
                 openIndex === i 
                   ? "bg-gray-50 border-blue-200 dark:bg-white/5 dark:border-blue-500/30" 
-                  : "bg-white border-gray-100 hover:border-gray-200 dark:bg-[#0A0A0A] dark:border-white/5 dark:hover:border-white/10"
+                  : "bg-card-bg border-gray-100 hover:border-gray-200 dark:border-white/5 dark:hover:border-white/10"
               }`}
             >
               <button

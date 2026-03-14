@@ -13,9 +13,9 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen bg-background transition-colors duration-300">
             <UserNavbar />
-            <main className="pt-24 px-4 md:px-8 max-w-7xl mx-auto">
+            <main className="pt-24 px-6 md:px-8 max-w-7xl mx-auto">
                 {children}
             </main>
         </div>

@@ -13,7 +13,7 @@ export function Showcase() {
   ];
 
   return (
-    <section className="py-24 md:py-32 relative z-10 w-full px-4 transition-colors bg-white dark:bg-[#050505]" id="showcase">
+    <section className="py-24 md:py-32 relative z-10 w-full px-4 transition-colors duration-300 bg-background" id="showcase">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8 px-6">
           <div>
@@ -47,7 +47,7 @@ export function Showcase() {
               viewport={{ once: true }}
               transition={{ delay: 0.1 * (idx + 1) }}
               whileHover={{ y: -8 }}
-              className={`group relative rounded-[32px] p-8 md:p-10 text-left border transition-all duration-500 ${review.offset ? 'md:translate-y-12' : ''} bg-white border-gray-100 hover:border-blue-400/30 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] dark:bg-[#0A0A0A] dark:border-white/5 dark:hover:border-blue-500/30 dark:hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)] overflow-hidden`}
+              className={`group relative rounded-[32px] p-8 md:p-10 text-left border transition-all duration-500 ${review.offset ? 'md:translate-y-12' : ''} bg-card-bg border-gray-100 hover:border-blue-400/30 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] dark:border-white/5 dark:hover:border-blue-500/30 dark:hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)] overflow-hidden`}
             >
               {/* Background Glow */}
               <div className="absolute -right-20 -top-20 w-40 h-40 bg-blue-500/5 blur-[80px] rounded-full group-hover:bg-blue-500/10 transition-colors duration-500" />

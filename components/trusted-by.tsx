@@ -2,7 +2,7 @@ import { Box, Play } from "lucide-react";
 
 export function TrustedBy() {
   return (
-    <section className="py-12 md:py-16 border-t relative z-10 w-full backdrop-blur-sm transition-colors border-gray-100 bg-white/50 dark:border-white/5 dark:bg-black/40">
+    <section className="py-12 md:py-16 border-t relative z-10 w-full backdrop-blur-sm transition-colors duration-300 border-gray-100 bg-background/50 dark:border-white/5">
       <div className="max-w-4xl mx-auto text-center px-4">
         <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase mb-6 transition-colors text-gray-600 dark:text-gray-500">
           Trusted by 2,000+ SaaS Companies

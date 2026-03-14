@@ -14,7 +14,7 @@ export default async function Home() {
   const { isAuthenticated } = await auth();
 
   return (
-    <div className="min-h-screen overflow-hidden relative font-sans bg-[#f8faff] text-gray-900 dark:bg-[#050505] dark:text-white transition-colors duration-300">
+    <div className="min-h-screen overflow-hidden relative bg-background text-foreground transition-colors duration-300">
       <Navbar isAuthenticated={isAuthenticated} />
       <main>
         <Hero />

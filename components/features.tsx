@@ -11,7 +11,7 @@ export function Features() {
   ];
 
   return (
-    <section className="py-24 md:py-32 relative z-10 w-full border-y transition-colors bg-[#FAFAFA] border-gray-100 dark:bg-[#0A0A0A] dark:border-white/5" id="features">
+    <section className="py-24 md:py-32 relative z-10 w-full border-y transition-colors duration-300 bg-background border-gray-100 dark:border-white/5" id="features">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div>
@@ -21,7 +21,7 @@ export function Features() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {features.map((feat, idx) => (
-            <div key={idx} className="p-6 rounded-[16px] transition-all shadow-sm bg-white border border-gray-100 hover:shadow-md dark:bg-[#111] dark:border-white/10 dark:hover:border-white/20">
+            <div key={idx} className="p-6 rounded-[16px] transition-all duration-300 shadow-sm bg-card-bg border border-gray-100 hover:shadow-md dark:border-white/10 dark:hover:border-white/20">
               <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6 bg-gray-50 border border-gray-100 dark:bg-white/5 dark:border-white/10">
                 <feat.icon className="w-5 h-5 text-gray-600 dark:text-white" />
               </div>

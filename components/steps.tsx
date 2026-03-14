@@ -8,7 +8,7 @@ export function Steps() {
   ];
 
   return (
-    <section className="py-24 md:py-32 relative z-10 w-full transition-colors bg-white dark:bg-[#050505]" id="how-it-works">
+    <section className="py-24 md:py-32 relative z-10 w-full transition-colors duration-300 bg-background" id="how-it-works">
       <div className="max-w-6xl mx-auto px-6">
 
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
@@ -22,7 +22,7 @@ export function Steps() {
           <div className="hidden md:block absolute top-[45px] left-[15%] right-[15%] h-[2px] -z-10 transition-colors bg-blue-100 dark:bg-white/10" />
           {steps.map((step, idx) => (
             <div key={idx} className="flex flex-col items-center text-center flex-1 w-full">
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl flex items-center justify-center mb-6 transition-all bg-white border border-transparent shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:bg-[#111] dark:border-white/10 dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl flex items-center justify-center mb-6 transition-all duration-300 bg-card-bg border border-transparent shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:border-white/10 dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
                 <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-colors bg-gray-50 dark:bg-white/5">
                   <step.icon className="w-5 h-5 md:w-6 md:h-6 text-gray-600 dark:text-white" />
                 </div>
