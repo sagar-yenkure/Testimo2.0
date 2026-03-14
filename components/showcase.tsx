@@ -1,4 +1,9 @@
-import { Star } from "lucide-react";
+"use client";
+
+import { Star, Heart } from "lucide-react";
+
+import { motion } from "framer-motion";
+
 
 export function Showcase() {
   const reviews = [
@@ -8,37 +13,66 @@ export function Showcase() {
   ];
 
   return (
-    <section className="py-16 md:py-20 relative z-10 w-full px-4 transition-colors bg-white dark:bg-[#050505]" id="showcase">
-      <div className="max-w-4xl mx-auto">
-        <div className="rounded-[24px] md:rounded-[32px] p-6 md:p-16 relative overflow-hidden transition-colors bg-[#f8faff] dark:bg-[#121626]">
-          <div className="relative z-10 text-center mb-10 md:mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 transition-colors text-gray-900 dark:text-white">Ready to showcase your love?</h2>
-            <p className="text-sm max-w-lg mx-auto leading-relaxed transition-colors text-gray-500 dark:text-[#9EADC8] px-4">
-              This is exactly how your "Wall of Love" will look on your website. Clean, responsive, and trustworthy.
-            </p>
+    <section className="py-24 md:py-32 relative z-10 w-full px-4 transition-colors bg-white dark:bg-[#050505]" id="showcase">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8 px-6">
+          <div>
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-[11px] font-bold tracking-[0.2em] uppercase mb-4 transition-colors text-blue-600 dark:text-[#2D6CFF]"
+            >
+              WALL OF LOVE
+            </motion.div>
+            
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-3xl md:text-4xl font-extrabold max-w-xl leading-tight transition-colors text-gray-900 dark:text-white tracking-tight"
+            >
+              Ready to showcase <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">your love?</span>
+            </motion.h2>
           </div>
+        </div>
 
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {reviews.map((review, idx) => (
-              <div key={idx} className={`rounded-2xl p-6 text-left border transition-colors ${review.offset ? 'md:translate-y-6' : ''} bg-[#F8FAFF] border-gray-200/50 dark:bg-[#1C233A] dark:border-white/5`}>
-                <div className="flex gap-1 mb-4">
-                  {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />)}
-                </div>
-                <p className="text-sm leading-relaxed mb-6 transition-colors text-gray-700 dark:text-white/90">
-                  "{review.text}"
-                </p>
-                <div className="flex items-center gap-3 mt-auto pt-4 border-t transition-colors border-gray-200 dark:border-white/10">
-                  <div className={`w-10 h-10 rounded-full bg-gradient-to-br flex items-center justify-center text-white font-bold text-sm overflow-hidden ${review.grad}`}>
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {reviews.map((review, idx) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 * (idx + 1) }}
+              whileHover={{ y: -8 }}
+              className={`group relative rounded-[32px] p-8 md:p-10 text-left border transition-all duration-500 ${review.offset ? 'md:translate-y-12' : ''} bg-white border-gray-100 hover:border-blue-400/30 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] dark:bg-[#0A0A0A] dark:border-white/5 dark:hover:border-blue-500/30 dark:hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)] overflow-hidden`}
+            >
+              {/* Background Glow */}
+              <div className="absolute -right-20 -top-20 w-40 h-40 bg-blue-500/5 blur-[80px] rounded-full group-hover:bg-blue-500/10 transition-colors duration-500" />
+              
+              <div className="relative z-10 flex gap-1 mb-8">
+                {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400 drop-shadow-sm" />)}
+              </div>
+              
+              <p className="relative z-10 text-[16px] md:text-[17px] leading-relaxed mb-10 transition-colors text-gray-600 dark:text-gray-300 font-medium">
+                "{review.text}"
+              </p>
+              
+              <div className="relative z-10 flex items-center gap-4 mt-auto">
+                <div className={`w-14 h-14 rounded-full bg-gradient-to-br p-[2.5px] shadow-lg transition-transform group-hover:scale-105 duration-500 ${review.grad}`}>
+                  <div className="w-full h-full rounded-full border-2 border-white dark:border-[#0A0A0A] overflow-hidden bg-gray-200">
                     <img src={`https://i.pravatar.cc/150?img=${review.img}`} alt={review.name} className="w-full h-full object-cover" />
                   </div>
-                  <div className="overflow-hidden">
-                    <div className="text-sm font-bold transition-colors text-gray-900 dark:text-white truncate">{review.name}</div>
-                    <div className="text-xs transition-colors text-gray-500 dark:text-white/50 truncate">{review.role}</div>
-                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <div className="text-[16px] font-extrabold transition-colors text-gray-900 dark:text-white leading-tight">{review.name}</div>
+                  <div className="text-xs font-semibold tracking-wide transition-colors text-gray-400 dark:text-gray-500 mt-1.5 uppercase">{review.role}</div>
                 </div>
               </div>
-            ))}
-          </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

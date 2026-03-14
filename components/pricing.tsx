@@ -13,10 +13,14 @@ export function Pricing() {
   ];
 
   return (
-    <section className="py-16 md:py-20 relative z-10 w-full transition-colors bg-[#FAFAFA] dark:bg-[#050505]" id="pricing">
-      <div className="max-w-4xl mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold mb-3 transition-colors text-gray-900 dark:text-white">Simple, transparent pricing</h2>
-        <p className="text-sm mb-8 transition-colors text-gray-500 dark:text-gray-400">Start for free, upgrade when you need more power. No credit card required.</p>
+    <section className="py-24 md:py-32 relative z-10 w-full transition-colors bg-[#FAFAFA] dark:bg-[#050505]" id="pricing">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
+          <div>
+            <div className="text-[11px] font-bold tracking-[0.2em] uppercase mb-4 transition-colors text-blue-600 dark:text-[#2D6CFF]">PRICING PLANS</div>
+            <h2 className="text-3xl md:text-4xl font-extrabold max-w-xl leading-tight transition-colors text-gray-900 dark:text-white tracking-tight">Simple, transparent pricing</h2>
+          </div>
+        </div>
 
         <div className="flex justify-center mb-10 md:mb-16">
           <div className="p-1.5 rounded-full inline-flex items-center gap-1 transition-colors bg-[#EDF2F7] dark:bg-[#111] dark:border dark:border-white/10">
@@ -35,7 +39,7 @@ export function Pricing() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto text-left">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto text-left">
           {tiers.map((tier, idx) => (
             <div key={idx} className={`rounded-[20px] p-8 shadow-sm flex flex-col relative w-full transition-colors ${tier.pop
               ? `border-2 border-[#2D6CFF] md:transform md:-translate-y-4 bg-white shadow-[0_20px_50px_-12px_rgba(45,108,255,0.15)] dark:bg-[#111] dark:shadow-[0_20px_50px_-12px_rgba(45,108,255,0.25)]`

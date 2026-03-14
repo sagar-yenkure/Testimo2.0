@@ -8,11 +8,15 @@ export function Steps() {
   ];
 
   return (
-    <section className="py-16 md:py-20 relative z-10 w-full transition-colors bg-white dark:bg-[#050505]" id="how-it-works">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="text-center mb-10 md:mb-12">
-          <h2 className="text-3xl font-bold mb-3 transition-colors text-gray-900 dark:text-white">Three steps to collect testimonials</h2>
-          <p className="text-sm transition-colors text-gray-500 dark:text-gray-400 max-w-md mx-auto">Our process is designed to be frictionless for both you and your customers.</p>
+    <section className="py-24 md:py-32 relative z-10 w-full transition-colors bg-white dark:bg-[#050505]" id="how-it-works">
+      <div className="max-w-6xl mx-auto px-6">
+
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
+          <div>
+            <div className="text-[11px] font-bold tracking-[0.2em] uppercase mb-4 transition-colors text-blue-600 dark:text-[#2D6CFF]">HOW IT WORKS</div>
+            <h2 className="text-3xl md:text-4xl font-extrabold max-w-xl leading-tight transition-colors text-gray-900 dark:text-white tracking-tight">Three steps to collect testimonials.</h2>
+          </div>
+
         </div>
         <div className="relative flex flex-col md:flex-row justify-between items-start gap-12 md:gap-4 mt-8 md:mt-16">
           <div className="hidden md:block absolute top-[45px] left-[15%] right-[15%] h-[2px] -z-10 transition-colors bg-blue-100 dark:bg-white/10" />

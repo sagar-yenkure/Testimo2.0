@@ -6,14 +6,14 @@ import { motion } from "framer-motion";
 
 export function Hero() {
   return (
-    <section className="relative z-10 flex flex-col items-center px-6 pb-16 md:pb-20 text-center pt-32 md:pt-44">
+    <section className="relative z-10 flex flex-col items-center px-6 pb-24 md:pb-32 text-center pt-32 md:pt-48">
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="text-[2.75rem] md:text-6xl font-extrabold tracking-tight mb-6 max-w-4xl text-[#111827] dark:text-white transition-colors leading-[1.1]"
+        className="text-4xl md:text-6xl font-extrabold tracking-tight mb-8 max-w-5xl text-[#111827] dark:text-white transition-colors leading-[1.05]"
       >
-        Collect stunning testimonials that <span className="text-[#625AF8]">grow your SaaS faster.</span>
+        Collect stunning testimonials that <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">grow your SaaS faster.</span>
       </motion.h1>
 
       <motion.p
@@ -22,7 +22,7 @@ export function Hero() {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="text-[15px] md:text-[16px] max-w-xl mb-10 leading-relaxed text-gray-500 dark:text-gray-400 transition-colors"
       >
-        Testimo helps SaaS teams build smarter onboarding, qualification, 
+        Testimo helps SaaS teams build smarter onboarding, qualification,
         and testimonial collection forms — with AI-powered logic and real-time analytics.
       </motion.p>
 

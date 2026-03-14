@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { ArrowRight, Video, PenTool, Bot, Filter, Globe, PieChart } from "lucide-react";
+import { Video, PenTool, Bot, Filter, Globe, PieChart } from "lucide-react";
 
 export function Features() {
   const features = [
@@ -12,16 +11,13 @@ export function Features() {
   ];
 
   return (
-    <section className="py-16 md:py-20 relative z-10 w-full border-y transition-colors bg-[#FAFAFA] border-gray-100 dark:bg-[#0A0A0A] dark:border-white/5" id="features">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-6">
+    <section className="py-24 md:py-32 relative z-10 w-full border-y transition-colors bg-[#FAFAFA] border-gray-100 dark:bg-[#0A0A0A] dark:border-white/5" id="features">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div>
-            <div className="text-[10px] font-bold tracking-wider uppercase mb-2 transition-colors text-blue-600 dark:text-[#2D6CFF]">POWERFUL FEATURES</div>
-            <h2 className="text-3xl font-bold max-w-sm leading-tight transition-colors text-gray-900 dark:text-white">Everything you need to showcase social proof</h2>
+            <div className="text-[11px] font-bold tracking-[0.2em] uppercase mb-4 transition-colors text-blue-600 dark:text-[#2D6CFF]">POWERFUL FEATURES</div>
+            <h2 className="text-3xl md:text-4xl font-extrabold max-w-xl leading-tight transition-colors text-gray-900 dark:text-white tracking-tight">Everything you need to showcase social proof</h2>
           </div>
-          <Link href="#" className="text-sm font-medium flex items-center gap-1 transition-colors text-blue-600 hover:text-blue-700 dark:text-[#2D6CFF] dark:hover:text-blue-400">
-            View all features <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {features.map((feat, idx) => (
