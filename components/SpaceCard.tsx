@@ -45,7 +45,7 @@ const SpaceCard = ({ space }: { space: any }) => {
                     <Clock className="w-3.5 h-3.5" />
                     <span>{space.updated}</span>
                 </div>
-                <Link href="#" className="flex items-center gap-1 text-[13px] font-black text-[#2D6CFF] hover:gap-2 transition-all">
+                <Link href={`/dashboard/${space.name}?tab?=inbox`} className="flex items-center gap-1 text-[13px] font-black text-[#2D6CFF] hover:gap-2 transition-all">
                     Manage
                     <ArrowRight className="w-4 h-4" />
                 </Link>
