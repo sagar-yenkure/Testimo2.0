@@ -43,8 +43,8 @@ const SpaceDetailPage = ({ params }: { params: { space: string } }) => {
                             key={item.id}
                             onClick={() => setActiveTab(item.id)}
                             className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all relative overflow-hidden group ${activeTab === item.id
-                                    ? 'text-white'
-                                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5'
+                                ? 'text-white'
+                                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5'
                                 }`}
                         >
                             {activeTab === item.id && (
@@ -63,19 +63,18 @@ const SpaceDetailPage = ({ params }: { params: { space: string } }) => {
 
             {/* Main Content Area */}
             <div className="flex-1 space-y-6">
-                <AnimatePresence mode="wait">
-                    {activeTab === 'inbox' && (
-                        <InboxView key="inbox" spaceName="Gojo Satoru - The Strongest Sorcerer" />
-                    )}
 
-                    {activeTab === 'embed' && (
-                        <EmbedView key="embed" spaceId={params.space} />
-                    )}
+                {activeTab === 'inbox' && (
+                    <InboxView key="inbox" spaceName="Gojo Satoru - The Strongest Sorcerer" />
+                )}
 
-                    {activeTab === 'integrations' && (
-                        <IntegrationsView key="integrations" />
-                    )}
-                </AnimatePresence>
+                {activeTab === 'embed' && (
+                    <EmbedView key="embed" spaceId={params.space} />
+                )}
+
+                {activeTab === 'integrations' && (
+                    <IntegrationsView key="integrations" />
+                )}
             </div>
         </div>
     )

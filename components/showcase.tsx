@@ -13,11 +13,11 @@ export function Showcase() {
   ];
 
   return (
-    <section className="py-24 md:py-32 relative z-10 w-full px-4 transition-colors duration-300 bg-background" id="showcase">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8 px-6">
+    <section className="py-16 md:py-24 relative z-10 w-full transition-colors duration-300 bg-background" id="showcase">
+      <div className="px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -25,8 +25,8 @@ export function Showcase() {
             >
               WALL OF LOVE
             </motion.div>
-            
-            <motion.h2 
+
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -40,7 +40,7 @@ export function Showcase() {
 
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8">
           {reviews.map((review, idx) => (
-            <motion.div 
+            <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -51,15 +51,15 @@ export function Showcase() {
             >
               {/* Background Glow */}
               <div className="absolute -right-20 -top-20 w-40 h-40 bg-blue-500/5 blur-[80px] rounded-full group-hover:bg-blue-500/10 transition-colors duration-500" />
-              
+
               <div className="relative z-10 flex gap-1 mb-8">
                 {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400 drop-shadow-sm" />)}
               </div>
-              
+
               <p className="relative z-10 text-[16px] md:text-[17px] leading-relaxed mb-10 transition-colors text-gray-600 dark:text-gray-300 font-medium">
                 "{review.text}"
               </p>
-              
+
               <div className="relative z-10 flex items-center gap-4 mt-auto">
                 <div className={`w-14 h-14 rounded-full bg-gradient-to-br p-[2.5px] shadow-lg transition-transform group-hover:scale-105 duration-500 ${review.grad}`}>
                   <div className="w-full h-full rounded-full border-2 border-white dark:border-[#0A0A0A] overflow-hidden bg-gray-200">

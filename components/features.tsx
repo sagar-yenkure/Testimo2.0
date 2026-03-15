@@ -11,8 +11,8 @@ export function Features() {
   ];
 
   return (
-    <section className="py-24 md:py-32 relative z-10 w-full border-y transition-colors duration-300 bg-background border-gray-100 dark:border-white/5" id="features">
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="py-16 md:py-24 relative z-10 w-full border-y transition-colors duration-300 bg-background border-gray-100 dark:border-white/5" id="features">
+      <div className="px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div>
             <div className="text-[11px] font-bold tracking-[0.2em] uppercase mb-4 transition-colors text-blue-600 dark:text-[#2D6CFF]">POWERFUL FEATURES</div>

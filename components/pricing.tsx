@@ -13,8 +13,8 @@ export function Pricing() {
   ];
 
   return (
-    <section className="py-24 md:py-32 relative z-10 w-full transition-colors duration-300 bg-background" id="pricing">
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="py-16 md:py-24 relative z-10 w-full transition-colors duration-300 bg-background" id="pricing">
+      <div className=" px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div>
             <div className="text-[11px] font-bold tracking-[0.2em] uppercase mb-4 transition-colors text-blue-600 dark:text-[#2D6CFF]">PRICING PLANS</div>
@@ -24,13 +24,13 @@ export function Pricing() {
 
         <div className="flex justify-center mb-10 md:mb-16">
           <div className="p-1.5 rounded-full inline-flex items-center gap-1 transition-colors bg-[#EDF2F7] dark:bg-[#111] dark:border dark:border-white/10">
-            <button 
+            <button
               onClick={() => setBillingCycle('monthly')}
               className={`text-sm font-medium px-6 py-2 rounded-full transition-colors ${billingCycle === 'monthly' ? "bg-white text-gray-900 dark:bg-[#222] dark:text-white dark:border dark:border-white/5 shadow-sm" : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"}`}
             >
               Monthly
             </button>
-            <button 
+            <button
               onClick={() => setBillingCycle('yearly')}
               className={`text-sm font-medium px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${billingCycle === 'yearly' ? "bg-white text-gray-900 dark:bg-[#222] dark:text-white dark:border dark:border-white/5 shadow-sm" : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"}`}
             >
@@ -44,7 +44,7 @@ export function Pricing() {
             <div key={idx} className={`rounded-[20px] p-8 shadow-sm flex flex-col relative w-full transition-all duration-300 ${tier.pop
               ? `border-2 border-[#2D6CFF] md:transform md:-translate-y-4 bg-card-bg shadow-[0_20px_50px_-12px_rgba(45,108,255,0.15)] dark:shadow-[0_20px_50px_-12px_rgba(45,108,255,0.25)]`
               : `border bg-card-bg border-gray-100 dark:border-white/10`
-            }`}>
+              }`}>
               {tier.pop && <div className="absolute top-0 right-0 bg-[#2D6CFF] text-white text-[9px] font-bold px-3 py-1.5 rounded-bl-xl rounded-tr-[18px] tracking-widest uppercase">POPULAR</div>}
               <h3 className="text-lg font-bold mb-2 transition-colors text-gray-900 dark:text-white">{tier.name}</h3>
               <div className="flex items-baseline gap-1 mb-4">
@@ -69,7 +69,7 @@ export function Pricing() {
               <button className={`w-full py-3.5 px-4 rounded-2xl font-bold text-sm transition-colors ${tier.pop
                 ? 'bg-[#2D6CFF] hover:bg-[#2057d5] text-white shadow-lg shadow-blue-500/20'
                 : 'border border-gray-200 text-gray-900 hover:bg-gray-50 dark:border-white/20 dark:text-white dark:hover:bg-white/5'
-              }`}>
+                }`}>
                 {tier.pop ? 'Start Free Trial' : (tier.name === 'Business' ? 'Contact Sales' : 'Get Started')}
               </button>
             </div>

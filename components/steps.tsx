@@ -8,8 +8,8 @@ export function Steps() {
   ];
 
   return (
-    <section className="py-24 md:py-32 relative z-10 w-full transition-colors duration-300 bg-background" id="how-it-works">
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="py-16 md:py-24 relative z-10 w-full transition-colors duration-300 bg-background" id="how-it-works">
+      <div className="px-6">
 
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div>

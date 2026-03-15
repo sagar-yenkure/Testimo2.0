@@ -1,4 +1,5 @@
 import { auth } from '@clerk/nextjs/server'
+import Link from 'next/link'
 import {
     BarChart3,
     MessageSquareText,
@@ -41,10 +42,12 @@ const DashboardPage = async () => {
                         Your Spaces
                     </h1>
                 </div>
-                <Button className="bg-[#2D6CFF] hover:bg-[#2057d5] text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-blue-500/20 transition-all active:scale-95 text-sm h-11 shrink-0">
-                    <Plus className="w-5 h-5 mr-2" />
-                    Create a new space
-                </Button>
+                <Link href="/dashboard/create">
+                    <Button className="bg-[#2D6CFF] hover:bg-[#2057d5] text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-blue-500/20 transition-all active:scale-95 text-sm h-11 shrink-0">
+                        <Plus className="w-5 h-5 mr-2" />
+                        Create a new space
+                    </Button>
+                </Link>
             </div>
 
             {/* Dashboard Overview Container */}
@@ -118,7 +121,7 @@ const DashboardPage = async () => {
                 ))}
 
                 {/* Add Space Placeholder */}
-                <button className="rounded-[28px] border-2 border-dashed border-blue-200/50 dark:border-blue-900/30 bg-card-bg flex flex-col items-center justify-center p-6 gap-4 hover:bg-white/40 dark:hover:bg-white/[0.05] hover:border-[#2D6CFF]/30 transition-colors duration-300 group h-full min-h-[300px] shadow-sm hover:shadow-md">
+                <Link href="/dashboard/create" className="rounded-[28px] border-2 border-dashed border-blue-200/50 dark:border-blue-900/30 bg-card-bg flex flex-col items-center justify-center p-6 gap-4 hover:bg-white/40 dark:hover:bg-white/[0.05] hover:border-[#2D6CFF]/30 transition-colors duration-300 group h-full min-h-[300px] shadow-sm hover:shadow-md">
                     <div className="w-14 h-14 rounded-full bg-gray-50 dark:bg-white/5 flex items-center justify-center border border-gray-100 dark:border-white/10 group-hover:bg-[#2D6CFF] group-hover:border-[#2D6CFF] transition-all">
                         <Plus className="w-7 h-7 text-gray-400 group-hover:text-white transition-colors" />
                     </div>
@@ -126,7 +129,7 @@ const DashboardPage = async () => {
                         <span className="block text-lg font-black text-gray-900 dark:text-white mb-1.5">New Space</span>
                         <p className="text-[13px] font-medium text-gray-400 max-w-[180px] mx-auto">Click to create a new testimonial collector</p>
                     </div>
-                </button>
+                </Link>
             </div>
         </div>
     )

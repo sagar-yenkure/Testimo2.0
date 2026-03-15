@@ -14,17 +14,19 @@ export default async function Home() {
   const { isAuthenticated } = await auth();
 
   return (
-    <div className="min-h-screen overflow-hidden relative bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen transition-colors duration-300 bg-background text-foreground">
       <Navbar isAuthenticated={isAuthenticated} />
-      <main>
-        <Hero />
-        <TrustedBy />
-        <Features />
-        <Steps />
-        <Showcase />
-        <Pricing />
-        <FAQ />
-      </main>
+      <div className="max-w-6xl mx-auto overflow-hidden relative">
+        <main>
+          <Hero />
+          <TrustedBy />
+          <Features />
+          <Steps />
+          <Showcase />
+          <Pricing />
+          <FAQ />
+        </main>
+      </div>
       <Footer />
     </div>
   );

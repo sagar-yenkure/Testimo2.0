@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export function Hero() {
   return (
-    <section className="relative z-10 flex flex-col items-center px-6 pb-24 md:pb-32 text-center pt-32 md:pt-48">
+    <section className="relative z-10 flex flex-col items-center text-center px-6 pt-24 md:pt-36 pb-16 md:pb-24">
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -32,11 +32,11 @@ export function Hero() {
         transition={{ duration: 0.5, delay: 0.3 }}
         className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 mb-12 md:mb-16 w-full"
       >
-        <Link href="#" className="w-[85%] sm:w-auto group flex items-center justify-center gap-2 bg-[#2D6CFF] hover:bg-[#2057d5] text-white px-6 py-3 rounded-full font-medium transition-all shadow-lg shadow-blue-500/20 text-[14px] md:text-[15px]">
+        <Link href="#" className="w-[90%] sm:w-auto group flex items-center justify-center gap-2 bg-[#2D6CFF] hover:bg-[#2057d5] text-white px-6 py-3 rounded-full font-medium transition-all shadow-lg shadow-blue-500/20 text-[14px] md:text-[15px]">
           Build your first form
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
-        <Link href="#" className="w-[85%] sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 dark:bg-[#1A1A1A] dark:hover:bg-[#222] dark:text-white dark:border-white/10 transition-colors shadow-sm text-[14px] md:text-[15px]">
+        <Link href="#" className="w-[90%] sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 dark:bg-[#1A1A1A] dark:hover:bg-[#222] dark:text-white dark:border-white/10 transition-colors shadow-sm text-[14px] md:text-[15px]">
           <Play className="w-4 h-4 transition-colors text-blue-600 fill-blue-600 dark:text-[#2D6CFF] dark:fill-[#2D6CFF]" />
           Watch a demo
         </Link>
@@ -63,7 +63,7 @@ export function Hero() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.4 }}
-        className="hidden md:block w-full max-w-6xl mx-auto rounded-[24px] shadow-2xl overflow-hidden border mb-20 relative z-20 bg-white border-gray-200 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] dark:bg-[#111] dark:border-white/10 dark:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all duration-300"
+        className="hidden md:block w-full rounded-[24px] shadow-2xl overflow-hidden border mb-20 relative z-20 bg-white border-gray-200 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] dark:bg-[#111] dark:border-white/10 dark:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all duration-300"
       >
         <div className="w-full h-10 flex items-center px-4 gap-2 border-b transition-colors bg-[#f1f4f9] border-gray-200 dark:bg-[#1A1A1A] dark:border-white/10">
           <div className="flex gap-2 w-20">

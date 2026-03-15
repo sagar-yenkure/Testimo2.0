@@ -27,8 +27,8 @@ export function FAQ() {
   ];
 
   return (
-    <section className="py-24 md:py-32 relative z-10 w-full transition-colors duration-300 bg-background" id="faq">
-      <div className="max-w-5xl mx-auto px-6">
+    <section className="py-16 md:py-24 relative z-10 w-full transition-colors duration-300 bg-background" id="faq">
+      <div className=" px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div>
             <div className="text-[11px] font-bold tracking-[0.2em] uppercase mb-4 transition-colors text-blue-600 dark:text-[#2D6CFF]">HELP CENTER</div>
@@ -40,30 +40,27 @@ export function FAQ() {
 
         <div className="space-y-4">
           {faqs.map((faq, i) => (
-            <div 
-              key={i} 
-              className={`rounded-[24px] overflow-hidden border transition-all duration-300 ${
-                openIndex === i 
-                  ? "bg-gray-50 border-blue-200 dark:bg-white/5 dark:border-blue-500/30" 
+            <div
+              key={i}
+              className={`rounded-[24px] overflow-hidden border transition-all duration-300 ${openIndex === i
+                  ? "bg-gray-50 border-blue-200 dark:bg-white/5 dark:border-blue-500/30"
                   : "bg-card-bg border-gray-100 hover:border-gray-200 dark:border-white/5 dark:hover:border-white/10"
-              }`}
+                }`}
             >
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 className="w-full p-6 md:p-8 flex justify-between items-center text-left transition-colors"
               >
-                <span className={`font-bold text-[16px] md:text-[18px] transition-colors ${
-                  openIndex === i ? "text-blue-600 dark:text-[#2D6CFF]" : "text-gray-900 dark:text-white"
-                }`}>
+                <span className={`font-bold text-[16px] md:text-[18px] transition-colors ${openIndex === i ? "text-blue-600 dark:text-[#2D6CFF]" : "text-gray-900 dark:text-white"
+                  }`}>
                   {faq.q}
                 </span>
                 <div className={`flex-shrink-0 ml-4 transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`}>
-                  <ChevronDown className={`w-5 h-5 transition-colors ${
-                    openIndex === i ? "text-blue-600 dark:text-[#2D6CFF]" : "text-gray-400 dark:text-gray-500"
-                  }`} />
+                  <ChevronDown className={`w-5 h-5 transition-colors ${openIndex === i ? "text-blue-600 dark:text-[#2D6CFF]" : "text-gray-400 dark:text-gray-500"
+                    }`} />
                 </div>
               </button>
-              
+
               <AnimatePresence>
                 {openIndex === i && (
                   <motion.div
