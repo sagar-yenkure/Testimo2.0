@@ -15,10 +15,11 @@ interface TestimonialFormProps {
     collectEmail: boolean;
     collectUserRole: boolean;
     collectSocialLink: boolean;
-    language: 'English' | 'Spanish' | 'French' | 'German' | 'Japanese';
-    theme: "Light" | "Dark";
-    backgroundPattern?: 'Default' | 'Dots' | 'Mesh' | 'Grid' | 'Waves' | 'Glass';
+    language: string;
+    theme: string;
+    bgPattern?: string;
     fontFamily?: 'Inter' | 'Outfit' | 'Playfair' | 'Mono';
+    accentColor?: string;
   };
   isPreview?: boolean;
 }
@@ -27,25 +28,19 @@ export function TestimonialForm({ formData, isPreview = false }: TestimonialForm
   const [submissionType, setSubmissionType] = useState<"text" | "video">("text");
   const [hoveredStar, setHoveredStar] = useState(0);
   const [selectedStar, setSelectedStar] = useState(0);
+  const [testimonial, setTestimonial] = useState("");
+  const MAX_CHARS = 500;
   const isDark = formData.theme === "Dark";
-  const fontFamily = formData.fontFamily || 'Inter';
-
-  const fontStyles = {
-    Inter: 'font-sans',
-    Outfit: 'font-outfit', // Assuming these are configured in tailwind or applied via inline style
-    Playfair: 'font-serif',
-    Mono: 'font-mono'
-  };
-
-  // Inline font families for better compatibility if tailwind classes aren't set up
+  const accent = formData.accentColor || '#2D6CFF'
   const fontFamilies = {
     Inter: '"Inter", sans-serif',
     Outfit: '"Outfit", sans-serif',
     Playfair: '"Playfair Display", serif',
-    Mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace'
-  };
+    Mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+  }
+  const fontStyle = fontFamilies[formData.fontFamily || 'Inter']
 
-  const inputCls = `w-full rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6CFF]/40 border transition-all
+  const inputCls = `w-full rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 border transition-all
     ${isDark
       ? "bg-[#0A0A0A] border-white/10 text-white placeholder:text-gray-600"
       : "bg-white border-blue-100/50 text-gray-900 shadow-sm placeholder:text-gray-400"
@@ -54,72 +49,60 @@ export function TestimonialForm({ formData, isPreview = false }: TestimonialForm
   const labelCls = `text-[11px] font-bold ${isDark ? "text-gray-400" : "text-gray-600"}`;
 
   return (
-    <div
-      className={`w-full px-6 py-8 relative overflow-hidden h-full ${isDark ? "text-white" : "text-gray-900"}`}
-      style={{ fontFamily: fontFamilies[fontFamily as keyof typeof fontFamilies] }}
-    >
-      {/* Background Patterns */}
-      {formData.backgroundPattern === 'Dots' && (
-        <div className={`absolute inset-0 pointer-events-none opacity-[0.25] ${isDark ? "opacity-[0.2]" : ""}`}
-          style={{ backgroundImage: 'radial-gradient(circle, #2D6CFF 1.5px, transparent 1.5px)', backgroundSize: '20px 20px' }} />
-      )}
-      {formData.backgroundPattern === 'Grid' && (
-        <div className={`absolute inset-0 pointer-events-none opacity-[0.12] ${isDark ? "opacity-[0.1]" : ""}`}
-          style={{ backgroundImage: 'linear-gradient(to right, #2D6CFF 1px, transparent 1px), linear-gradient(to bottom, #2D6CFF 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-      )}
-      {formData.backgroundPattern === 'Waves' && (
-        <div className={`absolute inset-0 pointer-events-none opacity-[0.1] ${isDark ? "opacity-[0.08]" : ""}`}
-          style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 12px, #2D6CFF 12px, #2D6CFF 13px)', backgroundSize: '24px 24px' }} />
-      )}
-      {formData.backgroundPattern === 'Glass' && (
-        <div className="absolute inset-0 pointer-events-none">
-          <div className={`absolute inset-0 backdrop-blur-[3px] ${isDark ? "bg-white/[0.03]" : "bg-[#2D6CFF]/[0.03]"}`} />
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#2D6CFF]/30 to-transparent" />
-        </div>
-      )}
-      {formData.backgroundPattern === 'Mesh' && (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className={`absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#2D6CFF]/30 blur-[90px] ${isDark ? "opacity-60" : ""}`} />
-          <div className={`absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-500/30 blur-[90px] ${isDark ? "opacity-60" : ""}`} />
-        </div>
-      )}
+    <div className={`w-full px-6 py-7 ${isDark ? "text-white" : "text-gray-900"}`} style={{ fontFamily: fontStyle }}>
+      <div className="flex flex-col items-center text-center w-full max-w-md mx-auto">
 
-      <div className="relative z-10 flex flex-col items-center text-center w-full max-w-md mx-auto">
+        {/* Logo & Title Section — Always stacked and centered for layout stability */}
+        <div className="mb-5 w-full">
+          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 border transition-all duration-300
+            ${isDark ? "bg-white/5" : "bg-blue-50/50"}`}
+            style={{
+              borderColor: `${accent}30`,
+              boxShadow: formData.logo ? `0 4px 20px -10px ${accent}` : 'none'
+            }}
+          >
+            {formData.logo ? (
+              <img src={formData.logo} alt="Logo" className="w-full h-full object-cover rounded-[14px]" />
+            ) : (
+              <ImageIcon className="w-6 h-6 opacity-70" style={{ color: accent }} />
+            )}
+          </div>
 
-        {/* Logo */}
-        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 overflow-hidden shrink-0 border
-          ${isDark ? "bg-white/5 border-white/10" : "bg-blue-50/50 border-blue-100/50"}`}>
-          {formData.logo ? (
-            <img src={formData.logo} alt="Logo" className="w-full h-full object-cover" />
-          ) : (
-            <ImageIcon className="w-6 h-6 text-[#2D6CFF] opacity-40" />
+          <h3 className="text-[25px] font-extrabold leading-tight tracking-tight">
+            {formData.formTitle || "Share Your Experience"}
+          </h3>
+
+          {formData.collectionName && (
+            <p className={`text-[11px] mt-1.5 font-medium ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+              {formData.collectionName}
+            </p>
           )}
         </div>
 
-        <h3 className="text-xl font-extrabold mb-1.5 leading-tight tracking-tight">
-          {formData.formTitle || "Share Your Experience"}
-        </h3>
-        <p className={`text-[13px] mb-6 leading-relaxed max-w-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+        {/* Description */}
+        <p className={`text-[12.5px] mb-5 leading-relaxed max-w-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>
           {formData.description || "We'd love to hear about your experience..."}
         </p>
 
-        {/* Star Ratings */}
+        {/* Star Ratings — integrated card, no uppercase label */}
         {formData.collectStarRatings && (
-          <div className="mb-5 w-full">
-            <label className={`block text-[10px] font-bold uppercase tracking-widest mb-2.5 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-              Rate your experience
-            </label>
-            <div className="flex items-center justify-center gap-1">
+          <div className={`w-full mb-5 rounded-2xl px-4 py-3.5 flex flex-col items-center gap-2
+            ${isDark ? "bg-white/[0.03] border border-white/5" : "bg-blue-50/40 border border-blue-100/40"}`}>
+            <p className={`text-[11px] font-semibold ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+              How would you rate your experience?
+            </p>
+            <div className="flex items-center gap-1.5">
               {[1, 2, 3, 4, 5].map((i) => (
                 <button
                   key={i}
+                  // disabled={isPreview}
                   onMouseEnter={() => setHoveredStar(i)}
                   onMouseLeave={() => setHoveredStar(0)}
                   onClick={() => setSelectedStar(i)}
-                  className="transition-transform hover:scale-110 active:scale-95"
+                  className="transition-transform hover:scale-115 active:scale-95 disabled:cursor-default"
                 >
                   <Star
-                    className={`w-8 h-8 transition-all duration-150
+                    className={`w-7 h-7 transition-all duration-100
                       ${(hoveredStar || selectedStar) >= i
                         ? "fill-yellow-400 text-yellow-400"
                         : isDark ? "text-white/10" : "text-gray-200"
@@ -128,6 +111,11 @@ export function TestimonialForm({ formData, isPreview = false }: TestimonialForm
                 </button>
               ))}
             </div>
+            <p className={`text-[10px] font-medium ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+              {(hoveredStar || selectedStar) > 0 ? (
+                ["", "Poor", "Fair", "Good", "Great", "Excellent!"][(hoveredStar || selectedStar)]
+              ) : "Not rated"}
+            </p>
           </div>
         )}
 
@@ -144,13 +132,15 @@ export function TestimonialForm({ formData, isPreview = false }: TestimonialForm
                 <button
                   key={type}
                   onClick={() => setSubmissionType(type)}
+                  // disabled={isPreview}
                   className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-[12px] font-bold transition-all duration-200
                     ${active
-                      ? "bg-[#2D6CFF] text-white shadow-md shadow-blue-500/25"
+                      ? "text-white shadow-md"
                       : isDark
                         ? "text-gray-400 hover:text-white hover:bg-white/5"
                         : "text-gray-500 hover:text-gray-700 hover:bg-white/60"
                     }`}
+                  style={active ? { backgroundColor: accent } : {}}
                 >
                   <Icon className="w-3.5 h-3.5" />
                   <span className="capitalize">{type}</span>
@@ -160,74 +150,99 @@ export function TestimonialForm({ formData, isPreview = false }: TestimonialForm
           </div>
         </div>
 
-        {/* ── Input Section (Text or Video) ── */}
-        <div className="w-full mb-5">
-          {submissionType === "text" ? (
-            <div className="space-y-1 text-left">
+        {/* ── Text Form ── */}
+        <div className="w-full space-y-3 text-left">
+          {submissionType === "text" && (
+            <div className="space-y-1">
               <label className={labelCls}>
                 Your testimonial <span className="text-red-400">*</span>
               </label>
-              <textarea
-                placeholder="Share your experience..."
-                disabled={isPreview}
-                className={`${inputCls} resize-none min-h-[96px]`}
-              />
+              <div className="space-y-1">
+                <textarea
+                  placeholder="Share your experience..."
+                  disabled={isPreview}
+                  value={testimonial}
+                  onChange={(e) => setTestimonial(e.target.value.slice(0, MAX_CHARS))}
+                  className={`${inputCls} resize-none min-h-[110px]`}
+                />
+                <div className="flex justify-end">
+                  <span className={`text-[10px] font-medium transition-colors ${testimonial.length >= MAX_CHARS ? "text-red-500" : "text-gray-400"
+                    }`}>
+                    {testimonial.length} / {MAX_CHARS} characters
+                  </span>
+                </div>
+              </div>
             </div>
-          ) : (
-            <div className="flex gap-3">
+          )}
+
+
+          {/* ── Video Options ── */}
+          {submissionType === "video" && (
+            <div className="w-full flex gap-3">
               {[
-                { icon: Video, label: "Record Video", sub: "Record testimonial" },
-                { icon: Upload, label: "Upload Video", sub: "MP4, MOV, up to 100MB" },
+                { icon: Video, label: "Record Video", sub: "Use your camera to record a testimonial" },
+                { icon: Upload, label: "Upload Video", sub: "MP4, MOV, WEBM · up to 100MB" },
               ].map(({ icon: Icon, label, sub }) => (
                 <button
                   key={label}
                   disabled={isPreview}
-                  className={`flex-1 flex flex-col items-center justify-center gap-3 py-6 rounded-2xl border-2 border-dashed transition-all group
-                    ${isDark
-                      ? "border-white/10 bg-white/[0.02] hover:border-[#2D6CFF]/50 hover:bg-[#2D6CFF]/5"
-                      : "border-blue-100/60 bg-blue-50/20 hover:border-[#2D6CFF]/40 hover:bg-blue-50/60"
-                    } ${isPreview ? "opacity-70 cursor-not-allowed pointer-events-none" : ""}`}
+                  className={`flex-1 flex flex-col items-center justify-center gap-4 py-6 rounded-2xl border-2 border-dashed transition-all group
+                  ${isDark
+                      ? "border-white/10 bg-white/[0.02]"
+                      : "border-blue-100/60 bg-blue-50/20"
+                    } cursor-pointer shadow-sm hover:shadow-md active:scale-[0.98]`}
+                  style={{ borderColor: submissionType === "video" ? `${accent}40` : undefined }}
+
                 >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200
-                    ${isDark
-                      ? "bg-white/5 group-hover:bg-[#2D6CFF]/20"
-                      : "bg-white shadow-sm group-hover:shadow-md group-hover:bg-[#2D6CFF]/5"
+                  {/* Icon circle */}
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-200
+                  ${isDark
+                      ? "bg-white/5"
+                      : "bg-white shadow-sm"
                     }`}>
-                    <Icon className="w-5 h-5 text-[#2D6CFF]" />
+                    <Icon className="w-6 h-6" style={{ color: accent }} />
                   </div>
-                  <div className="text-center px-1">
-                    <p className={`text-[12px] font-bold mb-0.5 ${isDark ? "text-white" : "text-gray-800"}`}>{label}</p>
-                    <p className={`text-[10px] leading-relaxed ${isDark ? "text-gray-500" : "text-gray-400"}`}>{sub}</p>
+                  <div className="text-center px-2">
+                    <p className={`text-[13px] font-bold mb-1 ${isDark ? "text-white" : "text-gray-800"}`}>{label}</p>
+                    <p className={`text-[11px] leading-relaxed ${isDark ? "text-gray-500" : "text-gray-400"}`}>{sub}</p>
                   </div>
                 </button>
               ))}
             </div>
           )}
-        </div>
 
-        {/* ── Shared User Fields (Always Visible) ── */}
-        <div className="w-full space-y-3 text-left">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
               <label className={labelCls}>Your Name <span className="text-red-400">*</span></label>
               <input type="text" placeholder="John Doe" disabled={isPreview} className={inputCls} />
             </div>
 
+            {/* Profile image — clean upload zone */}
             <div className="space-y-1">
               <label className={labelCls}>Profile Image</label>
-              <label className={`flex items-center gap-2 rounded-xl px-3 py-2 border cursor-pointer transition-all text-[12px]
-                ${isDark
-                  ? "bg-[#0A0A0A] border-white/10 text-gray-400 hover:border-[#2D6CFF]/50 hover:text-[#2D6CFF]"
-                  : "bg-white border-blue-100/50 text-gray-400 shadow-sm hover:border-[#2D6CFF]/40 hover:text-[#2D6CFF]"
-                } ${isPreview ? "pointer-events-none opacity-60" : ""}`}>
-                <Upload className="w-3.5 h-3.5 shrink-0" />
+              <label className={`flex items-center gap-2 rounded-xl px-3.5 py-2.5 border cursor-pointer transition-all text-sm
+                  ${isDark
+                  ? "bg-[#0A0A0A] border-white/10 text-gray-400 hover:text-white"
+                  : "bg-white border-blue-100/50 text-gray-400 shadow-sm hover:text-gray-700"
+                } ${isPreview ? "opacity-60" : ""}`}
+                style={{ borderColor: isPreview ? undefined : `${accent}30` }} // Custom border logic
+                onMouseEnter={(e) => {
+                  if(!isPreview) e.currentTarget.style.borderColor = accent;
+                }}
+                onMouseLeave={(e) => {
+                  if(!isPreview) e.currentTarget.style.borderColor = `${accent}30`;
+                }}
+              >
+                <Upload className="w-4 h-4 shrink-0" style={{ color: accent }} />
                 <span className="truncate font-medium">Upload photo</span>
                 <input type="file" accept="image/*" className="hidden" disabled={isPreview} />
               </label>
             </div>
           </div>
 
-          {/* Optional fields based on settings */}
+
+
+          {/* Optional fields */}
           {(formData.collectEmail || formData.collectUserRole || formData.collectCompany || formData.collectSocialLink) && (
             <div className="grid grid-cols-2 gap-3">
               {formData.collectEmail && (
@@ -260,8 +275,7 @@ export function TestimonialForm({ formData, isPreview = false }: TestimonialForm
           <div className="pt-1">
             <Button
               disabled={isPreview}
-              className={`w-full bg-[#2D6CFF] hover:bg-[#2057d5] text-white rounded-xl py-5 font-bold text-sm shadow-md shadow-blue-500/20 transition-all
-                ${isPreview ? "pointer-events-none opacity-80" : "hover:scale-[1.01] active:scale-[0.99]"}`}
+              className={`w-full text-white rounded-xl py-5 font-bold text-sm transition-all ${isPreview ? "pointer-events-none opacity-80" : "hover:scale-[1.01] active:scale-[0.99]"}`} style={{ backgroundColor: accent }}
             >
               Submit Testimonial
             </Button>

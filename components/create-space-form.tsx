@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { ChevronRight, ChevronLeft, Check, Settings, Wand2, Copy, CheckCheck, ExternalLink, Upload, X, PartyPopper } from 'lucide-react'
+import { ChevronRight, ChevronLeft, Check, Settings, Wand2, Copy, CheckCheck, ExternalLink, Upload, X, PartyPopperIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TestimonialForm } from '@/components/testimonial-form'
 import { useRouter } from 'next/navigation'
@@ -46,17 +46,18 @@ export default function CreateSpaceForm() {
     const [formData, setFormData] = useState({
         collectionName: '',
         logo: null as string | null,
-        formTitle: 'Share Your Experience',
-        description: "We'd love to hear about your experience with our product...",
+        formTitle: "Love us? Roast us? Let's hear it! 📢",
+        description: "Your feedback is our secret sauce. Whether we made your day or need a reality check, don't hold back!",
         collectStarRatings: true,
         collectCompany: false,
         collectEmail: false,
         collectUserRole: false,
         collectSocialLink: false,
-        language: 'English' as 'English' | 'Spanish' | 'French' | 'German' | 'Japanese',
-        theme: 'Light' as 'Light' | 'Dark',
-        backgroundPattern: 'Default' as 'Default' | 'Dots' | 'Mesh' | 'Grid' | 'Waves' | 'Glass',
+        language: 'English',
+        theme: 'Light',
+        bgPattern: 'none' as 'none' | 'dots' | 'grid' | 'waves' | 'circles',
         fontFamily: 'Inter' as 'Inter' | 'Outfit' | 'Playfair' | 'Mono',
+        accentColor: '#2D6CFF',
     })
 
     const updateFormData = (key: keyof typeof formData, value: any) =>
@@ -115,7 +116,55 @@ export default function CreateSpaceForm() {
                 <div className="lg:w-[44%] order-2 lg:order-1 flex flex-col min-h-0 overflow-hidden">
                     <div className={`relative flex-1 rounded-3xl overflow-hidden border transition-colors duration-500
             ${formData.theme === 'Dark' ? 'bg-[#0A0A0A] border-[#222]' : 'bg-white border-blue-200/50'}`}>
-                        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+
+                        {/* Pattern layer */}
+                        {formData.bgPattern !== 'none' && (
+                            <div className="pointer-events-none absolute inset-0 z-0">
+                                {formData.bgPattern === 'dots' && (
+                                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+                                                <circle cx="2" cy="2" r="1.5" fill={formData.theme === 'Dark' ? 'rgba(255,255,255,0.07)' : 'rgba(45,108,255,0.12)'} />
+                                            </pattern>
+                                        </defs>
+                                        <rect width="100%" height="100%" fill="url(#dots)" />
+                                    </svg>
+                                )}
+                                {formData.bgPattern === 'grid' && (
+                                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <pattern id="grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+                                                <path d="M 32 0 L 0 0 0 32" fill="none" stroke={formData.theme === 'Dark' ? 'rgba(255,255,255,0.06)' : 'rgba(45,108,255,0.1)'} strokeWidth="0.75" />
+                                            </pattern>
+                                        </defs>
+                                        <rect width="100%" height="100%" fill="url(#grid)" />
+                                    </svg>
+                                )}
+                                {formData.bgPattern === 'waves' && (
+                                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <pattern id="waves" x="0" y="0" width="80" height="24" patternUnits="userSpaceOnUse">
+                                                <path d="M0 12 C 20 4, 40 20, 80 12" fill="none" stroke={formData.theme === 'Dark' ? 'rgba(255,255,255,0.07)' : 'rgba(45,108,255,0.12)'} strokeWidth="1" />
+                                            </pattern>
+                                        </defs>
+                                        <rect width="100%" height="100%" fill="url(#waves)" />
+                                    </svg>
+                                )}
+                                {formData.bgPattern === 'circles' && (
+                                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <pattern id="circles" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                                                <circle cx="20" cy="20" r="14" fill="none" stroke={formData.theme === 'Dark' ? 'rgba(255,255,255,0.06)' : 'rgba(45,108,255,0.1)'} strokeWidth="0.75" />
+                                            </pattern>
+                                        </defs>
+                                        <rect width="100%" height="100%" fill="url(#circles)" />
+                                    </svg>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Ambient blobs */}
+                        <div className="pointer-events-none absolute inset-0 overflow-hidden z-0">
                             <div className={`absolute -top-16 -left-16 w-56 h-56 rounded-full blur-3xl opacity-40
                 ${formData.theme === 'Dark' ? 'bg-[#2D6CFF]/15' : 'bg-[#2D6CFF]/8'}`} />
                             <div className={`absolute -bottom-16 -right-16 w-56 h-56 rounded-full blur-3xl opacity-40
@@ -278,142 +327,237 @@ export default function CreateSpaceForm() {
                             {/* ── Step 2 ── */}
                             {step === 2 && (
                                 <div className="space-y-5">
-                                    <div className="grid grid-cols-1 gap-3">
-                                        <div className="grid grid-cols-3 gap-3">
+
+                                    {/* General Settings */}
+                                    <div className="space-y-2">
+                                        <h3 className="text-[12px] font-bold text-gray-900 dark:text-white">Display & Language</h3>
+                                        <div className="grid grid-cols-2 gap-3">
                                             <div className="space-y-1">
-                                                <label className="text-[12px] font-bold text-gray-900 dark:text-white">Language</label>
+                                                <label className="text-[10px] uppercase font-bold text-gray-400 dark:text-gray-500 ml-1">Language</label>
                                                 <Select value={formData.language} onValueChange={(v) => updateFormData('language', v)}>
-                                                    <SelectTrigger className="w-full bg-white/50 dark:bg-white/[0.02] border border-blue-100/50 dark:border-white/10 rounded-xl text-[12px] font-semibold h-auto py-2.5 px-3 text-gray-900 dark:text-white transition-all hover:bg-white dark:hover:bg-white/[0.05]">
+                                                    <SelectTrigger className="w-full bg-white/50 dark:bg-white/[0.02] border border-blue-100/50 dark:border-white/10 rounded-xl text-sm py-4 px-3 text-gray-900 dark:text-white transition-all hover:bg-white dark:hover:bg-white/[0.05] focus:ring-1 focus:ring-[#2D6CFF]/30">
                                                         <SelectValue />
                                                     </SelectTrigger>
                                                     <SelectContent className="rounded-xl">
                                                         {['English', 'Spanish', 'French', 'German', 'Japanese'].map(o => (
-                                                            <SelectItem key={o} value={o} className="text-[12px] cursor-pointer py-2 px-3">{o}</SelectItem>
+                                                            <SelectItem key={o} value={o} className="text-sm cursor-pointer">{o}</SelectItem>
                                                         ))}
                                                     </SelectContent>
                                                 </Select>
                                             </div>
-
                                             <div className="space-y-1">
-                                                <label className="text-[12px] font-bold text-gray-900 dark:text-white">Theme</label>
+                                                <label className="text-[10px] uppercase font-bold text-gray-400 dark:text-gray-500 ml-1">Theme</label>
                                                 <Select value={formData.theme} onValueChange={(v) => updateFormData('theme', v)}>
-                                                    <SelectTrigger className="w-full bg-white/50 dark:bg-white/[0.02] border border-blue-100/50 dark:border-white/10 rounded-xl text-[12px] font-semibold h-auto py-2.5 px-3 text-gray-900 dark:text-white transition-all hover:bg-white dark:hover:bg-white/[0.05]">
+                                                    <SelectTrigger className="w-full bg-white/50 dark:bg-white/[0.02] border border-blue-100/50 dark:border-white/10 rounded-xl text-sm py-4 px-3 text-gray-900 dark:text-white transition-all hover:bg-white dark:hover:bg-white/[0.05] focus:ring-1 focus:ring-[#2D6CFF]/30">
                                                         <SelectValue />
                                                     </SelectTrigger>
                                                     <SelectContent className="rounded-xl">
-                                                        <SelectItem value="Light" className="text-[12px] cursor-pointer py-2 px-3">Light</SelectItem>
-                                                        <SelectItem value="Dark" className="text-[12px] cursor-pointer py-2 px-3">Dark</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-
-                                            <div className="space-y-1">
-                                                <label className="text-[12px] font-bold text-gray-900 dark:text-white">Font Style</label>
-                                                <Select value={formData.fontFamily} onValueChange={(v) => updateFormData('fontFamily', v)}>
-                                                    <SelectTrigger className="w-full bg-white/50 dark:bg-white/[0.02] border border-blue-100/50 dark:border-white/10 rounded-xl text-[12px] font-semibold h-auto py-2.5 px-3 text-gray-900 dark:text-white transition-all hover:bg-white dark:hover:bg-white/[0.05]">
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                    <SelectContent className="rounded-xl">
-                                                        <SelectItem value="Inter" className="text-[12px] cursor-pointer py-2 px-3">Inter</SelectItem>
-                                                        <SelectItem value="Outfit" className="text-[12px] cursor-pointer py-2 px-3">Outfit</SelectItem>
-                                                        <SelectItem value="Playfair" className="text-[12px] cursor-pointer py-2 px-3">Playfair</SelectItem>
-                                                        <SelectItem value="Mono" className="text-[12px] cursor-pointer py-2 px-3 font-mono">Mono</SelectItem>
+                                                        <SelectItem value="Light" className="text-sm cursor-pointer">Light</SelectItem>
+                                                        <SelectItem value="Dark" className="text-sm cursor-pointer">Dark</SelectItem>
                                                     </SelectContent>
                                                 </Select>
                                             </div>
                                         </div>
-
-
-
-
-                                        {/* Data Collection */}
-                                        <div className="space-y-2">
-                                            <h3 className="text-[12px] font-bold text-gray-900 dark:text-white">Data Collection</h3>
-                                            <div className="grid grid-cols-3  gap-2">
-                                                {[
-                                                    { id: 'collectStarRatings', label: 'Star Ratings' },
-                                                    { id: 'collectCompany', label: 'Company' },
-                                                    { id: 'collectEmail', label: 'Email' },
-                                                    { id: 'collectUserRole', label: 'Job Title' },
-                                                    { id: 'collectSocialLink', label: 'Social Link' },
-                                                ].map((item) => {
-                                                    const active = (formData as any)[item.id]
-                                                    return (
-                                                        <div
-                                                            key={item.id}
-                                                            onClick={() => updateFormData(item.id as any, !active)}
-                                                            className={`flex items-center justify-between px-3 py-2.5 rounded-xl border transition-all cursor-pointer select-none
-                               ${active
-                                                                    ? 'border-[#2D6CFF]/30 bg-blue-50/50 dark:bg-[#2D6CFF]/10 dark:border-[#2D6CFF]/20'
-                                                                    : 'border-blue-100/50 dark:border-white/10 bg-white/50 dark:bg-white/[0.02] hover:bg-white dark:hover:bg-white/[0.05]'
-                                                                }`}
-                                                        >
-                                                            <span className={`text-[12px] font-semibold ${active ? 'text-[#2D6CFF]' : 'text-gray-700 dark:text-white'}`}>
-                                                                {item.label}
-                                                            </span>
-                                                            {/* Larger toggle — w-11 h-6 */}
-                                                            <div className={`relative w-11 h-6 rounded-full flex-shrink-0 transition-colors duration-200
-                               ${active ? 'bg-[#2D6CFF]' : 'bg-gray-200 dark:bg-white/10'}`}>
-                                                                <div className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-200
-                                 ${active ? 'translate-x-5' : 'translate-x-0'}`} />
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
-                                        </div>
-
-                                        {/* Background Style */}
-                                        <div className="space-y-3">
-                                            <h3 className="text-[12px] font-bold text-gray-900 dark:text-white">Background Style</h3>
-                                            <div className="grid grid-cols-3 gap-2">
-                                                {[
-                                                    { id: 'Default', label: 'Default' },
-                                                    { id: 'Dots', label: 'Dots' },
-                                                    { id: 'Mesh', label: 'Mesh' },
-                                                    { id: 'Grid', label: 'Grid' },
-                                                    { id: 'Waves', label: 'Waves' },
-                                                    { id: 'Glass', label: 'Glass' },
-                                                ].map((pattern) => {
-                                                    const active = formData.backgroundPattern === pattern.id
-                                                    return (
-                                                        <div
-                                                            key={pattern.id}
-                                                            onClick={() => updateFormData('backgroundPattern', pattern.id)}
-                                                            className={`flex items-center justify-between px-3 py-2.5 rounded-xl border transition-all cursor-pointer select-none
-                                                                ${active
-                                                                    ? 'border-[#2D6CFF]/30 bg-blue-50/50 dark:bg-[#2D6CFF]/10 dark:border-[#2D6CFF]/20'
-                                                                    : 'border-blue-100/50 dark:border-white/10 bg-white/50 dark:bg-white/[0.02] hover:bg-white dark:hover:bg-white/[0.05]'
-                                                                }`}
-                                                        >
-                                                            <span className={`text-[12px] font-semibold ${active ? 'text-[#2D6CFF]' : 'text-gray-700 dark:text-white'}`}>
-                                                                {pattern.label}
-                                                            </span>
-                                                            <div className={`w-8 h-8 rounded-lg border border-inherit overflow-hidden relative shrink-0
-                                                                ${formData.theme === 'Dark' ? 'bg-[#111]' : 'bg-blue-50/50'}`}>
-                                                                {pattern.id === 'Dots' && (
-                                                                    <div className="absolute inset-0 opacity-60" style={{ backgroundImage: 'radial-gradient(circle, #2D6CFF 0.8px, transparent 0.8px)', backgroundSize: '4px 4px' }} />
-                                                                )}
-                                                                {pattern.id === 'Grid' && (
-                                                                    <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'linear-gradient(to right, #2D6CFF 1px, transparent 1px), linear-gradient(to bottom, #2D6CFF 1px, transparent 1px)', backgroundSize: '8px 8px' }} />
-                                                                )}
-                                                                {pattern.id === 'Mesh' && (
-                                                                    <div className="absolute inset-0 opacity-60 bg-gradient-to-br from-[#2D6CFF]/50 via-purple-500/50 to-[#2D6CFF]/50 blur-md" />
-                                                                )}
-                                                                {pattern.id === 'Waves' && (
-                                                                    <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 2px, #2D6CFF 2px, #2D6CFF 3px)', backgroundSize: '10px 10px' }} />
-                                                                )}
-                                                                {pattern.id === 'Glass' && (
-                                                                    <div className="absolute inset-0 bg-white/40 dark:bg-white/10 backdrop-blur-[1px]" />
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
-                                        </div>
-
                                     </div>
+
+                                    {/* Data Collection */}
+                                    <div className="space-y-2">
+                                        <h3 className="text-[12px] font-bold text-gray-900 dark:text-white">Data Collection</h3>
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {[
+                                                { id: 'collectStarRatings', label: 'Star Ratings' },
+                                                { id: 'collectCompany', label: 'Company' },
+                                                { id: 'collectEmail', label: 'Email' },
+                                                { id: 'collectUserRole', label: 'Job Title' },
+                                                { id: 'collectSocialLink', label: 'Social Link' },
+                                            ].map((item) => {
+                                                const active = (formData as any)[item.id]
+                                                return (
+                                                    <div
+                                                        key={item.id}
+                                                        onClick={() => updateFormData(item.id as any, !active)}
+                                                        className={`flex items-center justify-between px-3 py-2.5 rounded-xl border transition-all cursor-pointer select-none
+                              ${active
+                                                                ? 'border-[#2D6CFF]/30 bg-blue-50/50 dark:bg-[#2D6CFF]/10 dark:border-[#2D6CFF]/20'
+                                                                : 'border-blue-100/50 dark:border-white/10 bg-white/50 dark:bg-white/[0.02] hover:bg-white dark:hover:bg-white/[0.05]'
+                                                            }`}
+                                                    >
+                                                        <span className={`text-[12px] font-semibold ${active ? 'text-[#2D6CFF]' : 'text-gray-700 dark:text-white'}`}>
+                                                            {item.label}
+                                                        </span>
+                                                        <div className={`relative w-11 h-6 rounded-full flex-shrink-0 transition-colors duration-200
+                              ${active ? 'bg-[#2D6CFF]' : 'bg-gray-200 dark:bg-white/10'}`}>
+                                                            <div className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-200
+                                ${active ? 'translate-x-5' : 'translate-x-0'}`} />
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    {/* Background Pattern */}
+                                    <div className="space-y-2">
+                                        <h3 className="text-[12px] font-bold text-gray-900 dark:text-white">Background Pattern</h3>
+                                        <div className="grid grid-cols-5 gap-2">
+                                            {([
+                                                { id: 'none', label: 'None' },
+                                                { id: 'dots', label: 'Dots' },
+                                                { id: 'grid', label: 'Grid' },
+                                                { id: 'waves', label: 'Waves' },
+                                                { id: 'circles', label: 'Rings' },
+                                            ] as const).map((p) => {
+                                                const active = formData.bgPattern === p.id
+                                                return (
+                                                    <button
+                                                        key={p.id}
+                                                        onClick={() => updateFormData('bgPattern', p.id)}
+                                                        className={`flex flex-col gap-1.5 rounded-xl border-2 overflow-hidden transition-all
+                              ${active
+                                                                ? 'border-[#2D6CFF] shadow-sm shadow-blue-500/20'
+                                                                : 'border-blue-100/50 dark:border-white/10 hover:border-[#2D6CFF]/40'
+                                                            }`}
+                                                    >
+                                                        <div className={`w-full h-9 flex items-center justify-center
+                              ${active ? 'bg-blue-50/80 dark:bg-[#2D6CFF]/10' : 'bg-gray-50 dark:bg-white/[0.03]'}`}>
+                                                            {p.id === 'none' && (
+                                                                <div className="w-4 h-4 rounded border border-gray-300 dark:border-white/20 flex items-center justify-center">
+                                                                    <div className="w-2.5 h-[1.5px] bg-gray-400 dark:bg-white/40 rotate-45" />
+                                                                </div>
+                                                            )}
+                                                            {p.id === 'dots' && (
+                                                                <svg width="30" height="24" viewBox="0 0 30 24">
+                                                                    {[4, 12, 20, 28].map(x => [4, 12, 20].map(y => (
+                                                                        <circle key={`${x}-${y}`} cx={x} cy={y} r="1.6" fill={active ? '#2D6CFF' : '#94a3b8'} opacity={active ? 0.7 : 0.5} />
+                                                                    )))}
+                                                                </svg>
+                                                            )}
+                                                            {p.id === 'grid' && (
+                                                                <svg width="30" height="24" viewBox="0 0 30 24" fill="none">
+                                                                    {[0, 10, 20, 30].map(x => <line key={x} x1={x} y1="0" x2={x} y2="24" stroke={active ? '#2D6CFF' : '#94a3b8'} strokeWidth="0.75" opacity={active ? 0.7 : 0.4} />)}
+                                                                    {[0, 8, 16, 24].map(y => <line key={y} x1="0" y1={y} x2="30" y2={y} stroke={active ? '#2D6CFF' : '#94a3b8'} strokeWidth="0.75" opacity={active ? 0.7 : 0.4} />)}
+                                                                </svg>
+                                                            )}
+                                                            {p.id === 'waves' && (
+                                                                <svg width="34" height="24" viewBox="0 0 34 24" fill="none">
+                                                                    {[4, 12, 20].map((y, i) => <path key={i} d={`M0 ${y} C 8 ${y - 4}, 17 ${y + 4}, 34 ${y}`} stroke={active ? '#2D6CFF' : '#94a3b8'} strokeWidth="1" opacity={active ? 0.8 : 0.5} />)}
+                                                                </svg>
+                                                            )}
+                                                            {p.id === 'circles' && (
+                                                                <svg width="30" height="24" viewBox="0 0 30 24" fill="none">
+                                                                    <circle cx="15" cy="12" r="10" stroke={active ? '#2D6CFF' : '#94a3b8'} strokeWidth="0.75" opacity={active ? 0.8 : 0.4} />
+                                                                    <circle cx="15" cy="12" r="5.5" stroke={active ? '#2D6CFF' : '#94a3b8'} strokeWidth="0.75" opacity={active ? 0.6 : 0.3} />
+                                                                    <circle cx="15" cy="12" r="2" fill={active ? '#2D6CFF' : '#94a3b8'} opacity={active ? 0.8 : 0.4} />
+                                                                </svg>
+                                                            )}
+                                                        </div>
+                                                        <span className={`text-[10px] font-bold pb-1 text-center w-full
+                              ${active ? 'text-[#2D6CFF]' : 'text-gray-400 dark:text-gray-500'}`}>
+                                                            {p.label}
+                                                        </span>
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    {/* Font Style */}
+                                    <div className="space-y-2">
+                                        <h3 className="text-[12px] font-bold text-gray-900 dark:text-white">Font Style</h3>
+                                        <div className="grid grid-cols-4 gap-2">
+                                            {([
+                                                { id: 'Inter', label: 'Inter', preview: 'Aa', cls: 'font-sans' },
+                                                { id: 'Outfit', label: 'Outfit', preview: 'Aa', cls: 'font-sans tracking-wide' },
+                                                { id: 'Playfair', label: 'Serif', preview: 'Aa', cls: 'font-serif' },
+                                                { id: 'Mono', label: 'Mono', preview: 'Aa', cls: 'font-mono' },
+                                            ] as const).map((f) => {
+                                                const active = formData.fontFamily === f.id
+                                                return (
+                                                    <button
+                                                        key={f.id}
+                                                        onClick={() => updateFormData('fontFamily', f.id)}
+                                                        className={`flex flex-col items-center gap-1.5 py-2.5 rounded-xl border-2 transition-all
+                              ${active
+                                                                ? 'border-[#2D6CFF] bg-blue-50/60 dark:bg-[#2D6CFF]/10 shadow-sm shadow-blue-500/20'
+                                                                : 'border-blue-100/50 dark:border-white/10 bg-white/50 dark:bg-white/[0.02] hover:border-[#2D6CFF]/40'
+                                                            }`}
+                                                    >
+                                                        <span className={`text-[18px] leading-none ${f.cls} ${active ? 'text-[#2D6CFF]' : 'text-gray-600 dark:text-gray-300'}`}>
+                                                            {f.preview}
+                                                        </span>
+                                                        <span className={`text-[10px] font-bold ${active ? 'text-[#2D6CFF]' : 'text-gray-400 dark:text-gray-500'}`}>
+                                                            {f.label}
+                                                        </span>
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                        {/* Brand Color */}
+                                        <div className="space-y-2">
+                                            <h3 className="text-[12px] font-bold text-gray-900 dark:text-white">Brand Color</h3>
+                                            <div className="p-3.5 rounded-2xl border border-blue-100/40 dark:border-white/5 bg-white/40 dark:bg-white/[0.02] shadow-sm">
+                                                <div className="flex flex-col gap-4">
+                                                    <div className="flex items-center justify-between gap-3">
+                                                        <div className="flex items-center gap-2 flex-wrap">
+                                                            {[
+                                                                { color: '#2D6CFF', label: 'Blue' },
+                                                                { color: '#7C3AED', label: 'Purple' },
+                                                                { color: '#059669', label: 'Green' },
+                                                                { color: '#DC2626', label: 'Red' },
+                                                                { color: '#D97706', label: 'Amber' },
+                                                                { color: '#DB2777', label: 'Pink' },
+                                                                { color: '#18181b', label: 'Black' },
+                                                            ].map(({ color, label }) => {
+                                                                const active = formData.accentColor === color
+                                                                return (
+                                                                    <button
+                                                                        key={color}
+                                                                        title={label}
+                                                                        onClick={() => updateFormData('accentColor', color)}
+                                                                        className={`w-7 h-7 rounded-full flex-shrink-0 transition-all duration-200 border-2 flex items-center justify-center relative
+                                                                        ${active ? 'scale-110 border-white dark:border-gray-800 shadow-md ring-2 ring-[#2D6CFF]/20' : 'border-transparent hover:scale-110'}`}
+                                                                        style={{ backgroundColor: color }}
+                                                                    >
+                                                                        {active && <Check className="w-3.5 h-3.5 text-white drop-shadow-md" />}
+                                                                    </button>
+                                                                )
+                                                            })}
+                                                        </div>
+
+                                                        {/* Custom Color Selector */}
+                                                        <div className="flex items-center gap-2.5 pl-3 border-l border-gray-100 dark:border-white/5">
+                                                            <label className="group relative w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center border-2 border-white dark:border-gray-800 cursor-pointer shadow-sm overflow-hidden"
+                                                                style={{ background: 'conic-gradient(from 0deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)' }}>
+                                                                <input type="color" className="absolute inset-0 opacity-0 cursor-pointer scale-150"
+                                                                    value={formData.accentColor} onChange={(e) => updateFormData('accentColor', e.target.value)} />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-gray-50/50 dark:bg-white/[0.04] border border-gray-100/50 dark:border-white/[0.06]">
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-5 h-5 rounded-md border border-white/20 shadow-sm shrink-0" style={{ backgroundColor: formData.accentColor }} />
+                                                            <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Accent Color</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-1">
+                                                            <span className="text-[11px] text-gray-400 font-mono">#</span>
+                                                            <input
+                                                                type="text"
+                                                                value={formData.accentColor.replace('#', '')}
+                                                                onChange={(e) => {
+                                                                    const val = e.target.value.replace(/[^0-9a-fA-F]/g, '').slice(0, 6)
+                                                                    if (val.length === 6 || val.length === 3) updateFormData('accentColor', `#${val}`)
+                                                                }}
+                                                                className="bg-transparent border-none p-0 w-14 text-[11px] font-mono font-bold text-gray-800 dark:text-gray-100 focus:ring-0 uppercase placeholder:text-gray-400"
+                                                                placeholder="FFFFFF"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             )}
 
@@ -430,7 +574,10 @@ export default function CreateSpaceForm() {
                                     {/* Badge */}
                                     <div className="relative mb-3 z-10">
                                         <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-blue-100 to-purple-100 dark:from-[#2D6CFF]/20 dark:to-purple-500/20 flex items-center justify-center">
-                                            <PartyPopper className="w-9 h-9 text-[#2D6CFF]" />
+                                            <PartyPopperIcon />
+                                        </div>
+                                        <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-green-500 flex items-center justify-center shadow-md shadow-green-500/30">
+                                            <Check className="w-3 h-3 text-white" />
                                         </div>
                                     </div>
 
