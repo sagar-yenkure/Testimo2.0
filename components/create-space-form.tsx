@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { ChevronRight, ChevronLeft, Check, Settings, Wand2, Copy, CheckCheck, ExternalLink, Upload, X, PartyPopper } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { TestimonialFormPreview } from '@/components/testimonial-form'
+import { TestimonialForm } from '@/components/testimonial-form'
 import { useRouter } from 'next/navigation'
 import {
     Select,
@@ -53,8 +53,10 @@ export default function CreateSpaceForm() {
         collectEmail: false,
         collectUserRole: false,
         collectSocialLink: false,
-        language: 'English',
-        theme: 'Light',
+        language: 'English' as 'English' | 'Spanish' | 'French' | 'German' | 'Japanese',
+        theme: 'Light' as 'Light' | 'Dark',
+        backgroundPattern: 'Default' as 'Default' | 'Dots' | 'Mesh' | 'Grid' | 'Waves' | 'Glass',
+        fontFamily: 'Inter' as 'Inter' | 'Outfit' | 'Playfair' | 'Mono',
     })
 
     const updateFormData = (key: keyof typeof formData, value: any) =>
@@ -120,7 +122,7 @@ export default function CreateSpaceForm() {
                 ${formData.theme === 'Dark' ? 'bg-purple-500/15' : 'bg-purple-500/8'}`} />
                         </div>
                         <div className="relative z-10 h-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                            <TestimonialFormPreview formData={formData} isPreview={true} />
+                            <TestimonialForm formData={formData} isPreview={true} />
                         </div>
                     </div>
                 </div>
@@ -276,69 +278,141 @@ export default function CreateSpaceForm() {
                             {/* ── Step 2 ── */}
                             {step === 2 && (
                                 <div className="space-y-5">
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <div className="space-y-1">
-                                            <label className="text-[12px] font-bold text-gray-900 dark:text-white">Language</label>
-                                            <Select value={formData.language} onValueChange={(v) => updateFormData('language', v)}>
-                                                <SelectTrigger className="w-full bg-white/50 dark:bg-white/[0.02] border border-blue-100/50 dark:border-white/10 rounded-xl text-[12px] font-semibold h-auto py-5 px-3text-gray-900 dark:text-white transition-all hover:bg-white dark:hover:bg-white/[0.05]">
-                                                    <SelectValue />
-                                                </SelectTrigger>
-                                                <SelectContent className="rounded-xl">
-                                                    {['English', 'Spanish', 'French', 'German', 'Japanese'].map(o => (
-                                                        <SelectItem key={o} value={o} className="text-[12px] cursor-pointer py-3 px-3">{o}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
+                                    <div className="grid grid-cols-1 gap-3">
+                                        <div className="grid grid-cols-3 gap-3">
+                                            <div className="space-y-1">
+                                                <label className="text-[12px] font-bold text-gray-900 dark:text-white">Language</label>
+                                                <Select value={formData.language} onValueChange={(v) => updateFormData('language', v)}>
+                                                    <SelectTrigger className="w-full bg-white/50 dark:bg-white/[0.02] border border-blue-100/50 dark:border-white/10 rounded-xl text-[12px] font-semibold h-auto py-2.5 px-3 text-gray-900 dark:text-white transition-all hover:bg-white dark:hover:bg-white/[0.05]">
+                                                        <SelectValue />
+                                                    </SelectTrigger>
+                                                    <SelectContent className="rounded-xl">
+                                                        {['English', 'Spanish', 'French', 'German', 'Japanese'].map(o => (
+                                                            <SelectItem key={o} value={o} className="text-[12px] cursor-pointer py-2 px-3">{o}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+
+                                            <div className="space-y-1">
+                                                <label className="text-[12px] font-bold text-gray-900 dark:text-white">Theme</label>
+                                                <Select value={formData.theme} onValueChange={(v) => updateFormData('theme', v)}>
+                                                    <SelectTrigger className="w-full bg-white/50 dark:bg-white/[0.02] border border-blue-100/50 dark:border-white/10 rounded-xl text-[12px] font-semibold h-auto py-2.5 px-3 text-gray-900 dark:text-white transition-all hover:bg-white dark:hover:bg-white/[0.05]">
+                                                        <SelectValue />
+                                                    </SelectTrigger>
+                                                    <SelectContent className="rounded-xl">
+                                                        <SelectItem value="Light" className="text-[12px] cursor-pointer py-2 px-3">Light</SelectItem>
+                                                        <SelectItem value="Dark" className="text-[12px] cursor-pointer py-2 px-3">Dark</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+
+                                            <div className="space-y-1">
+                                                <label className="text-[12px] font-bold text-gray-900 dark:text-white">Font Style</label>
+                                                <Select value={formData.fontFamily} onValueChange={(v) => updateFormData('fontFamily', v)}>
+                                                    <SelectTrigger className="w-full bg-white/50 dark:bg-white/[0.02] border border-blue-100/50 dark:border-white/10 rounded-xl text-[12px] font-semibold h-auto py-2.5 px-3 text-gray-900 dark:text-white transition-all hover:bg-white dark:hover:bg-white/[0.05]">
+                                                        <SelectValue />
+                                                    </SelectTrigger>
+                                                    <SelectContent className="rounded-xl">
+                                                        <SelectItem value="Inter" className="text-[12px] cursor-pointer py-2 px-3">Inter</SelectItem>
+                                                        <SelectItem value="Outfit" className="text-[12px] cursor-pointer py-2 px-3">Outfit</SelectItem>
+                                                        <SelectItem value="Playfair" className="text-[12px] cursor-pointer py-2 px-3">Playfair</SelectItem>
+                                                        <SelectItem value="Mono" className="text-[12px] cursor-pointer py-2 px-3 font-mono">Mono</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
                                         </div>
 
-                                        <div className="space-y-1">
-                                            <label className="text-[12px] font-bold text-gray-900 dark:text-white">Theme</label>
-                                            <Select value={formData.theme} onValueChange={(v) => updateFormData('theme', v)}>
-                                                <SelectTrigger className="w-full bg-white/50 dark:bg-white/[0.02] border border-blue-100/50 dark:border-white/10 rounded-xl text-[12px] font-semibold h-auto py-5 px-3 text-gray-900 dark:text-white transition-all hover:bg-white dark:hover:bg-white/[0.05]">
-                                                    <SelectValue />
-                                                </SelectTrigger>
-                                                <SelectContent className="rounded-xl">
-                                                    <SelectItem value="Light" className="text-[12px] cursor-pointer py-3 px-3">Light</SelectItem>
-                                                    <SelectItem value="Dark" className="text-[12px] cursor-pointer py-3 px-3">Dark</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-                                    </div>
 
-                                    <div className="space-y-2">
-                                        <h3 className="text-[12px] font-bold text-gray-900 dark:text-white">Data Collection</h3>
-                                        <div className="grid grid-cols-2 gap-2">
-                                            {[
-                                                { id: 'collectStarRatings', label: 'Star Ratings' },
-                                                { id: 'collectCompany', label: 'Company' },
-                                                { id: 'collectEmail', label: 'Email' },
-                                                { id: 'collectUserRole', label: 'Job Title' },
-                                                { id: 'collectSocialLink', label: 'Social Link' },
-                                            ].map((item) => {
-                                                const active = (formData as any)[item.id]
-                                                return (
-                                                    <div
-                                                        key={item.id}
-                                                        onClick={() => updateFormData(item.id as any, !active)}
-                                                        className={`flex items-center justify-between px-3 py-2.5 rounded-xl border transition-all cursor-pointer select-none
-                              ${active
-                                                                ? 'border-[#2D6CFF]/30 bg-blue-50/50 dark:bg-[#2D6CFF]/10 dark:border-[#2D6CFF]/20'
-                                                                : 'border-blue-100/50 dark:border-white/10 bg-white/50 dark:bg-white/[0.02] hover:bg-white dark:hover:bg-white/[0.05]'
-                                                            }`}
-                                                    >
-                                                        <span className={`text-[12px] font-semibold ${active ? 'text-[#2D6CFF]' : 'text-gray-700 dark:text-white'}`}>
-                                                            {item.label}
-                                                        </span>
-                                                        {/* Larger toggle — w-11 h-6 */}
-                                                        <div className={`relative w-11 h-6 rounded-full flex-shrink-0 transition-colors duration-200
-                              ${active ? 'bg-[#2D6CFF]' : 'bg-gray-200 dark:bg-white/10'}`}>
-                                                            <div className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-200
-                                ${active ? 'translate-x-5' : 'translate-x-0'}`} />
+
+
+                                        {/* Data Collection */}
+                                        <div className="space-y-2">
+                                            <h3 className="text-[12px] font-bold text-gray-900 dark:text-white">Data Collection</h3>
+                                            <div className="grid grid-cols-3  gap-2">
+                                                {[
+                                                    { id: 'collectStarRatings', label: 'Star Ratings' },
+                                                    { id: 'collectCompany', label: 'Company' },
+                                                    { id: 'collectEmail', label: 'Email' },
+                                                    { id: 'collectUserRole', label: 'Job Title' },
+                                                    { id: 'collectSocialLink', label: 'Social Link' },
+                                                ].map((item) => {
+                                                    const active = (formData as any)[item.id]
+                                                    return (
+                                                        <div
+                                                            key={item.id}
+                                                            onClick={() => updateFormData(item.id as any, !active)}
+                                                            className={`flex items-center justify-between px-3 py-2.5 rounded-xl border transition-all cursor-pointer select-none
+                               ${active
+                                                                    ? 'border-[#2D6CFF]/30 bg-blue-50/50 dark:bg-[#2D6CFF]/10 dark:border-[#2D6CFF]/20'
+                                                                    : 'border-blue-100/50 dark:border-white/10 bg-white/50 dark:bg-white/[0.02] hover:bg-white dark:hover:bg-white/[0.05]'
+                                                                }`}
+                                                        >
+                                                            <span className={`text-[12px] font-semibold ${active ? 'text-[#2D6CFF]' : 'text-gray-700 dark:text-white'}`}>
+                                                                {item.label}
+                                                            </span>
+                                                            {/* Larger toggle — w-11 h-6 */}
+                                                            <div className={`relative w-11 h-6 rounded-full flex-shrink-0 transition-colors duration-200
+                               ${active ? 'bg-[#2D6CFF]' : 'bg-gray-200 dark:bg-white/10'}`}>
+                                                                <div className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-200
+                                 ${active ? 'translate-x-5' : 'translate-x-0'}`} />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                )
-                                            })}
+                                                    )
+                                                })}
+                                            </div>
                                         </div>
+
+                                        {/* Background Style */}
+                                        <div className="space-y-3">
+                                            <h3 className="text-[12px] font-bold text-gray-900 dark:text-white">Background Style</h3>
+                                            <div className="grid grid-cols-3 gap-2">
+                                                {[
+                                                    { id: 'Default', label: 'Default' },
+                                                    { id: 'Dots', label: 'Dots' },
+                                                    { id: 'Mesh', label: 'Mesh' },
+                                                    { id: 'Grid', label: 'Grid' },
+                                                    { id: 'Waves', label: 'Waves' },
+                                                    { id: 'Glass', label: 'Glass' },
+                                                ].map((pattern) => {
+                                                    const active = formData.backgroundPattern === pattern.id
+                                                    return (
+                                                        <div
+                                                            key={pattern.id}
+                                                            onClick={() => updateFormData('backgroundPattern', pattern.id)}
+                                                            className={`flex items-center justify-between px-3 py-2.5 rounded-xl border transition-all cursor-pointer select-none
+                                                                ${active
+                                                                    ? 'border-[#2D6CFF]/30 bg-blue-50/50 dark:bg-[#2D6CFF]/10 dark:border-[#2D6CFF]/20'
+                                                                    : 'border-blue-100/50 dark:border-white/10 bg-white/50 dark:bg-white/[0.02] hover:bg-white dark:hover:bg-white/[0.05]'
+                                                                }`}
+                                                        >
+                                                            <span className={`text-[12px] font-semibold ${active ? 'text-[#2D6CFF]' : 'text-gray-700 dark:text-white'}`}>
+                                                                {pattern.label}
+                                                            </span>
+                                                            <div className={`w-8 h-8 rounded-lg border border-inherit overflow-hidden relative shrink-0
+                                                                ${formData.theme === 'Dark' ? 'bg-[#111]' : 'bg-blue-50/50'}`}>
+                                                                {pattern.id === 'Dots' && (
+                                                                    <div className="absolute inset-0 opacity-60" style={{ backgroundImage: 'radial-gradient(circle, #2D6CFF 0.8px, transparent 0.8px)', backgroundSize: '4px 4px' }} />
+                                                                )}
+                                                                {pattern.id === 'Grid' && (
+                                                                    <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'linear-gradient(to right, #2D6CFF 1px, transparent 1px), linear-gradient(to bottom, #2D6CFF 1px, transparent 1px)', backgroundSize: '8px 8px' }} />
+                                                                )}
+                                                                {pattern.id === 'Mesh' && (
+                                                                    <div className="absolute inset-0 opacity-60 bg-gradient-to-br from-[#2D6CFF]/50 via-purple-500/50 to-[#2D6CFF]/50 blur-md" />
+                                                                )}
+                                                                {pattern.id === 'Waves' && (
+                                                                    <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 2px, #2D6CFF 2px, #2D6CFF 3px)', backgroundSize: '10px 10px' }} />
+                                                                )}
+                                                                {pattern.id === 'Glass' && (
+                                                                    <div className="absolute inset-0 bg-white/40 dark:bg-white/10 backdrop-blur-[1px]" />
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             )}

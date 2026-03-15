@@ -15,17 +15,35 @@ interface TestimonialFormProps {
     collectEmail: boolean;
     collectUserRole: boolean;
     collectSocialLink: boolean;
-    language: string;
-    theme: string;
+    language: 'English' | 'Spanish' | 'French' | 'German' | 'Japanese';
+    theme: "Light" | "Dark";
+    backgroundPattern?: 'Default' | 'Dots' | 'Mesh' | 'Grid' | 'Waves' | 'Glass';
+    fontFamily?: 'Inter' | 'Outfit' | 'Playfair' | 'Mono';
   };
   isPreview?: boolean;
 }
 
-export function TestimonialFormPreview({ formData, isPreview = false }: TestimonialFormProps) {
+export function TestimonialForm({ formData, isPreview = false }: TestimonialFormProps) {
   const [submissionType, setSubmissionType] = useState<"text" | "video">("text");
   const [hoveredStar, setHoveredStar] = useState(0);
   const [selectedStar, setSelectedStar] = useState(0);
   const isDark = formData.theme === "Dark";
+  const fontFamily = formData.fontFamily || 'Inter';
+
+  const fontStyles = {
+    Inter: 'font-sans',
+    Outfit: 'font-outfit', // Assuming these are configured in tailwind or applied via inline style
+    Playfair: 'font-serif',
+    Mono: 'font-mono'
+  };
+
+  // Inline font families for better compatibility if tailwind classes aren't set up
+  const fontFamilies = {
+    Inter: '"Inter", sans-serif',
+    Outfit: '"Outfit", sans-serif',
+    Playfair: '"Playfair Display", serif',
+    Mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace'
+  };
 
   const inputCls = `w-full rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6CFF]/40 border transition-all
     ${isDark
@@ -36,8 +54,37 @@ export function TestimonialFormPreview({ formData, isPreview = false }: Testimon
   const labelCls = `text-[11px] font-bold ${isDark ? "text-gray-400" : "text-gray-600"}`;
 
   return (
-    <div className={`w-full px-6 py-8 ${isDark ? "text-white" : "text-gray-900"}`}>
-      <div className="flex flex-col items-center text-center w-full max-w-md mx-auto">
+    <div
+      className={`w-full px-6 py-8 relative overflow-hidden h-full ${isDark ? "text-white" : "text-gray-900"}`}
+      style={{ fontFamily: fontFamilies[fontFamily as keyof typeof fontFamilies] }}
+    >
+      {/* Background Patterns */}
+      {formData.backgroundPattern === 'Dots' && (
+        <div className={`absolute inset-0 pointer-events-none opacity-[0.25] ${isDark ? "opacity-[0.2]" : ""}`}
+          style={{ backgroundImage: 'radial-gradient(circle, #2D6CFF 1.5px, transparent 1.5px)', backgroundSize: '20px 20px' }} />
+      )}
+      {formData.backgroundPattern === 'Grid' && (
+        <div className={`absolute inset-0 pointer-events-none opacity-[0.12] ${isDark ? "opacity-[0.1]" : ""}`}
+          style={{ backgroundImage: 'linear-gradient(to right, #2D6CFF 1px, transparent 1px), linear-gradient(to bottom, #2D6CFF 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      )}
+      {formData.backgroundPattern === 'Waves' && (
+        <div className={`absolute inset-0 pointer-events-none opacity-[0.1] ${isDark ? "opacity-[0.08]" : ""}`}
+          style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 12px, #2D6CFF 12px, #2D6CFF 13px)', backgroundSize: '24px 24px' }} />
+      )}
+      {formData.backgroundPattern === 'Glass' && (
+        <div className="absolute inset-0 pointer-events-none">
+          <div className={`absolute inset-0 backdrop-blur-[3px] ${isDark ? "bg-white/[0.03]" : "bg-[#2D6CFF]/[0.03]"}`} />
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#2D6CFF]/30 to-transparent" />
+        </div>
+      )}
+      {formData.backgroundPattern === 'Mesh' && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className={`absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#2D6CFF]/30 blur-[90px] ${isDark ? "opacity-60" : ""}`} />
+          <div className={`absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-500/30 blur-[90px] ${isDark ? "opacity-60" : ""}`} />
+        </div>
+      )}
+
+      <div className="relative z-10 flex flex-col items-center text-center w-full max-w-md mx-auto">
 
         {/* Logo */}
         <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 overflow-hidden shrink-0 border
