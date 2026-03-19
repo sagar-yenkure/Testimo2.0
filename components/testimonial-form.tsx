@@ -8,6 +8,7 @@ interface TestimonialFormProps {
   formData: {
     collectionName: string;
     logo: string | null;
+    brandName: string;
     formTitle: string;
     description: string;
     collectStarRatings: boolean;
@@ -50,24 +51,30 @@ export function TestimonialForm({ formData, isPreview = false }: TestimonialForm
 
   return (
     <div className={`w-full px-6 py-7 ${isDark ? "text-white" : "text-gray-900"}`} style={{ fontFamily: fontStyle }}>
-      <div className="flex flex-col items-center text-center w-full max-w-md mx-auto">
+      <div className="flex flex-col items-center text-center w-full max-w-md mx-auto relative z-10">
 
         {/* Logo & Title Section — Always stacked and centered for layout stability */}
         <div className="mb-5 w-full">
-          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 border transition-all duration-300
-            ${isDark ? "bg-white/5" : "bg-blue-50/50"}`}
-            style={{
-              borderColor: `${accent}30`,
-              boxShadow: formData.logo ? `0 4px 20px -10px ${accent}` : 'none'
-            }}
-          >
-            {formData.logo ? (
-              <img src={formData.logo} alt="Logo" className="w-full h-full object-cover rounded-[14px]" />
-            ) : (
-              <ImageIcon className="w-6 h-6 opacity-70" style={{ color: accent }} />
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-300 shrink-0
+              ${isDark ? "bg-white/5" : "bg-blue-50/50"}`}
+              style={{
+                borderColor: `${accent}30`,
+                boxShadow: formData.logo ? `0 4px 20px -10px ${accent}` : 'none'
+              }}
+            >
+              {formData.logo ? (
+                <img src={formData.logo} alt="Logo" className="w-full h-full object-cover rounded-[14px]" />
+              ) : (
+                <ImageIcon className="w-6 h-6 opacity-70" style={{ color: accent }} />
+              )}
+            </div>
+            {formData.brandName && (
+              <span className={`text-2xl font-black tracking-tight ${isDark ? "text-white" : "text-gray-900"}`}>
+                {formData.brandName}
+              </span>
             )}
           </div>
-
           <h3 className="text-[25px] font-extrabold leading-tight tracking-tight">
             {formData.formTitle || "Share Your Experience"}
           </h3>
@@ -227,10 +234,10 @@ export function TestimonialForm({ formData, isPreview = false }: TestimonialForm
                 } ${isPreview ? "opacity-60" : ""}`}
                 style={{ borderColor: isPreview ? undefined : `${accent}30` }} // Custom border logic
                 onMouseEnter={(e) => {
-                  if(!isPreview) e.currentTarget.style.borderColor = accent;
+                  if (!isPreview) e.currentTarget.style.borderColor = accent;
                 }}
                 onMouseLeave={(e) => {
-                  if(!isPreview) e.currentTarget.style.borderColor = `${accent}30`;
+                  if (!isPreview) e.currentTarget.style.borderColor = `${accent}30`;
                 }}
               >
                 <Upload className="w-4 h-4 shrink-0" style={{ color: accent }} />

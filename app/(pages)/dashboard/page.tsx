@@ -33,7 +33,7 @@ const DashboardPage = async () => {
     ]
 
     return (
-        <div className="space-y-5 md:space-y-7 pb-16">
+        <div className="space-y-5 max-w-6xl mx-auto md:space-y-7 pb-16 overflow-y-auto h-full [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pr-1">
             {/* Header Area */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>

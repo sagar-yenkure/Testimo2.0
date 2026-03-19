@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { ChevronRight, ChevronLeft, Check, Settings, Wand2, Copy, CheckCheck, ExternalLink, Upload, X, PartyPopperIcon } from 'lucide-react'
+import { ChevronRight, ChevronLeft, Check, Settings, Wand2, Copy, CheckCheck, ExternalLink, Upload, X, PartyPopperIcon, Crown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TestimonialForm } from '@/components/testimonial-form'
 import { useRouter } from 'next/navigation'
@@ -46,6 +46,7 @@ export default function CreateSpaceForm() {
     const [formData, setFormData] = useState({
         collectionName: '',
         logo: null as string | null,
+        brandName: 'Testimo',
         formTitle: "Love us? Roast us? Let's hear it! 📢",
         description: "Your feedback is our secret sauce. Whether we made your day or need a reality check, don't hold back!",
         collectStarRatings: true,
@@ -110,12 +111,22 @@ export default function CreateSpaceForm() {
         .animate-confetti { animation: confettiFall 2.4s cubic-bezier(.25,.46,.45,.94) forwards; }
       `}</style>
 
-            <div className="w-full h-full flex flex-col lg:flex-row gap-4 lg:gap-5 overflow-hidden">
-
+            <div className="w-full h-auto lg:h-full flex flex-col lg:flex-row gap-4 lg:gap-6 lg:overflow-hidden pt-4 lg:pt-5">
                 {/* ── Live Preview ── */}
-                <div className="lg:w-[44%] order-2 lg:order-1 flex flex-col min-h-0 overflow-hidden">
-                    <div className={`relative flex-1 rounded-3xl overflow-hidden border transition-colors duration-500
-            ${formData.theme === 'Dark' ? 'bg-[#0A0A0A] border-[#222]' : 'bg-white border-blue-200/50'}`}>
+                <div className="lg:w-[45%] flex-shrink-0 order-2 lg:order-1 flex flex-col h-auto lg:h-full lg:min-h-0 relative pt-4 lg:pt-0">
+                    {/* Floating Preview Pill — Half-in, Half-out on the border */}
+                    <div className="absolute top-4 lg:top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] pointer-events-none">
+                        <div className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] shadow-2xl border
+              ${formData.theme === 'Dark' ? 'bg-[#1A1A1A] border-white/10 text-blue-400 font-bold' : 'bg-white border-blue-200/60 text-[#2D6CFF]'}`}>
+                            <span className="relative flex h-1.5 w-1.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500"></span>
+                            </span>
+                            Live Preview
+                        </div>
+                    </div>
+                    <div className={`relative flex-1 rounded-[32px] overflow-hidden border transition-colors duration-500 min-h-[500px] lg:min-h-0
+            ${formData.theme === 'Dark' ? 'bg-[#0A0A0A] border-[#222]' : 'bg-white border-blue-200/50 shadow-sm'}`}>
 
                         {/* Pattern layer */}
                         {formData.bgPattern !== 'none' && (
@@ -170,15 +181,15 @@ export default function CreateSpaceForm() {
                             <div className={`absolute -bottom-16 -right-16 w-56 h-56 rounded-full blur-3xl opacity-40
                 ${formData.theme === 'Dark' ? 'bg-purple-500/15' : 'bg-purple-500/8'}`} />
                         </div>
-                        <div className="relative z-10 h-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                        <div className="relative z-10 h-full overflow-y-auto lg:overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                             <TestimonialForm formData={formData} isPreview={true} />
                         </div>
                     </div>
                 </div>
 
                 {/* ── Form Panel ── */}
-                <div className="lg:w-[56%] order-1 lg:order-2 flex flex-col min-h-0 overflow-hidden">
-                    <div className="flex-1 bg-card-bg border border-blue-200/50 dark:border-blue-900/30 rounded-3xl p-6 lg:p-7 flex flex-col min-h-0 overflow-hidden shadow-sm">
+                <div className="lg:w-[55%] flex-1 order-1 lg:order-2 flex flex-col h-auto lg:h-full lg:min-h-0 overflow-hidden">
+                    <div className="flex-1 bg-card-bg border border-blue-200/50 dark:border-blue-900/30 rounded-[32px] p-6 lg:p-10 flex flex-col h-auto lg:h-full lg:min-h-0 overflow-hidden shadow-sm">
 
                         {/* Header */}
                         <div className="mb-5 shrink-0">
@@ -225,11 +236,11 @@ export default function CreateSpaceForm() {
                         </div>
 
                         {/* Content */}
-                        <div className={`min-h-0 ${step === 3 ? 'flex-1 flex flex-col' : 'flex-1 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pr-1'}`}>
+                        <div className={`min-h-0 ${step === 3 ? 'flex-1 flex flex-col' : 'flex-1 overflow-y-visible lg:overflow-y-auto lg:pr-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'}`}>
 
                             {/* ── Step 1 ── */}
                             {step === 1 && (
-                                <div className="space-y-4">
+                                <div className="space-y-4 max-w-2xl">
                                     <div className="space-y-1">
                                         <label className="text-[12px] font-bold text-gray-900 dark:text-white">
                                             Space Name <span className="text-red-500">*</span>
@@ -244,17 +255,31 @@ export default function CreateSpaceForm() {
                                         <p className="text-[10px] text-gray-400 font-medium">Internal reference only — not shown to customers.</p>
                                     </div>
 
-                                    <div className="space-y-1">
-                                        <label className="text-[12px] font-bold text-gray-900 dark:text-white">
-                                            Form Title <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            placeholder="Share Your Experience"
-                                            className="w-full bg-white dark:bg-[#0A0A0A] border border-blue-100/50 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6CFF]/40 transition-all text-gray-900 dark:text-white"
-                                            value={formData.formTitle}
-                                            onChange={(e) => updateFormData('formTitle', e.target.value)}
-                                        />
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-1">
+                                            <label className="text-[12px] font-bold text-gray-900 dark:text-white">
+                                                Brand Name <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                placeholder="e.g., Testimo"
+                                                className="w-full bg-white dark:bg-[#0A0A0A] border border-blue-100/50 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6CFF]/40 transition-all text-gray-900 dark:text-white"
+                                                value={formData.brandName}
+                                                onChange={(e) => updateFormData('brandName', e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[12px] font-bold text-gray-900 dark:text-white">
+                                                Form Title <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                placeholder="Share Your Experience"
+                                                className="w-full bg-white dark:bg-[#0A0A0A] border border-blue-100/50 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6CFF]/40 transition-all text-gray-900 dark:text-white"
+                                                value={formData.formTitle}
+                                                onChange={(e) => updateFormData('formTitle', e.target.value)}
+                                            />
+                                        </div>
                                     </div>
 
                                     <div className="space-y-1">
@@ -326,7 +351,7 @@ export default function CreateSpaceForm() {
 
                             {/* ── Step 2 ── */}
                             {step === 2 && (
-                                <div className="space-y-5">
+                                <div className="space-y-5 max-w-2xl">
 
                                     {/* General Settings */}
                                     <div className="space-y-2">
@@ -339,9 +364,16 @@ export default function CreateSpaceForm() {
                                                         <SelectValue />
                                                     </SelectTrigger>
                                                     <SelectContent className="rounded-xl">
-                                                        {['English', 'Spanish', 'French', 'German', 'Japanese'].map(o => (
+                                                        {['English', 'Arabic', 'Japanese'].map(o => (
                                                             <SelectItem key={o} value={o} className="text-sm cursor-pointer">{o}</SelectItem>
                                                         ))}
+                                                        <div className="flex items-center justify-between px-2 py-2 mx-1 rounded-lg cursor-not-allowed opacity-60 select-none">
+                                                            <div className="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500">
+                                                                <Crown className="w-3.5 h-3.5 text-amber-400" />
+                                                                Auto Detect
+                                                            </div>
+                                                            <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400">Pro</span>
+                                                        </div>
                                                     </SelectContent>
                                                 </Select>
                                             </div>

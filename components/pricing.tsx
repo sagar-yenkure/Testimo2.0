@@ -14,7 +14,7 @@ export function Pricing() {
 
   return (
     <section className="py-16 md:py-24 relative z-10 w-full transition-colors duration-300 bg-background" id="pricing">
-      <div className=" px-6">
+      <div className="px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div>
             <div className="text-[11px] font-bold tracking-[0.2em] uppercase mb-4 transition-colors text-blue-600 dark:text-[#2D6CFF]">PRICING PLANS</div>
@@ -39,7 +39,7 @@ export function Pricing() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto text-left">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
           {tiers.map((tier, idx) => (
             <div key={idx} className={`rounded-[20px] p-8 shadow-sm flex flex-col relative w-full transition-all duration-300 ${tier.pop
               ? `border-2 border-[#2D6CFF] md:transform md:-translate-y-4 bg-card-bg shadow-[0_20px_50px_-12px_rgba(45,108,255,0.15)] dark:shadow-[0_20px_50px_-12px_rgba(45,108,255,0.25)]`
