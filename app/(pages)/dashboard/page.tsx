@@ -7,130 +7,268 @@ import {
     TrendingUp,
     Plus,
     Crown,
+    Copy,
+    Clock,
+    Zap,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import SpaceCard from '@/components/SpaceCard'
 
 const DashboardPage = async () => {
     const { userId } = await auth();
 
-    // Mock data based on landing page context
     const stats = [
-        { label: 'TOTAL COLLECTIONS', value: '1', icon: BarChart3, iconColor: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-[#2D6CFF]/10' },
-        { label: 'TEXT TESTIMONIALS', value: '1', icon: MessageSquareText, iconColor: 'text-green-600', bgColor: 'bg-green-50 dark:bg-green-500/10' },
-        { label: 'VIDEO TESTIMONIALS', value: '0', icon: Video, iconColor: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-[#2D6CFF]/10' },
-        { label: 'SUBMISSIONS', value: '1', icon: TrendingUp, iconColor: 'text-orange-600', bgColor: 'bg-orange-50 dark:bg-orange-500/10' },
+        { label: 'Total Collections', value: '1', icon: BarChart3, iconColor: 'text-blue-600 dark:text-blue-400' },
+        { label: 'Text Testimonials', value: '1', icon: MessageSquareText, iconColor: 'text-blue-500 dark:text-blue-400' },
+        { label: 'Video Testimonials', value: '0', icon: Video, iconColor: 'text-blue-600 dark:text-blue-400' },
+        { label: 'Submissions', value: '1', icon: TrendingUp, iconColor: 'text-cyan-500 dark:text-cyan-400' },
     ]
 
     const spaces = [
         {
             name: "Gojo Satoru - The Strongest Sorcerer",
+            initials: "GS",
             textCount: 1,
             videoCount: 0,
             link: "testimo.io/gojo",
-            updated: "3/7/2026"
+            slug: "gojo",
+            updated: "3/7/2026",
+            status: "active",
+            responseRate: 100,
         }
     ]
 
+    const recentActivity = [
+        { type: 'submission', text: 'New submission from Sarah', time: '2 hours ago' },
+        { type: 'space', text: 'Created "Gojo Satoru" space', time: '1 day ago' },
+        { type: 'milestone', text: 'Reached 1 submission', time: '1 day ago' },
+    ]
+
     return (
-        <div className="space-y-5 max-w-6xl mx-auto md:space-y-7 pb-16 overflow-y-auto h-full [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pr-1">
-            {/* Header Area */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-5 px-6 md:space-y-6 pb-16 overflow-y-auto h-full [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pr-1">
+
+            {/* ── Page Header ── */}
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
-                    <div className="text-[11px] font-bold tracking-[0.2em] uppercase mb-1.5 text-blue-600 dark:text-[#2D6CFF]">DASHBOARD</div>
-                    <h1 className="text-3xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                    <div className="text-[11px] font-black tracking-[0.2em] uppercase mb-1 text-[#2D6CFF]">
+                        Dashboard
+                    </div>
+                    <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
                         Your Spaces
                     </h1>
                 </div>
-                <Link href="/dashboard/create">
-                    <Button className="bg-[#2D6CFF] hover:bg-[#2057d5] text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-blue-500/20 transition-all active:scale-95 text-sm h-11 shrink-0">
-                        <Plus className="w-5 h-5 mr-2" />
-                        Create a new space
-                    </Button>
-                </Link>
+
+                <div className="flex items-center gap-3">
+                    {/* Plan banner inline — compact */}
+                    <div className="hidden sm:flex items-center gap-3 bg-white dark:bg-[#111114] border border-blue-100/60 dark:border-white/[0.06] rounded-2xl px-4 py-2.5 shadow-sm">
+                        <div className="w-7 h-7 rounded-[8px] bg-gray-50 dark:bg-white/4 border border-gray-100 dark:border-white/6 flex items-center justify-center shrink-0">
+                            <Crown className="w-3 h-3 text-[#2D6CFF]" />
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <span className="text-[16px] font-extrabold text-gray-900 dark:text-white">Starter Plan</span>
+                            <span className="text-[9px] bg-blue-50 dark:bg-[#2D6CFF]/15 text-[#2D6CFF] px-2 py-0.5 rounded-full font-black uppercase tracking-widest border border-blue-100 dark:border-[#2D6CFF]/20">
+                                Free
+                            </span>
+                        </div>
+                        <div className="w-px h-5 bg-blue-100/40 dark:bg-white/5" />
+                        <div className="flex flex-col gap-1 w-[80px]">
+                            <div className="flex items-center justify-between">
+                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">1 of 1</span>
+                                <span className="text-[10px] font-black text-red-500 uppercase tracking-widest">Full</span>
+                            </div>
+                            <div className="w-full h-1 bg-gray-100 dark:bg-white/8 rounded-full overflow-hidden">
+                                <div className="h-full w-full bg-red-500 rounded-full" />
+                            </div>
+                        </div>
+                        <Button className="bg-gray-900 dark:bg-white text-white dark:text-black font-bold rounded-full hover:opacity-90 transition-all text-xs h-8 px-4 whitespace-nowrap shadow-sm">
+                            Upgrade to Pro
+                        </Button>
+                    </div>
+
+                    <Link href="/dashboard/create">
+                        <Button className="bg-[#2D6CFF] hover:bg-[#2057d5] text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-blue-500/20 transition-all active:scale-95 text-sm h-10 shrink-0">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Create a new space
+                        </Button>
+                    </Link>
+                </div>
             </div>
 
-            {/* Dashboard Overview Container */}
-            <div className="bg-card-bg border border-blue-200/50 dark:border-blue-900/30 rounded-[32px] shadow-sm overflow-hidden transition-colors duration-300">
-                {/* Stats Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-blue-200/30 dark:divide-blue-900/20">
-                    {stats.map((stat, index) => (
-                        <div key={index} className="p-6 flex flex-col justify-between relative group hover:bg-white/40 dark:hover:bg-white/[0.02] transition-colors">
-                            <div className="flex justify-between items-start">
-                                <div className="space-y-0.5">
-                                    <div className="text-[10px] font-bold tracking-widest text-[#2D6CFF] dark:text-blue-400 uppercase opacity-70">{stat.label}</div>
-                                    <div className={`text-2xl font-black tracking-tight text-gray-900 dark:text-white`}>
-                                        {stat.value}
-                                    </div>
-                                </div>
-                                <div className={`bg-white dark:bg-[#0A0A0A] p-2.5 rounded-2xl border border-blue-100/50 dark:border-white/5 shadow-sm transition-transform group-hover:scale-110`}>
-                                    <stat.icon className={`w-5.5 h-5.5 ${stat.iconColor} dark:text-white`} />
-                                </div>
+            {/* ── Stats Strip ── */}
+            <div className=" border border-blue-100/60 dark:border-white/[0.06] rounded-2xl overflow-hidden shadow-sm">
+                <div className="flex divide-y md:divide-y-0 md:divide-x divide-blue-100/40 dark:divide-white/[0.05]">
+                    {stats.map((stat, i) => (
+                        <div
+                            key={i}
+                            className="px-4 py-3 flex items-center justify-between gap-3 group hover:bg-blue-50/30 dark:hover:bg-white/2 transition-colors"
+                        >
+                            <div className="flex flex-col gap-1 min-w-0">
+                                <span className="text-xs font-black tracking-[0.12em] uppercase text-[#2D6CFF]/60 dark:text-blue-400/50 truncate">
+                                    {stat.label}
+                                </span>
+                                <span className="text-[22px] font-black tracking-tight text-gray-900 dark:text-white leading-none">
+                                    {stat.value}
+                                </span>
+
                             </div>
-                            <div className="mt-2 text-[10px] font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1.5 leading-none">
-                                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                                <span>Live tracking active</span>
+                            <div className="w-8 h-8 rounded-xl bg-gray-50 dark:bg-white/4 border border-gray-100 dark:border-white/6 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <stat.icon className={`w-4 h-4 ${stat.iconColor}`} />
                             </div>
                         </div>
                     ))}
                 </div>
+            </div>
 
-                {/* Divider */}
-                <div className="h-[1px] w-full bg-blue-200/30 dark:bg-blue-900/20" />
+            {/* ── Collections Grid with Sidebar ── */}
+            <div className="grid lg:grid-cols-3 gap-6">
+                {/* Main Content */}
+                <div className="lg:col-span-2">
+                    {/* Collections Table */}
+                    <div className="bg-white dark:bg-[#111114] border border-blue-100/60 dark:border-white/[0.06] rounded-2xl overflow-hidden shadow-sm">
 
-                {/* Subscription Banner */}
-                <div className="p-6 md:p-8 relative overflow-hidden group transition-colors duration-300">
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
-                        <div className="flex items-center gap-4">
-                            <div className="bg-white dark:bg-[#111] p-2.5 rounded-2xl shadow-sm border border-gray-100 dark:border-white/10 shrink-0">
-                                <Crown className="w-5.5 h-5.5 text-[#2D6CFF]" />
-                            </div>
-                            <div>
-                                <h2 className="text-base font-extrabold text-gray-900 dark:text-white flex items-center gap-3">
-                                    Starter Plan Active
-                                    <span className="text-[8px] bg-blue-100 dark:bg-[#2D6CFF]/20 text-blue-600 dark:text-[#2D6CFF] px-2 py-0.5 rounded-full font-black uppercase tracking-widest">Free</span>
-                                </h2>
-                                <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-0.5">
-                                    Unlock video testimonials, 10 spaces, and remove our branding.
-                                </p>
-                            </div>
+                        {/* Table header bar */}
+                        <div className="flex items-center justify-between px-5 py-3 border-b border-blue-100/40 dark:border-white/[0.05]">
+                            <span className="text-[12px] font-black tracking-[0.12em] uppercase text-[#2D6CFF]/60 dark:text-blue-400/50">
+                                Spaces
+                            </span>
+                            <span className="text-[12px] font-bold text-gray-400 dark:text-gray-500">
+                                {spaces.length} of 1
+                            </span>
                         </div>
 
-                        <div className="flex items-center gap-6 w-full lg:w-auto">
-                            <div className="flex-1 lg:min-w-[180px]">
-                                <div className="flex items-center justify-between text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 leading-none">
-                                    <span>Used 1 of 1 Space</span>
-                                    <span className="text-blue-600 dark:text-[#2D6CFF]">100% full</span>
+                        {/* Column headers */}
+                        <div className="hidden md:grid md:grid-cols-[1fr_100px_100px_110px_130px_120px] items-center px-5 py-2.5 border-b border-blue-100/30 dark:border-white/4 bg-gray-50/60 dark:bg-white/2">
+                            {['Space', 'Text', 'Video', 'Status', 'Created', ''].map((h, i) => (
+                                <span key={i} className="text-[11px] font-black tracking-[0.12em] uppercase text-gray-400 dark:text-gray-600">
+                                    {h}
+                                </span>
+                            ))}
+                        </div>
+
+                        {/* Rows */}
+                        {spaces.map((space, idx) => (
+                            <div
+                                key={idx}
+                                className="grid grid-cols-1 md:grid-cols-[1fr_100px_100px_110px_130px_120px] items-center px-5 py-5 border-b border-blue-100/30 dark:border-white/4 hover:bg-blue-50/20 dark:hover:bg-white/1.5 transition-colors group last:border-b-0"
+                            >
+                                {/* Space identity */}
+                                <div className="flex items-center gap-3 min-w-0 mb-3 md:mb-0">
+                                    <div className="w-9 h-9 rounded-full bg-[#2D6CFF]/10 dark:bg-[#2D6CFF]/20 flex items-center justify-center text-[11px] font-black text-[#2D6CFF] flex-shrink-0">
+                                        {space.initials}
+                                    </div>
+                                    <div className="min-w-0">
+                                        <div className="text-[16px] font-extrabold text-gray-900 dark:text-white truncate leading-tight">
+                                            {space.name}
+                                        </div>
+                                        <div className="flex items-center gap-1.5 mt-0.5">
+                                            <span className="text-[13px] text-gray-400 dark:text-gray-500 truncate">
+                                                {space.link}
+                                            </span>
+                                            <button className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <Copy className="w-2.5 h-2.5 text-gray-400 hover:text-[#2D6CFF] transition-colors" />
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="w-full h-1.5 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden shadow-inner">
-                                    <div className="h-full bg-blue-600 dark:bg-[#2D6CFF] w-full rounded-full shadow-[0_0_10px_rgba(45,108,255,0.5)]" />
+
+                                {/* Text count */}
+                                <div className="flex flex-col md:block">
+                                    <span className="text-[11px] font-black uppercase tracking-widest text-gray-400 md:hidden mb-0.5">Text</span>
+                                    <span className="text-lg font-black text-gray-900 dark:text-white">{space.textCount}</span>
+                                </div>
+
+                                {/* Video count */}
+                                <div className="flex flex-col md:block">
+                                    <span className="text-[11px] font-black uppercase tracking-widest text-gray-400 md:hidden mb-0.5">Video</span>
+                                    <span className="text-lg font-black text-gray-400 dark:text-gray-500">{space.videoCount}</span>
+                                </div>
+
+                                {/* Status badge */}
+                                <div>
+                                    <span className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 px-3 py-1.5 rounded-full border border-green-200/60 dark:border-green-500/20">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                                        Active
+                                    </span>
+                                </div>
+
+                                {/* Created date */}
+                                <div className="flex items-center gap-1.5 text-[12px] text-gray-400 dark:text-gray-500">
+                                    <Clock className="w-3 h-3 shrink-0" />
+                                    {space.updated}
+                                </div>
+
+                                {/* Manage CTA */}
+                                <div>
+                                    <Link href={`/dashboard/${space.slug}`}>
+                                        <Button
+                                            variant="outline"
+                                            className="h-9 px-5 rounded-full text-[12px] font-bold border-blue-200/60 dark:border-white/8 text-[#2D6CFF] dark:text-blue-400 hover:bg-[#2D6CFF] hover:text-white hover:border-[#2D6CFF] transition-all"
+                                        >
+                                            Manage →
+                                        </Button>
+                                    </Link>
                                 </div>
                             </div>
-                            <Button className="shrink-0 bg-[#121626] dark:bg-white text-white dark:text-black font-bold px-6 py-2.5 rounded-full hover:opacity-90 transition-all hover:scale-105 shadow-xl shadow-black/10 dark:shadow-white/5 h-10 text-xs text-nowrap">
-                                Upgrade to Pro
-                            </Button>
+                        ))}
+
+                        {/* Add new space row */}
+                        <Link
+                            href="/dashboard/create"
+                            className="flex items-center gap-3 px-5 py-4 hover:bg-blue-50/20 dark:hover:bg-white/[0.015] transition-colors group cursor-pointer border-t border-blue-100/30 dark:border-white/[0.04]"
+                        >
+                            <div className="w-9 h-9 rounded-full border-2 border-dashed border-blue-200/50 dark:border-blue-900/40 flex items-center justify-center flex-shrink-0 group-hover:border-[#2D6CFF]/50 group-hover:bg-[#2D6CFF]/5 transition-all">
+                                <Plus className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600 group-hover:text-[#2D6CFF] transition-colors" />
+                            </div>
+                            <span className="text-[13px] font-bold text-gray-300 dark:text-gray-600 group-hover:text-[#2D6CFF] transition-colors">
+                                Create a new space…
+                            </span>
+                            <span className="ml-auto text-[10px] font-bold text-red-400 bg-red-50 dark:bg-red-500/10 px-2 py-0.5 rounded-full border border-red-200/50 dark:border-red-500/20">
+                                Upgrade to unlock more
+                            </span>
+                        </Link>
+
+                    </div>
+                </div>
+
+                {/* Sidebar */}
+                <div className="space-y-4">
+                    {/* Recent Activity */}
+                    <div className="bg-white dark:bg-[#111114] border border-blue-100/60 dark:border-white/[0.06] rounded-2xl p-5 shadow-sm">
+                        <h3 className="text-[12px] font-black tracking-[0.12em] uppercase text-[#2D6CFF]/60 dark:text-blue-400/50 mb-4">
+                            Recent Activity
+                        </h3>
+                        <div className="space-y-3">
+                            {recentActivity.map((activity, i) => (
+                                <div key={i} className="flex gap-3 pb-3 border-b border-blue-100/30 dark:border-white/[0.04] last:border-0 last:pb-0">
+                                    <div className="w-2 h-2 rounded-full bg-[#2D6CFF] flex-shrink-0 mt-1"></div>
+                                    <div>
+                                        <p className="text-[15px] font-semibold text-gray-900 dark:text-white">{activity.text}</p>
+                                        <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-1">{activity.time}</p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
+                    </div>
+                    {/* Quick Tips */}
+                    <div className="bg-white dark:bg-[#111114] border border-blue-100/60 dark:border-white/[0.06] rounded-2xl p-5 shadow-sm">
+                        <h4 className="text-[12px] font-black tracking-[0.12em] uppercase text-gray-400 dark:text-gray-600 mb-3">Quick Tips</h4>
+                        <ul className="space-y-2 text-[13px] text-gray-600 dark:text-gray-400">
+                            <li className="flex gap-2">
+                                <span className="text-[#2D6CFF] font-bold flex-shrink-0">→</span>
+                                <span>Share your testimonial link</span>
+                            </li>
+                            <li className="flex gap-2">
+                                <span className="text-[#2D6CFF] font-bold flex-shrink-0">→</span>
+                                <span>Embed video testimonials</span>
+                            </li>
+                            <li className="flex gap-2">
+                                <span className="text-[#2D6CFF] font-bold flex-shrink-0">→</span>
+                                <span>Track responses in real-time</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-            {/* Main Spaces Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {spaces.map((space, idx) => (
-                    <SpaceCard key={idx} space={space} />
-                ))}
-
-                {/* Add Space Placeholder */}
-                <Link href="/dashboard/create" className="rounded-[28px] border-2 border-dashed border-blue-200/50 dark:border-blue-900/30 bg-card-bg flex flex-col items-center justify-center p-6 gap-4 hover:bg-white/40 dark:hover:bg-white/[0.05] hover:border-[#2D6CFF]/30 transition-colors duration-300 group h-full min-h-[300px] shadow-sm hover:shadow-md">
-                    <div className="w-14 h-14 rounded-full bg-gray-50 dark:bg-white/5 flex items-center justify-center border border-gray-100 dark:border-white/10 group-hover:bg-[#2D6CFF] group-hover:border-[#2D6CFF] transition-all">
-                        <Plus className="w-7 h-7 text-gray-400 group-hover:text-white transition-colors" />
-                    </div>
-                    <div className="text-center">
-                        <span className="block text-lg font-black text-gray-900 dark:text-white mb-1.5">New Space</span>
-                        <p className="text-[13px] font-medium text-gray-400 max-w-[180px] mx-auto">Click to create a new testimonial collector</p>
-                    </div>
-                </Link>
-            </div>
         </div>
     )
 }

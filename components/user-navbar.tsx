@@ -21,7 +21,7 @@ export function UserNavbar() {
       className={`z-50 transition-all duration-300 border-b bg-background border-gray-100 dark:border-white/5 ${scrolled ? "py-3" : "py-5"
         }`}
     >
-      <div className="flex items-center justify-between px-4 md:px-8 mx-auto max-w-[1500px]">
+      <div className="flex items-center justify-between px-4 md:px-8">
         <Link href="/" className="flex items-center gap-2 group">
           <div className="bg-[#3B6FF1] p-1.5 rounded-md flex items-center justify-center transition-transform group-hover:scale-110">
             <Box className="w-5 h-5 text-white" />

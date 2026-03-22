@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Testimo — Hero</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,600&display=swap"
+    rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      background: #ffffff;
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      width: 100%;
+      height: 100%;
+      font-family: 'Sora', sans-serif;
+    }
+
+    .stage {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      background: #ffffff;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+    }
+
+    /* ── Soft radial bg tints ── */
+    .bg-tl {
+      position: absolute;
+      top: -180px;
+      left: -120px;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(91, 91, 214, 0.07) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-br {
+      position: absolute;
+      bottom: -180px;
+      right: -120px;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(45, 108, 255, 0.06) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-cr {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 900px;
+      height: 700px;
+      background: radial-gradient(ellipse, rgba(91, 91, 214, 0.04) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Subtle dot pattern ── */
+    .dot-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(91, 91, 214, 0.12) 1px, transparent 1px);
+      background-size: 36px 36px;
+      opacity: 0.5;
+    }
+
+    /* ── Scenes ── */
+    .scene {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .scene.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ─────────────────────────────────
+   SCENE 1 — User sends a link
+───────────────────────────────── */
+    .s1-left {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 56px 0 60px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #ededfc;
+      border: 1px solid #c5c5f0;
+      color: #5b5bd6;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 100px;
+      padding: 6px 14px;
+      width: fit-content;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #5b5bd6;
+      animation: bdot 1.6s ease-in-out infinite;
+    }
+
+    @keyframes bdot {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(0.6);
+        opacity: 0.4;
+      }
+    }
+
+    .s1-h {
+      font-size: 44px;
+      font-weight: 800;
+      color: #111;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    .s1-h .hl {
+      color: #5b5bd6;
+    }
+
+    .s1-sub {
+      font-size: 14px;
+      color: #888;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.65;
+      max-width: 310px;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    /* ── Phone mockup ── */
+    .phone-wrap {
+      position: absolute;
+      right: 60px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      opacity: 0;
+    }
+
+    .phone {
+      width: 220px;
+      background: #fff;
+      border-radius: 32px;
+      overflow: hidden;
+      border: 1.5px solid #e0e0f0;
+      box-shadow: 0 20px 60px rgba(91, 91, 214, 0.14), 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    .phone-notch {
+      height: 24px;
+      background: #f8f8fe;
+      border-bottom: 1px solid #eeeef8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone-notch-bar {
+      width: 60px;
+      height: 4px;
+      background: #d0d0e8;
+      border-radius: 2px;
+    }
+
+    .phone-screen {
+      padding: 20px 16px 24px;
+    }
+
+    .phone-msg-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .phone-msg {
+      background: #f4f4fd;
+      border-radius: 14px 14px 14px 4px;
+      padding: 10px 13px;
+      font-size: 11px;
+      font-family: 'DM Sans', sans-serif;
+      color: #333;
+      line-height: 1.5;
+      max-width: 85%;
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    .phone-msg.sent {
+      background: #5b5bd6;
+      color: #fff;
+      border-radius: 14px 14px 4px 14px;
+      align-self: flex-end;
+    }
+
+    .phone-msg .pm-from {
+      font-size: 9px;
+      font-weight: 700;
+      color: #5b5bd6;
+      margin-bottom: 3px;
+      font-family: 'Sora', sans-serif;
+    }
+
+    .phone-msg.sent .pm-from {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .phone-link-card {
+      background: #fff;
+      border: 1px solid #e8e8f8;
+      border-radius: 10px;
+      padding: 8px 10px;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .plc-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #ededfc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .plc-text .pt1 {
+      font-size: 10px;
+      font-weight: 700;
+      color: #333;
+      font-family: 'Sora', sans-serif;
+    }
+
+    .plc-text .pt2 {
+      font-size: 9px;
+      color: #5b5bd6;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* Notification pop */
+    .notif {
+      position: absolute;
+      top: -18px;
+      right: -20px;
+      background: #fff;
+      border: 1px solid #e8e8f0;
+      border-radius: 14px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(8px) scale(0.9);
+      font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
+    }
+
+    .notif-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #ededfc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .notif-text .nt1 {
+      font-size: 10px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .notif-text .nt2 {
+      font-size: 9px;
+      color: #aaa;
+    }
+
+    /* ─────────────────────────────────
+   SCENE 2 — Customer fills the form
+───────────────────────────────── */
+    .s2-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form-mockup {
+      width: 340px;
+      background: #fff;
+      border-radius: 24px;
+      border: 1px solid #ebebf8;
+      box-shadow: 0 24px 80px rgba(91, 91, 214, 0.14), 0 4px 20px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(28px) scale(0.94);
+      z-index: 4;
+    }
+
+    .fm-header {
+      background: linear-gradient(135deg, #5b5bd6 0%, #7c7ce8 100%);
+      padding: 22px 22px 18px;
+      text-align: center;
+      position: relative;
+    }
+
+    .fm-header-circles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .fm-hc1 {
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .fm-hc2 {
+      position: absolute;
+      bottom: -20px;
+      left: -20px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .fm-logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .fm-logo-box {
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fm-brand {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .fm-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.95);
+      position: relative;
+      z-index: 1;
+      margin-bottom: 2px;
+    }
+
+    .fm-sub {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.65);
+      font-family: 'DM Sans', sans-serif;
+      position: relative;
+      z-index: 1;
+    }
+
+    .fm-body {
+      padding: 18px 20px;
+    }
+
+    .fm-star-row {
+      background: #f8f8fe;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .fm-star-q {
+      font-size: 10px;
+      color: #666;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .fm-stars {
+      display: flex;
+      gap: 3px;
+    }
+
+    .fm-star {
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    .fm-star.on {
+      color: #f59e0b;
+    }
+
+    .fm-star.off {
+      color: #ddd;
+    }
+
+    .fm-star-label {
+      font-size: 10px;
+      color: #5b5bd6;
+      font-weight: 700;
+    }
+
+    .fm-toggle {
+      display: flex;
+      gap: 3px;
+      background: #f4f4fd;
+      border-radius: 10px;
+      padding: 3px;
+      margin-bottom: 12px;
+    }
+
+    .fm-tab-on {
+      flex: 1;
+      background: #5b5bd6;
+      color: #fff;
+      border-radius: 7px;
+      padding: 7px;
+      font-size: 10px;
+      font-weight: 700;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .fm-tab-off {
+      flex: 1;
+      color: #aaa;
+      padding: 7px;
+      font-size: 10px;
+      font-weight: 600;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .fm-textarea {
+      background: #f8f8fe;
+      border: 1.5px solid #ebebf8;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 10px;
+      color: #555;
+      font-family: 'DM Sans', sans-serif;
+      height: 60px;
+      width: 100%;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    .fm-typing-cursor {
+      display: inline-block;
+      width: 1.5px;
+      height: 11px;
+      background: #5b5bd6;
+      animation: tc 0.75s step-end infinite;
+      vertical-align: middle;
+      margin-left: 1px;
+    }
+
+    @keyframes tc {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .fm-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .fm-input {
+      background: #f8f8fe;
+      border: 1px solid #ebebf8;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 10px;
+      color: #666;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .fm-btn {
+      background: #5b5bd6;
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    /* Floating user avatars around form */
+    .user-float {
+      position: absolute;
+      opacity: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid #ebebf8;
+      border-radius: 100px;
+      padding: 5px 12px 5px 5px;
+      box-shadow: 0 6px 20px rgba(91, 91, 214, 0.1);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .uf-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .uf-text .ut1 {
+      font-size: 10px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .uf-text .ut2 {
+      font-size: 9px;
+      color: #aaa;
+    }
+
+    /* ─────────────────────────────────
+   SCENE 3 — Wall of love
+───────────────────────────────── */
+    .s3-inner {
+      position: absolute;
+      inset: 0;
+    }
+
+    .s3-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 56px;
+    }
+
+    .s3-hl {
+      font-size: 26px;
+      font-weight: 800;
+      color: #111;
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    .s3-hl span {
+      color: #5b5bd6;
+    }
+
+    .s3-counter {
+      background: #f4f4fd;
+      border: 1px solid #ddddf5;
+      border-radius: 100px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    .s3c-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: bdot 1.4s infinite;
+    }
+
+    .s3c-label {
+      font-size: 11px;
+      color: #888;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .s3c-num {
+      font-size: 18px;
+      font-weight: 800;
+      color: #5b5bd6;
+    }
+
+    /* Card grid */
+    .card-grid {
+      position: absolute;
+      top: 86px;
+      left: 0;
+      right: 0;
+      bottom: 32px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 14px;
+      padding: 0 40px;
+    }
+
+    .wc {
+      background: #fff;
+      border: 1px solid #ebebf8;
+      border-radius: 16px;
+      padding: 16px;
+      opacity: 0;
+      box-shadow: 0 4px 16px rgba(91, 91, 214, 0.06);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s;
+    }
+
+    .wc:hover {
+      transform: translateY(-2px);
+    }
+
+    .wc-stars {
+      color: #f59e0b;
+      font-size: 12px;
+      letter-spacing: 1px;
+      margin-bottom: 7px;
+    }
+
+    .wc-body {
+      font-size: 11px;
+      color: #555;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.58;
+      flex: 1;
+      margin-bottom: 10px;
+    }
+
+    .wc-foot {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .wc-av {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .wc-name {
+      font-size: 10px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .wc-role {
+      font-size: 9px;
+      color: #aaa;
+    }
+
+    /* Video card variant */
+    .wc-video .wc-thumb {
+      background: linear-gradient(135deg, #ededfc, #ddddf8);
+      border-radius: 10px;
+      height: 72px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wc-play {
+      width: 32px;
+      height: 32px;
+      background: #5b5bd6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wc-vtag {
+      position: absolute;
+      bottom: 5px;
+      left: 7px;
+      background: rgba(91, 91, 214, 0.85);
+      color: #fff;
+      border-radius: 4px;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 2px 6px;
+      font-family: 'Sora', sans-serif;
+    }
+
+    .wc-quote-big {
+      font-size: 22px;
+      color: #5b5bd6;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    /* ─────────────────────────────────
+   SCENE 4 — CTA / conversion
+───────────────────────────────── */
+    .s4-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s4-split {
+      display: flex;
+      align-items: center;
+      gap: 64px;
+      width: 100%;
+      max-width: 950px;
+      padding: 0 40px;
+    }
+
+    /* Left copy */
+    .s4-copy {
+      flex: 1;
+    }
+
+    .s4-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #ededfc;
+      border: 1px solid #c5c5f0;
+      color: #5b5bd6;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 100px;
+      padding: 5px 14px;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    .s4-h {
+      font-size: 48px;
+      font-weight: 800;
+      color: #111;
+      line-height: 1.08;
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .s4-h span {
+      color: #5b5bd6;
+    }
+
+    .s4-sub {
+      font-size: 14px;
+      color: #888;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.65;
+      margin-bottom: 28px;
+      max-width: 360px;
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    .s4-btns {
+      display: flex;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    .s4-btn-p {
+      background: #5b5bd6;
+      color: #fff;
+      border-radius: 100px;
+      padding: 13px 28px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 8px 28px rgba(91, 91, 214, 0.3);
+    }
+
+    .s4-btn-s {
+      background: #fff;
+      color: #555;
+      border: 1.5px solid #ddd;
+      border-radius: 100px;
+      padding: 13px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .s4-proof {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+      opacity: 0;
+    }
+
+    .s4-avs {
+      display: flex;
+    }
+
+    .s4-av {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      margin-left: -8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .s4-av:first-child {
+      margin-left: 0;
+    }
+
+    .s4-proof-text {
+      font-size: 12px;
+      color: #888;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .s4-proof-text strong {
+      color: #333;
+    }
+
+    /* Right: metric cards */
+    .s4-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      transform: translateX(30px);
+    }
+
+    .metric-card {
+      background: #fff;
+      border: 1px solid #ebebf8;
+      border-radius: 16px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(91, 91, 214, 0.07);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mc-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mc-val {
+      font-size: 28px;
+      font-weight: 800;
+      color: #111;
+    }
+
+    .mc-label {
+      font-size: 11px;
+      color: #888;
+      font-family: 'DM Sans', sans-serif;
+      margin-top: 1px;
+    }
+
+    .mc-change {
+      font-size: 10px;
+      font-weight: 700;
+      color: #22c55e;
+      background: #f0fdf4;
+      border-radius: 100px;
+      padding: 2px 8px;
+      margin-top: 4px;
+      display: inline-block;
+    }
+
+    /* ── Progress & dots ── */
+    .progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(to right, #5b5bd6, #a78bfa);
+      width: 0%;
+      z-index: 100;
+      border-radius: 0 2px 2px 0;
+    }
+
+    .dots {
+      position: absolute;
+      bottom: 13px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 7px;
+      z-index: 100;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #ddd;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      background: #5b5bd6;
+      width: 18px;
+      border-radius: 2.5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stage" id="stage">
+    <div class="dot-bg"></div>
+    <div class="bg-tl"></div>
+    <div class="bg-br"></div>
+    <div class="bg-cr"></div>
+
+    <!-- ══════════════════════════
+       SCENE 1 — Send the link
+  ══════════════════════════ -->
+    <div class="scene" id="s1">
+      <!-- Left copy -->
+      <div
+        style="position:absolute;left:0;top:0;bottom:0;width:460px;display:flex;flex-direction:column;justify-content:center;padding:0 56px 0 64px;">
+        <div class="badge" id="s1badge"><span class="badge-dot"></span> Send · Collect · Display</div>
+        <div id="s1h"
+          style="font-size:46px;font-weight:800;color:#111;line-height:1.08;margin-bottom:16px;opacity:0;transform:translateY(20px);">
+          Your customer<br>just had a<br><span style="color:#5b5bd6;">great moment.</span>
+        </div>
+        <div id="s1s"
+          style="font-size:14px;color:#888;font-family:'DM Sans',sans-serif;line-height:1.7;max-width:320px;opacity:0;transform:translateY(14px);">
+          Capture it instantly — before they forget. Send a Testimo link and get a polished testimonial back in minutes.
+        </div>
+
+        <!-- Notification toast slides up -->
+        <div id="s1toast"
+          style="margin-top:28px;background:#fff;border:1px solid #ebebf8;border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 28px rgba(91,91,214,0.13);opacity:0;transform:translateY(14px);width:fit-content;">
+          <div
+            style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#4ade80);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                fill="white" />
+            </svg>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#111;font-family:'Sora',sans-serif;">New testimonial
+              received!</div>
+            <div style="font-size:11px;color:#888;font-family:'DM Sans',sans-serif;margin-top:1px;">Sarah J. · ★★★★★ ·
+              just now</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right phone -->
+      <div id="s1phone" style="position:absolute;right:64px;top:50%;transform:translateY(-50%);opacity:0;">
+        <!-- Phone shell -->
+        <div
+          style="width:240px;background:#fff;border-radius:36px;border:1.5px solid #e0e0f0;box-shadow:0 28px 70px rgba(91,91,214,0.16),0 6px 20px rgba(0,0,0,0.06);overflow:hidden;">
+          <!-- Status bar -->
+          <div
+            style="height:44px;background:#f8f8fe;border-bottom:1px solid #eeeef8;display:flex;align-items:center;justify-content:space-between;padding:0 18px;">
+            <span style="font-size:11px;font-weight:700;color:#aaa;font-family:'DM Sans',sans-serif;">9:41</span>
+            <div style="width:54px;height:18px;background:#111;border-radius:9px;"></div>
+            <div style="display:flex;gap:5px;align-items:center;">
+              <div style="width:14px;height:8px;border:1.5px solid #ccc;border-radius:2px;position:relative;">
+                <div
+                  style="position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:3px;height:5px;background:#ccc;border-radius:1px;">
+                </div>
+                <div style="background:#111;width:9px;height:5px;border-radius:1px;margin:0.5px;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- iMessage header -->
+          <div
+            style="background:#f8f8fe;padding:10px 16px 8px;border-bottom:1px solid #eeeef8;display:flex;align-items:center;gap:10px;">
+            <div
+              style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#5b5bd6,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;">
+              SJ</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#111;font-family:'Sora',sans-serif;">Sarah Johnson</div>
+              <div style="font-size:10px;color:#22c55e;font-family:'DM Sans',sans-serif;font-weight:600;">● Online</div>
+            </div>
+          </div>
+          <!-- Messages -->
+          <div
+            style="padding:14px 12px 16px;display:flex;flex-direction:column;gap:9px;background:#fff;min-height:280px;">
+            <!-- Outgoing msg 1 -->
+            <div id="pm1"
+              style="align-self:flex-end;background:#5b5bd6;color:#fff;border-radius:16px 16px 4px 16px;padding:9px 13px;font-size:11px;font-family:'DM Sans',sans-serif;line-height:1.5;max-width:82%;opacity:0;transform:translateY(8px);">
+              Hey Sarah! 🎉 Glad the launch went well. Mind sharing a quick testimonial?
+            </div>
+            <!-- Link card -->
+            <div id="pm2" style="align-self:flex-end;opacity:0;transform:translateY(8px);max-width:86%;">
+              <div style="background:#ededfc;border-radius:14px 14px 4px 14px;padding:10px 12px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div
+                    style="width:32px;height:32px;border-radius:8px;background:#5b5bd6;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24">
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2"
+                        stroke-linecap="round" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div style="font-size:11px;font-weight:700;color:#333;font-family:'Sora',sans-serif;">Share Your
+                      Experience</div>
+                    <div style="font-size:10px;color:#5b5bd6;font-family:'DM Sans',sans-serif;">testimo.io/acme-corp
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Incoming reply -->
+            <div id="pm3"
+              style="align-self:flex-start;background:#f4f4fd;border-radius:16px 16px 16px 4px;padding:9px 13px;font-size:11px;font-family:'DM Sans',sans-serif;color:#333;line-height:1.5;max-width:80%;opacity:0;transform:translateY(8px);">
+              Of course! Just filled it out 😊 Took literally 2 mins!
+            </div>
+            <!-- Stars reply -->
+            <div id="pm4"
+              style="align-self:flex-start;background:#f4f4fd;border-radius:16px 16px 16px 4px;padding:8px 13px;font-size:15px;max-width:fit-content;opacity:0;transform:translateY(8px);">
+              ★★★★★
+            </div>
+          </div>
+          <!-- Bottom bar -->
+          <div
+            style="background:#f8f8fe;border-top:1px solid #eeeef8;padding:10px 14px;display:flex;align-items:center;gap:8px;">
+            <div
+              style="flex:1;background:#fff;border:1px solid #e0e0f0;border-radius:20px;padding:7px 12px;font-size:11px;color:#ccc;font-family:'DM Sans',sans-serif;">
+              Message...</div>
+            <div
+              style="width:28px;height:28px;border-radius:50%;background:#5b5bd6;display:flex;align-items:center;justify-content:center;">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24">
+                <path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z" stroke="white" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+       SCENE 2 — Filling the form
+  ══════════════════════════ -->
+    <div class="scene" id="s2">
+      <div class="s2-center">
+
+        <!-- Floating users left -->
+        <div class="user-float" id="uf1" style="left:42px;top:160px;transform:rotate(-2deg);">
+          <div class="uf-avatar" style="background:#5b5bd6;">MK</div>
+          <div class="uf-text">
+            <div class="ut1">Mike K.</div>
+            <div class="ut2">Just submitted ★★★★★</div>
+          </div>
+        </div>
+        <div class="user-float" id="uf2" style="left:30px;bottom:200px;transform:rotate(1.5deg);">
+          <div class="uf-avatar" style="background:#059669;">SR</div>
+          <div class="uf-text">
+            <div class="ut1">Sarah R.</div>
+            <div class="ut2">Recording a video...</div>
+          </div>
+        </div>
+        <div class="user-float" id="uf3" style="left:58px;top:320px;">
+          <div class="uf-avatar" style="background:#db2777;">AP</div>
+          <div class="uf-text">
+            <div class="ut1">Ana P.</div>
+            <div class="ut2">Typing a review...</div>
+          </div>
+        </div>
+
+        <!-- Floating users right -->
+        <div class="user-float" id="uf4" style="right:38px;top:170px;transform:rotate(2deg);">
+          <div class="uf-avatar" style="background:#d97706;">TM</div>
+          <div class="uf-text">
+            <div class="ut1">Tom M.</div>
+            <div class="ut2">Opened the form</div>
+          </div>
+        </div>
+        <div class="user-float" id="uf5" style="right:44px;bottom:210px;transform:rotate(-1.5deg);">
+          <div class="uf-avatar" style="background:#7c3aed;">NB</div>
+          <div class="uf-text">
+            <div class="ut1">Nina B.</div>
+            <div class="ut2">Just submitted ★★★★★</div>
+          </div>
+        </div>
+
+        <!-- Center form -->
+        <div class="form-mockup" id="formMock">
+          <div class="fm-header">
+            <div class="fm-header-circles">
+              <div class="fm-hc1"></div>
+              <div class="fm-hc2"></div>
+            </div>
+            <div class="fm-logo-row">
+              <div class="fm-logo-box">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2"
+                    stroke-linecap="round" />
+                </svg>
+              </div>
+              <span class="fm-brand">Acme Corp</span>
+            </div>
+            <div class="fm-title" id="fmTitle">Share Your Experience<span class="fm-typing-cursor"></span></div>
+            <div class="fm-sub">Takes less than 2 minutes 🙌</div>
+          </div>
+          <div class="fm-body">
+            <div class="fm-star-row">
+              <div class="fm-star-q">How would you rate your experience?</div>
+              <div class="fm-stars">
+                <span class="fm-star on">★</span>
+                <span class="fm-star on">★</span>
+                <span class="fm-star on">★</span>
+                <span class="fm-star on">★</span>
+                <span class="fm-star off" id="fmStar5">★</span>
+              </div>
+              <div class="fm-star-label" id="fmStarLabel">Great</div>
+            </div>
+            <div class="fm-toggle">
+              <div class="fm-tab-on">
+                <svg width="10" height="10" fill="none" viewBox="0 0 24 24">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="white" stroke-width="2"
+                    stroke-linecap="round" />
+                </svg>
+                Text
+              </div>
+              <div class="fm-tab-off">
+                <svg width="10" height="10" fill="none" viewBox="0 0 24 24">
+                  <path
+                    d="M15 10l4.553-2.277A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    stroke="#aaa" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                Video
+              </div>
+            </div>
+            <div class="fm-textarea" id="fmTextarea">
+              <span id="typedText"></span><span class="fm-typing-cursor"></span>
+            </div>
+            <div class="fm-row">
+              <div class="fm-input">Sarah Johnson</div>
+              <div class="fm-input" style="color:#5b5bd6;display:flex;align-items:center;gap:4px;">
+                <svg width="10" height="10" fill="none" viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="#5b5bd6"
+                    stroke-width="2" stroke-linecap="round" />
+                </svg>
+                photo.jpg
+              </div>
+            </div>
+            <div class="fm-btn">
+              Submit Testimonial
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+       SCENE 3 — Wall of love
+  ══════════════════════════ -->
+    <div class="scene" id="s3">
+      <div class="s3-inner">
+        <div class="s3-top">
+          <div class="s3-hl" id="s3hl">Wall of Love — <span>Ready to showcase yours?</span></div>
+          <div class="s3-counter" id="s3cnt">
+            <div class="s3c-dot"></div>
+            <div class="s3c-label">Live responses</div>
+            <div class="s3c-num" id="s3num">0</div>
+          </div>
+        </div>
+
+        <div
+          style="position:absolute;top:88px;left:0;right:0;bottom:22px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:14px;padding:0 40px;">
+
+          <!-- Row 1 -->
+          <div class="wc" id="wc1" style="padding:22px 24px 20px;display:flex;flex-direction:column;">
+            <div style="color:#f59e0b;font-size:16px;letter-spacing:2px;margin-bottom:14px;">★★★★★</div>
+            <div
+              style="font-size:13px;color:#333;font-family:'DM Sans',sans-serif;line-height:1.65;flex:1;margin-bottom:16px;">
+              "Testimo has completely transformed how we collect feedback. The UI is stunning and our customers love
+              it."</div>
+            <div style="display:flex;align-items:center;gap:11px;">
+              <div
+                style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#5b5bd6,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 2.5px #5b5bd6;">
+                SJ</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#111;font-family:'Sora',sans-serif;">Sarah Jenkins
+                </div>
+                <div
+                  style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:0.07em;text-transform:uppercase;margin-top:1px;font-family:'DM Sans',sans-serif;">
+                  Product Manager</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wc" id="wc2"
+            style="padding:22px 24px 20px;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(91,91,214,0.13);">
+            <div style="color:#f59e0b;font-size:16px;letter-spacing:2px;margin-bottom:14px;">★★★★★</div>
+            <div
+              style="font-size:13px;color:#333;font-family:'DM Sans',sans-serif;line-height:1.65;flex:1;margin-bottom:16px;">
+              "Setting up my first collection form took less than 2 minutes. The embed code works perfectly on Webflow."
+            </div>
+            <div style="display:flex;align-items:center;gap:11px;">
+              <div
+                style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#059669,#34d399);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 2.5px #059669;">
+                MD</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#111;font-family:'Sora',sans-serif;">Mark Davis</div>
+                <div
+                  style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:0.07em;text-transform:uppercase;margin-top:1px;font-family:'DM Sans',sans-serif;">
+                  Freelance Developer</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wc" id="wc3" style="padding:22px 24px 20px;display:flex;flex-direction:column;">
+            <div style="color:#f59e0b;font-size:16px;letter-spacing:2px;margin-bottom:14px;">★★★★★</div>
+            <div
+              style="font-size:13px;color:#333;font-family:'DM Sans',sans-serif;line-height:1.65;flex:1;margin-bottom:16px;">
+              "The video testimonial feature is a game changer. Seeing real faces builds so much more trust."</div>
+            <div style="display:flex;align-items:center;gap:11px;">
+              <div
+                style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#db2777,#f472b6);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 2.5px #db2777;">
+                ER</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#111;font-family:'Sora',sans-serif;">Elena Rodriguez
+                </div>
+                <div
+                  style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:0.07em;text-transform:uppercase;margin-top:1px;font-family:'DM Sans',sans-serif;">
+                  Marketing Director</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="wc" id="wc4" style="padding:22px 24px 20px;display:flex;flex-direction:column;">
+            <div style="color:#f59e0b;font-size:16px;letter-spacing:2px;margin-bottom:14px;">★★★★★</div>
+            <div
+              style="font-size:13px;color:#333;font-family:'DM Sans',sans-serif;line-height:1.65;flex:1;margin-bottom:16px;">
+              "We got 50 testimonials before launch. Investors were genuinely impressed by the social proof we had."
+            </div>
+            <div style="display:flex;align-items:center;gap:11px;">
+              <div
+                style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#c084fc);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 2.5px #7c3aed;">
+                NB</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#111;font-family:'Sora',sans-serif;">Nina Brooks</div>
+                <div
+                  style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:0.07em;text-transform:uppercase;margin-top:1px;font-family:'DM Sans',sans-serif;">
+                  Co-founder, Orbit</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wc" id="wc5" style="padding:22px 24px 20px;display:flex;flex-direction:column;">
+            <div style="color:#f59e0b;font-size:16px;letter-spacing:2px;margin-bottom:14px;">★★★★★</div>
+            <div
+              style="font-size:13px;color:#333;font-family:'DM Sans',sans-serif;line-height:1.65;flex:1;margin-bottom:16px;">
+              "Setup to first testimonial in under 10 minutes. Our customers actually enjoy leaving feedback now."</div>
+            <div style="display:flex;align-items:center;gap:11px;">
+              <div
+                style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0891b2,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 2.5px #0891b2;">
+                LW</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#111;font-family:'Sora',sans-serif;">Leon Walsh</div>
+                <div
+                  style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:0.07em;text-transform:uppercase;margin-top:1px;font-family:'DM Sans',sans-serif;">
+                  PM, Shipify</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wc" id="wc6" style="padding:22px 24px 20px;display:flex;flex-direction:column;">
+            <div style="color:#f59e0b;font-size:16px;letter-spacing:2px;margin-bottom:14px;">★★★★★</div>
+            <div
+              style="font-size:13px;color:#333;font-family:'DM Sans',sans-serif;line-height:1.65;flex:1;margin-bottom:16px;">
+              "Conversion rate up 34% after embedding the wall of love. Our homepage finally has real social proof."
+            </div>
+            <div style="display:flex;align-items:center;gap:11px;">
+              <div
+                style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#d97706,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 2.5px #d97706;">
+                TM</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#111;font-family:'Sora',sans-serif;">Tom Murray</div>
+                <div
+                  style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:0.07em;text-transform:uppercase;margin-top:1px;font-family:'DM Sans',sans-serif;">
+                  Indie Hacker</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+       SCENE 4 — Product showcase
+  ══════════════════════════ -->
+    <div class="scene" id="s4">
+      <div style="position:absolute;inset:0;overflow:hidden;">
+
+        <!-- Top label -->
+        <div id="s4label" style="position:absolute;top:32px;left:50%;transform:translateX(-50%);opacity:0;">
+          <div
+            style="display:inline-flex;align-items:center;gap:8px;background:#ededfc;border:1px solid #c5c5f0;color:#5b5bd6;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border-radius:100px;padding:6px 16px;">
+            <span class="badge-dot"></span> Your testimonials — live on your site
+          </div>
+        </div>
+
+        <!-- Headline -->
+        <div id="s4h"
+          style="position:absolute;top:72px;left:50%;transform:translateX(-50%);opacity:0;white-space:nowrap;text-align:center;">
+          <div style="font-size:36px;font-weight:800;color:#111;line-height:1.1;">From <span
+              style="color:#5b5bd6;">collected</span> to <span style="color:#5b5bd6;">embedded</span> — in one click.
+          </div>
+        </div>
+
+        <!-- Dashboard mockup — full width panel -->
+        <div id="s4dash"
+          style="position:absolute;bottom:22px;left:40px;right:40px;top:138px;background:#fff;border-radius:20px;border:1px solid #ebebf8;box-shadow:0 16px 50px rgba(91,91,214,0.1);overflow:hidden;opacity:0;">
+
+          <!-- Dashboard top bar -->
+          <div
+            style="height:46px;background:#f8f8fe;border-bottom:1px solid #eeeef8;display:flex;align-items:center;padding:0 20px;gap:14px;">
+            <div style="display:flex;gap:5px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:#ff5f56;"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#ffbd2e;"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#27c93f;"></div>
+            </div>
+            <div style="flex:1;display:flex;justify-content:center;">
+              <div
+                style="background:#fff;border:1px solid #e0e0f0;border-radius:7px;padding:5px 18px;display:flex;align-items:center;gap:6px;">
+                <div style="width:7px;height:7px;border-radius:50%;background:#22c55e;"></div>
+                <span style="font-size:11px;color:#666;font-family:monospace;">testimo.io/dashboard</span>
+              </div>
+            </div>
+            <div style="width:60px;"></div>
+          </div>
+
+          <!-- Dashboard body -->
+          <div style="display:flex;height:calc(100% - 46px);">
+
+            <!-- Sidebar -->
+            <div
+              style="width:52px;background:#f8f8fe;border-right:1px solid #eeeef8;display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:14px;flex-shrink:0;">
+              <div
+                style="width:28px;height:28px;background:#5b5bd6;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2"
+                    stroke-linecap="round" />
+                </svg>
+              </div>
+              <div
+                style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#ededfc;">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#5b5bd6" stroke-width="1.8"
+                    stroke-linecap="round" />
+                </svg>
+              </div>
+              <div
+                style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" stroke="#ccc" stroke-width="1.8"
+                    stroke-linecap="round" />
+                </svg>
+              </div>
+              <div
+                style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="3" stroke="#ccc" stroke-width="1.8" />
+                  <path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3" stroke="#ccc"
+                    stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Main content -->
+            <div style="flex:1;padding:18px 20px;overflow:hidden;">
+
+              <!-- Stats row -->
+              <div id="s4stats"
+                style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;opacity:0;">
+                <div style="background:#f8f8fe;border:1px solid #ebebf8;border-radius:12px;padding:12px 14px;">
+                  <div
+                    style="font-size:10px;color:#aaa;font-family:'DM Sans',sans-serif;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">
+                    Total Responses</div>
+                  <div style="font-size:22px;font-weight:800;color:#111;">247</div>
+                  <div style="font-size:10px;color:#22c55e;font-weight:600;margin-top:2px;">↑ 18 this week</div>
+                </div>
+                <div style="background:#f8f8fe;border:1px solid #ebebf8;border-radius:12px;padding:12px 14px;">
+                  <div
+                    style="font-size:10px;color:#aaa;font-family:'DM Sans',sans-serif;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">
+                    Avg. Rating</div>
+                  <div style="font-size:22px;font-weight:800;color:#111;">4.9</div>
+                  <div style="font-size:10px;color:#f59e0b;font-weight:600;margin-top:2px;">★★★★★</div>
+                </div>
+                <div style="background:#f8f8fe;border:1px solid #ebebf8;border-radius:12px;padding:12px 14px;">
+                  <div
+                    style="font-size:10px;color:#aaa;font-family:'DM Sans',sans-serif;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">
+                    Video Reviews</div>
+                  <div style="font-size:22px;font-weight:800;color:#111;">84</div>
+                  <div style="font-size:10px;color:#5b5bd6;font-weight:600;margin-top:2px;">34% of total</div>
+                </div>
+                <div style="background:#ededfc;border:1px solid #c5c5f0;border-radius:12px;padding:12px 14px;">
+                  <div
+                    style="font-size:10px;color:#5b5bd6;font-family:'DM Sans',sans-serif;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">
+                    Embed Views</div>
+                  <div style="font-size:22px;font-weight:800;color:#5b5bd6;">12.4k</div>
+                  <div style="font-size:10px;color:#5b5bd6;font-weight:600;margin-top:2px;">↑ 2.1k this month</div>
+                </div>
+              </div>
+
+              <!-- Testimonial list -->
+              <div id="s4list" style="display:flex;flex-direction:column;gap:8px;opacity:0;">
+                <!-- Row 1 -->
+                <div
+                  style="background:#fff;border:1px solid #ebebf8;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:12px;">
+                  <div
+                    style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#5b5bd6,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">
+                    SJ</div>
+                  <div style="flex:1;min-width:0;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                      <span style="font-size:12px;font-weight:700;color:#111;font-family:'Sora',sans-serif;">Sarah
+                        Jenkins</span>
+                      <span
+                        style="font-size:9px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Sans',sans-serif;">Product
+                        Manager</span>
+                      <span style="color:#f59e0b;font-size:11px;margin-left:auto;">★★★★★</span>
+                    </div>
+                    <div
+                      style="font-size:11px;color:#666;font-family:'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                      "Testimo has completely transformed how we collect feedback. The UI is stunning..."</div>
+                  </div>
+                  <div
+                    style="background:#f0fdf4;color:#15803d;font-size:9px;font-weight:700;border-radius:100px;padding:3px 9px;flex-shrink:0;font-family:'DM Sans',sans-serif;">
+                    Published</div>
+                </div>
+                <!-- Row 2 -->
+                <div
+                  style="background:#fff;border:1px solid #ebebf8;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:12px;">
+                  <div
+                    style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#059669,#34d399);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">
+                    MD</div>
+                  <div style="flex:1;min-width:0;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                      <span style="font-size:12px;font-weight:700;color:#111;font-family:'Sora',sans-serif;">Mark
+                        Davis</span>
+                      <span
+                        style="font-size:9px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Sans',sans-serif;">Developer</span>
+                      <span
+                        style="background:#ededfc;color:#5b5bd6;font-size:9px;font-weight:700;border-radius:100px;padding:2px 8px;margin-left:4px;font-family:'DM Sans',sans-serif;">Video</span>
+                      <span style="color:#f59e0b;font-size:11px;margin-left:auto;">★★★★★</span>
+                    </div>
+                    <div
+                      style="font-size:11px;color:#666;font-family:'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                      "Setting up my first collection form took less than 2 minutes. The embed code..."</div>
+                  </div>
+                  <div
+                    style="background:#f0fdf4;color:#15803d;font-size:9px;font-weight:700;border-radius:100px;padding:3px 9px;flex-shrink:0;font-family:'DM Sans',sans-serif;">
+                    Published</div>
+                </div>
+                <!-- Row 3 -->
+                <div
+                  style="background:#fff;border:1px solid #ebebf8;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:12px;">
+                  <div
+                    style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#db2777,#f472b6);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">
+                    ER</div>
+                  <div style="flex:1;min-width:0;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                      <span style="font-size:12px;font-weight:700;color:#111;font-family:'Sora',sans-serif;">Elena
+                        Rodriguez</span>
+                      <span
+                        style="font-size:9px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Sans',sans-serif;">Marketing
+                        Director</span>
+                      <span style="color:#f59e0b;font-size:11px;margin-left:auto;">★★★★★</span>
+                    </div>
+                    <div
+                      style="font-size:11px;color:#666;font-family:'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                      "The video testimonial feature is a game changer. Seeing real faces builds trust..."</div>
+                  </div>
+                  <div
+                    style="background:#fef9c3;color:#a16207;font-size:9px;font-weight:700;border-radius:100px;padding:3px 9px;flex-shrink:0;font-family:'DM Sans',sans-serif;">
+                    Pending</div>
+                </div>
+              </div>
+
+              <!-- Embed snippet -->
+              <div id="s4embed"
+                style="margin-top:10px;background:#0f0f1e;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;opacity:0;">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                  <polyline points="16 18 22 12 16 6" stroke="#5b5bd6" stroke-width="2" stroke-linecap="round" />
+                  <polyline points="8 6 2 12 8 18" stroke="#5b5bd6" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <code
+                  style="font-size:11px;color:#7c7ce8;font-family:monospace;flex:1;">&lt;script src="https://testimo.io/embed.js" data-space="acme-corp"&gt;&lt;/script&gt;</code>
+                <div
+                  style="background:#5b5bd6;color:#fff;border-radius:7px;padding:5px 12px;font-size:10px;font-weight:700;font-family:'Sora',sans-serif;flex-shrink:0;">
+                  Copy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress" id="progress"></div>
+    <div class="dots">
+      <div class="dot active" id="d0"></div>
+      <div class="dot" id="d1"></div>
+      <div class="dot" id="d2"></div>
+      <div class="dot" id="d3"></div>
+    </div>
+    <div class="dot active" id="d0"></div>
+    <div class="dot" id="d1"></div>
+    <div class="dot" id="d2"></div>
+    <div class="dot" id="d3"></div>
+  </div>
+  </div>
+
+  <script>
+    function $(id) { return document.getElementById(id); }
+    function ease(el, kf, opts) { if (!el) return; return el.animate(kf, { fill: 'forwards', easing: 'ease-out', ...opts }); }
+    function spring(el, kf, opts) { if (!el) return; return el.animate(kf, { fill: 'forwards', easing: 'cubic-bezier(0.34,1.56,0.64,1)', ...opts }); }
+    function fadeUp(id, delay, dur = 580) { setTimeout(() => ease($(id), [{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: dur }), delay); }
+
+    /* ── S1 ── */
+    function playS1() {
+      const s = $('s1'); s.classList.add('active');
+      fadeUp('s1badge', 60, 400);
+      fadeUp('s1h', 220, 650);
+      fadeUp('s1s', 460, 550);
+      // Phone slides in from right
+      setTimeout(() => spring($('s1phone'), [
+        { opacity: 0, transform: 'translateY(-50%) translateX(50px) scale(0.92)' },
+        { opacity: 1, transform: 'translateY(-50%) translateX(0) scale(1)' }
+      ], { duration: 700 }), 550);
+      // Messages appear sequentially
+      [$('pm1'), $('pm2'), $('pm3'), $('pm4')].forEach((el, i) => {
+        setTimeout(() => { if (el) ease(el, [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 380 }); }, 850 + i * 380);
+      });
+      // Toast notification
+      setTimeout(() => spring($('s1toast'), [
+        { opacity: 0, transform: 'translateY(14px) scale(0.94)' },
+        { opacity: 1, transform: 'translateY(0) scale(1)' }
+      ], { duration: 500 }), 2500);
+    }
+
+    /* ── S2 ── */
+    let typer = null;
+    function playS2() {
+      const s = $('s2'); s.classList.add('active');
+      // Form pops in
+      setTimeout(() => spring($('formMock'), [
+        { opacity: 0, transform: 'translateY(28px) scale(0.92)' },
+        { opacity: 1, transform: 'translateY(0) scale(1)' }
+      ], { duration: 700 }), 100);
+      // User pills
+      [['uf1', 350], ['uf2', 550], ['uf3', 750], ['uf4', 450], ['uf5', 650]].forEach(([id, d]) => {
+        setTimeout(() => spring($(id), [{ opacity: 0, transform: $(id).style.transform + ' scale(0.85)' }, { opacity: 1, transform: $(id).style.transform + ' scale(1)' }], { duration: 500 }), d);
+      });
+      // Star animation
+      setTimeout(() => {
+        const s5 = $('fmStar5');
+        if (s5) {
+          s5.classList.remove('off'); s5.classList.add('on');
+          $('fmStarLabel').textContent = 'Excellent!';
+        }
+      }, 1400);
+      // Typing in textarea
+      const txt = "Testimo made it so easy! The form was beautiful and took me under 2 minutes. 10/10 would recommend!";
+      let ci = 0; clearInterval(typer);
+      setTimeout(() => {
+        typer = setInterval(() => {
+          const el = $('typedText'); if (el) el.textContent = txt.slice(0, ci);
+          ci++; if (ci > txt.length) clearInterval(typer);
+        }, 36);
+      }, 800);
+    }
+
+    /* ── S3 ── */
+    let cntr = null;
+    function playS3() {
+      const s = $('s3'); s.classList.add('active');
+      fadeUp('s3hl', 80, 500);
+      setTimeout(() => ease($('s3cnt'), [{ opacity: 0, transform: 'translateX(20px)' }, { opacity: 1, transform: 'translateX(0)' }], { duration: 500 }), 200);
+      // Row 1 slides up, Row 2 slides up with slight delay
+      ['wc1', 'wc2', 'wc3'].forEach((id, i) => {
+        setTimeout(() => spring($(id), [{ opacity: 0, transform: 'translateY(22px) scale(0.96)' }, { opacity: 1, transform: 'translateY(0) scale(1)' }], { duration: 580 }), 280 + i * 140);
+      });
+      ['wc4', 'wc5', 'wc6'].forEach((id, i) => {
+        setTimeout(() => spring($(id), [{ opacity: 0, transform: 'translateY(22px) scale(0.96)' }, { opacity: 1, transform: 'translateY(0) scale(1)' }], { duration: 580 }), 560 + i * 140);
+      });
+      clearInterval(cntr); let n = 0;
+      setTimeout(() => {
+        cntr = setInterval(() => { n++; const el = $('s3num'); if (el) el.textContent = n; if (n >= 18) clearInterval(cntr); }, 140);
+      }, 400);
+    }
+
+    /* ── S4 ── */
+    function playS4() {
+      const s = $('s4'); s.classList.add('active');
+      fadeUp('s4label', 60, 400);
+      fadeUp('s4h', 220, 600);
+      // Dashboard slides up
+      setTimeout(() => ease($('s4dash'), [{ opacity: 0, transform: 'translateY(30px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 700 }), 380);
+      // Stats row fades in
+      setTimeout(() => ease($('s4stats'), [{ opacity: 0 }, { opacity: 1 }], { duration: 500 }), 800);
+      // List rows stagger in
+      setTimeout(() => ease($('s4list'), [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 500 }), 1100);
+      // Embed snippet slides up
+      setTimeout(() => spring($('s4embed'), [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 500 }), 1600);
+    }
+
+    /* ── Orchestration ── */
+    const DUR = 5000;
+    let cur = 0, timer = null, progT = null, pv = 0;
+    function hideAll() { ['s1', 's2', 's3', 's4'].forEach(id => { const s = $(id); if (s) s.classList.remove('active'); }); }
+    function updateDots(n) { for (let i = 0; i < 4; i++) { const d = $('d' + i); if (d) d.className = 'dot' + (i === n ? ' active' : ''); } }
+    function startProg() {
+      clearInterval(progT); pv = 0; $('progress').style.width = '0%';
+      const step = 100 / (DUR / 40);
+      progT = setInterval(() => { pv += step; if (pv >= 100) { pv = 100; clearInterval(progT); } $('progress').style.width = pv + '%'; }, 40);
+    }
+    const fns = [playS1, playS2, playS3, playS4];
+    function go(n) {
+      hideAll(); clearInterval(cntr); clearInterval(typer);
+      updateDots(n); startProg(); fns[n]();
+    }
+    function loop() { clearTimeout(timer); timer = setTimeout(() => { cur = (cur + 1) % 4; go(cur); loop(); }, DUR); }
+    go(0); loop();
+    for (let i = 0; i < 4; i++) {
+      const d = $('d' + i); if (!d) continue;
+      d.addEventListener('click', (n => () => { clearTimeout(timer); cur = n; go(cur); loop(); })(i));
+    }
+  </script>
+</body>
+
+</html>
