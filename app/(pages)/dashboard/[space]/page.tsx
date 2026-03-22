@@ -164,10 +164,10 @@ export default function SpaceDetailPage() {
     }), [activeTab, search])
 
     return (
-        <div className="flex h-full overflow-hidden bg-gray-50/40 dark:bg-[#0d0d10]">
+        <div className="flex h-full overflow-hidden ">
 
             {/* ══════════════ LEFT SIDEBAR ══════════════ */}
-            <aside className="hidden lg:flex w-[220px] shrink-0 bg-white dark:bg-[#111114] border-r border-blue-100/60 dark:border-white/[0.06] flex-col overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <aside className="hidden lg:flex w-[230px] shrink-0 bg-gray-50/40 dark:bg-[#0d0d10]  border-r border-blue-100/60 dark:border-white/[0.06] flex-col overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 
                 {/* Space identity header */}
                 <div className="p-4 border-b border-blue-100/40 dark:border-white/[0.05]">
@@ -199,7 +199,7 @@ export default function SpaceDetailPage() {
                         <button
                             key={key}
                             onClick={() => setActiveNav(key)}
-                            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left w-full mb-0.5 ${activeNav === key
+                            className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-bold transition-all text-left w-full mb-0.5 ${activeNav === key
                                 ? "bg-[#2D6CFF]/10 dark:bg-[#2D6CFF]/15 text-[#2D6CFF]"
                                 : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/[0.03] hover:text-gray-900 dark:hover:text-white"
                                 }`}
@@ -493,26 +493,7 @@ export default function SpaceDetailPage() {
                         {/* ── RIGHT COLUMN: Upcoming / Quick actions (mirrors Super Finti right panel) ── */}
                         <div className="flex flex-col gap-4">
 
-                            {/* Quick actions card */}
-                            <div className="bg-white dark:bg-[#111114] border border-blue-100/60 dark:border-white/[0.06] rounded-2xl p-4 shadow-sm">
-                                <div className="flex items-center justify-between mb-3">
-                                    <p className="text-[14px] font-extrabold text-gray-900 dark:text-white">Quick Actions</p>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <button className="flex items-center gap-3 w-full px-3 py-2.5 bg-[#2D6CFF] hover:bg-[#2057d5] text-white rounded-xl text-[13px] font-bold transition-all active:scale-95">
-                                        <ExternalLink className="w-4 h-4 shrink-0" />
-                                        Share collection link
-                                    </button>
-                                    <button className="flex items-center gap-3 w-full px-3 py-2.5 bg-gray-50 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 rounded-xl text-[13px] font-bold hover:border-[#2D6CFF] hover:text-[#2D6CFF] transition-all">
-                                        <Code2 className="w-4 h-4 shrink-0" />
-                                        Copy embed code
-                                    </button>
-                                    <button className="flex items-center gap-3 w-full px-3 py-2.5 bg-gray-50 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 rounded-xl text-[13px] font-bold hover:border-[#2D6CFF] hover:text-[#2D6CFF] transition-all">
-                                        <Settings2 className="w-4 h-4 shrink-0" />
-                                        Space settings
-                                    </button>
-                                </div>
-                            </div>
+
 
                             {/* Recent activity card — mirrors "Upcoming Transactions" */}
                             <div className="bg-white dark:bg-[#111114] border border-blue-100/60 dark:border-white/[0.06] rounded-2xl p-4 shadow-sm flex-1">

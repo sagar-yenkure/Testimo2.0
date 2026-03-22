@@ -102,7 +102,7 @@ export const StatsCard = React.forwardRef<HTMLDivElement, StatsCardProps>(
         whileHover={{ scale: 1.03, y: -5 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <CardHeader className="flex flex-row items-center justify-between pb-1">
           <HeaderElement
             onClick={onActionClick}
             className={cn(
@@ -118,7 +118,7 @@ export const StatsCard = React.forwardRef<HTMLDivElement, StatsCardProps>(
           </HeaderElement>
         </CardHeader>
         <CardContent>
-          <div ref={cardRef} className="flex flex-col gap-4">
+          <div ref={cardRef} className="flex flex-col gap-1">
             <div>
               <h2 className="text-3xl font-bold tracking-tight text-card-foreground">
                 <AnimatedValue value={currentValue} prefix={valuePrefix} postfix={valuePostfix} />
@@ -127,7 +127,7 @@ export const StatsCard = React.forwardRef<HTMLDivElement, StatsCardProps>(
             </div>
 
             <motion.div
-              className="flex h-20 w-full items-end gap-3"
+              className="flex h-20 w-full items-end gap-2"
               initial="hidden"
               animate={controls}
               transition={{ staggerChildren: 0.1 }}

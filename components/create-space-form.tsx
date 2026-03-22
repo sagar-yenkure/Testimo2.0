@@ -189,17 +189,6 @@ export default function CreateSpaceForm() {
                         {/* ── Sidebar ── */}
                         <aside className="w-[188px] flex-shrink-0 border-r border-blue-100/60 dark:border-blue-900/30 bg-blue-50/30 dark:bg-white/[0.015] flex flex-col p-4 gap-1 hidden lg:flex">
 
-                            {/* Brand */}
-                            <div className="flex items-center gap-2 px-2 pb-4 mb-1 border-b border-blue-100/60 dark:border-blue-900/30">
-                                <div className="w-7 h-7 rounded-lg bg-[#2D6CFF] flex items-center justify-center text-white text-[11px] font-black flex-shrink-0">
-                                    T
-                                </div>
-                                <div>
-                                    <p className="text-[12px] font-extrabold text-gray-900 dark:text-white leading-none">Testimo</p>
-                                    <p className="text-[9px] text-gray-400 font-medium mt-0.5 uppercase tracking-wider">New space</p>
-                                </div>
-                            </div>
-
                             {/* Steps */}
                             <div className="flex flex-col gap-0.5">
                                 {steps.map((s, i) => {
