@@ -5,6 +5,7 @@ import { Box } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "./theme-toggle";
 import { UserButton } from "@clerk/nextjs";
+import { NotificationBell } from "./NotificationBell";
 
 export function UserNavbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -32,6 +33,7 @@ export function UserNavbar() {
         </Link>
 
         <div className="flex items-center gap-2 md:gap-4">
+          <NotificationBell />
           <ThemeToggle />
           <div className="flex items-center justify-center w-10 h-10 rounded-full border border-gray-200 dark:border-white/20 bg-white dark:bg-[#111] overflow-hidden">
             <UserButton
