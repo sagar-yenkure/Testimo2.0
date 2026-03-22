@@ -27,6 +27,7 @@ import {
     HelpCircle,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ProjectSwitcher } from "@/components/ProjectSwitcher"
 
 type FilterTab = "all" | "video" | "text" | "highlighted" | "liked" | "archived" | "spam"
 
@@ -70,6 +71,12 @@ const NAV_ITEMS = [
     { key: "inbox", label: "Inbox", icon: LayoutGrid },
     { key: "embed", label: "Embed Widgets", icon: Code2 },
     { key: "integrations", label: "Integrations", icon: Settings2 },
+]
+
+const SPACES = [
+    { label: "Space 1", value: "space-1" },
+    { label: "Space 2", value: "space-2" },
+    { label: "Space 3", value: "space-3" },
 ]
 
 /* ── Sparkline SVG (inline mini bar chart) ── */
@@ -178,18 +185,10 @@ export default function SpaceDetailPage() {
                         <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
                         Back to dashboard
                     </Link>
-                    <div className="flex items-center gap-2.5">
-                        <div className="w-9 h-9 rounded-full bg-[#2D6CFF]/10 dark:bg-[#2D6CFF]/20 flex items-center justify-center text-[11px] font-black text-[#2D6CFF] shrink-0">
-                            GS
-                        </div>
-                        <div className="min-w-0">
-                            <p className="text-[13px] font-extrabold text-gray-900 dark:text-white truncate leading-tight">Gojo Satoru</p>
-                            <p className="text-[11px] text-gray-400 dark:text-gray-500 truncate">testimo.io/gojo</p>
-                        </div>
-                        <button className="ml-auto text-gray-300 dark:text-gray-600 hover:text-[#2D6CFF] transition-colors shrink-0">
-                            <Copy className="w-3 h-3" />
-                        </button>
-                    </div>
+
+
+                    {/* Space switcher */}
+                    <ProjectSwitcher spaces={SPACES} />
                 </div>
 
                 {/* Nav section */}
