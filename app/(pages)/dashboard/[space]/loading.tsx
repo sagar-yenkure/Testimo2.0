@@ -1,4 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { SPACE_DETAIL_TABS } from "@/constants";
 
 export default function SpaceDetailLoading() {
     return (
@@ -47,21 +48,15 @@ export default function SpaceDetailLoading() {
                     {/* ── Tabs Skeleton ── */}
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 md:pb-0">
-                            {[
-                                { label: "All", width: "w-14" },
-                                { label: "Video", width: "w-16" },
-                                { label: "Text", width: "w-14" },
-                                { label: "Liked", width: "w-16" },
-                                { label: "Archived", width: "w-20" }
-                            ].map((tab, i) => (
+                            {SPACE_DETAIL_TABS.map((tab, i) => (
                                 <div key={i} className="px-4 py-1.5 rounded-full border border-slate-200 dark:border-[#1F1F24] bg-slate-50 dark:bg-[#131316] text-[12px] font-bold text-slate-500 dark:text-[#82828C] whitespace-nowrap">
-                                    {tab.label}
+                                    {tab}
                                 </div>
                             ))}
                         </div>
                         <div className="hidden md:flex gap-1 p-1 bg-slate-50 dark:bg-[#131316] rounded-xl border border-slate-200 dark:border-[#1F1F24]">
-                             <Skeleton className="w-8 h-8 rounded-lg" />
-                             <Skeleton className="w-8 h-8 rounded-lg" />
+                            <Skeleton className="w-8 h-8 rounded-lg" />
+                            <Skeleton className="w-8 h-8 rounded-lg" />
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,5 @@
 import SpaceDetailClient from "@/components/dashboard/SpaceDetailClient";
 import { Testimonial } from "@/types";
-import SpaceDetailLoading from "./loading";
 
 const CARDS: Testimonial[] = [
     {
@@ -68,6 +67,5 @@ const CARDS: Testimonial[] = [
 ]
 
 export default async function SpaceDetailPage({ params }: { params: { space: string } }) {
-    return < SpaceDetailLoading/>
-    // <SpaceDetailClient initialCards={CARDS} />;
+    return <SpaceDetailClient initialCards={CARDS} />;
 }

@@ -92,10 +92,11 @@ export const DashboardStatsBar = () => {
 
                 <div className="w-full xl:flex-1 flex justify-center xl:justify-end mt-4 xl:mt-0">
                     <Link href="/dashboard/create" className="w-full sm:w-auto">
-                        <Button className="w-full sm:w-auto bg-blue-600 dark:bg-[#6C85FF] hover:bg-blue-700 dark:hover:bg-[#5C75FF] text-white px-10 py-3 rounded-xl font-bold shadow-lg shadow-blue-500/20 dark:shadow-[0_4px_25px_rgba(108,133,255,0.4)] transition-all active:scale-95 text-[14px] h-12 shrink-0 cursor-pointer">
-                            <Plus className="w-4 h-4 mr-2" />
-                            Create space
-                        </Button>
+                        <button className="relative overflow-hidden group/btn bg-gradient-to-b from-slate-100 to-slate-200 dark:from-[#2A2A35] dark:to-[#1C1C22] hover:from-white hover:to-slate-100 dark:hover:from-[#353545] dark:hover:to-[#252530] text-slate-900 dark:text-white border border-slate-300 dark:border-[#3F3F4E] rounded-xl px-10 py-3 text-[14px] font-extrabold transition-all shadow-sm dark:shadow-[0_4px_15px_rgba(0,0,0,0.2)] w-full sm:w-auto h-12 active:scale-95 cursor-pointer flex items-center justify-center">
+                            <Plus className="w-4 h-4 mr-2 relative z-10 transition-colors group-hover/btn:text-blue-600 dark:group-hover/btn:text-white" />
+                            <span className="relative z-10 group-hover/btn:text-blue-600 dark:group-hover/btn:text-white transition-colors">Create space</span>
+                            <div className="absolute inset-0 bg-white/40 dark:bg-white/5 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>
+                        </button>
                     </Link>
                 </div>
             </div>

@@ -47,17 +47,20 @@ export const DetailStatsBar = () => {
             <div className="hidden lg:flex items-center justify-center lg:justify-start relative z-10 shrink-0 w-full xl:w-auto mt-2 xl:mt-0">
                 <button 
                     onClick={handleCopy}
-                    className={`flex items-center justify-center gap-2 px-8 py-2.5 rounded-xl border font-bold text-[13px] transition-all duration-300 active:scale-95 group w-full sm:w-auto h-11 cursor-pointer ${isCopied
+                    className={`relative overflow-hidden group/btn flex items-center justify-center gap-2 px-8 py-2.5 rounded-xl border text-[13px] font-extrabold transition-all duration-300 active:scale-95 w-full sm:w-auto h-11 cursor-pointer shadow-sm dark:shadow-[0_4px_15px_rgba(0,0,0,0.2)] ${isCopied
                         ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-[#65E3AD] border-emerald-200 dark:border-emerald-500/20'
-                        : 'bg-slate-100 dark:bg-[#1A1A20] border-slate-200 dark:border-[#2A2A35] text-slate-800 dark:text-white hover:border-slate-300 dark:hover:border-[#3A3A45] hover:bg-white dark:hover:bg-[#202028]'
+                        : 'bg-gradient-to-b from-slate-100 to-slate-200 dark:from-[#2A2A35] dark:to-[#1C1C22] hover:from-white hover:to-slate-100 dark:hover:from-[#353545] dark:hover:to-[#252530] text-slate-900 dark:text-white border-slate-300 dark:border-[#3F3F4E]'
                     }`}
                 >
-                    {isCopied ? (
-                        <Check className="w-4 h-4 animate-in zoom-in duration-300" />
-                    ) : (
-                        <LinkIcon className="w-4 h-4 transition-transform group-hover:-rotate-12" />
-                    )}
-                    {isCopied ? 'Copied to Clipboard!' : 'Copy Public Link'}
+                    <div className={`flex items-center gap-2 relative z-10 transition-colors ${!isCopied && 'group-hover/btn:text-blue-600 dark:group-hover/btn:text-white'}`}>
+                        {isCopied ? (
+                            <Check className="w-4 h-4 animate-in zoom-in duration-300" />
+                        ) : (
+                            <LinkIcon className="w-4 h-4 transition-transform group-hover/btn:-rotate-12" />
+                        )}
+                        {isCopied ? 'Copied to Clipboard!' : 'Copy Public Link'}
+                    </div>
+                    {!isCopied && <div className="absolute inset-0 bg-white/40 dark:bg-white/5 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>}
                 </button>
             </div>
         </div>
