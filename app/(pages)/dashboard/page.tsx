@@ -1,4 +1,7 @@
+"use client"
+
 import { Activity, Plus } from 'lucide-react'
+import { motion } from 'framer-motion'
 import {
     Popover,
     PopoverContent,
@@ -114,10 +117,29 @@ const DashboardPage = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <motion.div 
+                        className="flex flex-col gap-2"
+                        initial="hidden"
+                        animate="show"
+                        variants={{
+                            hidden: { opacity: 0 },
+                            show: {
+                                opacity: 1,
+                                transition: { staggerChildren: 0.1 }
+                            }
+                        }}
+                    >
                         {spaces && spaces.length > 0 ? (
                             spaces.map((space, idx) => (
-                                <SpaceCard key={idx} space={space} />
+                                <motion.div 
+                                    key={idx} 
+                                    variants={{
+                                        hidden: { opacity: 0, y: 30 },
+                                        show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+                                    }}
+                                >
+                                    <SpaceCard space={space} />
+                                </motion.div>
                             ))
                         ) : (
                             <EmptyState
@@ -128,7 +150,7 @@ const DashboardPage = () => {
                                 className="h-full"
                             />
                         )}
-                    </div>
+                    </motion.div>
 
                     {/* Pagination */}
                     <div className="flex items-center justify-end mt-3 ">

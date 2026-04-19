@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import {
     Heart, Plus, LayoutGrid, AlignJustify, Menu, Layers, Link as LinkIcon, Check, MessageSquareText
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Extracted Components
 import { DetailSidebar } from "@/components/dashboard/DetailSidebar";
@@ -22,6 +23,22 @@ interface SpaceDetailClientProps {
 export default function SpaceDetailClient({ initialCards }: SpaceDetailClientProps) {
     const { space } = useParams();
     const [activeTab, setActiveTab] = useState("All");
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const status = params.get("status");
+        if (status) {
+            const matched = SPACE_DETAIL_TABS.find(t => t.toLowerCase() === status.toLowerCase());
+            if (matched) setActiveTab(matched);
+        }
+    }, []);
+
+    const handleTabClick = (tab: string) => {
+        setActiveTab(tab);
+        const params = new URLSearchParams(window.location.search);
+        params.set("status", tab.toLowerCase());
+        window.history.replaceState(null, '', `?${params.toString()}`);
+    };
     const [viewMode, setViewMode] = useState<ViewMode>("grid");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
@@ -80,26 +97,43 @@ export default function SpaceDetailClient({ initialCards }: SpaceDetailClientPro
                                     return (
                                         <button
                                             key={tab}
-                                            onClick={() => setActiveTab(tab)}
-                                            className={`px-5 py-2 rounded-full text-[12px] font-semibold transition-all flex items-center gap-1.5 ${isActive
-                                                ? 'bg-blue-600 dark:bg-[#6C85FF] text-white shadow-[0_2px_10px_rgba(37,99,235,0.3)] dark:shadow-[0_2px_10px_rgba(108,133,255,0.3)]'
+                                            onClick={() => handleTabClick(tab)}
+                                            className={`relative px-5 py-2 rounded-full text-[12px] font-semibold transition-colors flex items-center gap-1.5 ${isActive
+                                                ? 'text-white'
                                                 : 'bg-white dark:bg-[#18181D] hover:bg-slate-100 dark:hover:bg-[#202025] text-slate-600 dark:text-[#82828C] border border-slate-200 dark:border-[#222228]'
                                                 }`}
                                         >
-                                            <Heart className={`w-3.5 h-3.5 ${isActive ? 'fill-white' : 'text-slate-400 dark:text-[#82828C]'}`} /> Liked
+                                            {isActive && (
+                                                <motion.div
+                                                    layoutId="activeTabPill"
+                                                    className="absolute inset-0 bg-blue-600 dark:bg-[#6C85FF] rounded-full shadow-[0_2px_10px_rgba(37,99,235,0.3)] dark:shadow-[0_2px_10px_rgba(108,133,255,0.3)] z-0"
+                                                    transition={{ type: "tween", ease: "easeOut", duration: 0.15 }}
+                                                />
+                                            )}
+                                            <span className="relative z-10 flex items-center gap-1.5">
+                                                <Heart className={`w-3.5 h-3.5 ${isActive ? 'fill-white text-white' : 'text-slate-400 dark:text-[#82828C]'}`} /> 
+                                                Liked
+                                            </span>
                                         </button>
                                     )
                                 }
                                 return (
                                     <button
                                         key={tab}
-                                        onClick={() => setActiveTab(tab)}
-                                        className={`px-5 py-2 rounded-full text-[12px] font-semibold transition-all ${isActive
-                                            ? 'bg-blue-600 dark:bg-[#6C85FF] text-white shadow-[0_2px_10px_rgba(37,99,235,0.3)] dark:shadow-[0_2px_10px_rgba(108,133,255,0.3)]'
+                                        onClick={() => handleTabClick(tab)}
+                                        className={`relative px-5 py-2 rounded-full text-[12px] font-semibold transition-colors ${isActive
+                                            ? 'text-white'
                                             : 'bg-white dark:bg-[#18181D] hover:bg-slate-100 dark:hover:bg-[#202025] text-slate-600 dark:text-[#82828C] border border-slate-200 dark:border-[#222228]'
                                             }`}
                                     >
-                                        {tab}
+                                        {isActive && (
+                                            <motion.div
+                                                layoutId="activeTabPill"
+                                                className="absolute inset-0 bg-blue-600 dark:bg-[#6C85FF] rounded-full shadow-[0_2px_10px_rgba(37,99,235,0.3)] dark:shadow-[0_2px_10px_rgba(108,133,255,0.3)] z-0"
+                                                transition={{ type: "tween", ease: "easeOut", duration: 0.15 }}
+                                            />
+                                        )}
+                                        <span className="relative z-10">{tab}</span>
                                     </button>
                                 )
                             })}
@@ -124,25 +158,33 @@ export default function SpaceDetailClient({ initialCards }: SpaceDetailClientPro
 
                 <div className="flex-1 overflow-y-auto px-6 pb-32">
                     {initialCards.length > 0 ? (
-                        viewMode === "grid" ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                                {[0, 1, 2].map((colIndex) => (
-                                    <div key={colIndex} className="flex flex-col gap-3">
-                                        {initialCards
-                                            .filter((_, index) => index % 3 === colIndex)
-                                            .map((card) => (
-                                                <TestimonialCard key={card.id} data={card} />
-                                            ))}
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="flex flex-col gap-5 max-w-3xl mx-auto w-full transition-all duration-300">
+                        <motion.div 
+                            layout
+                            className={
+                                viewMode === "grid" 
+                                    ? "columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4" 
+                                    : "flex flex-col gap-5 max-w-3xl mx-auto w-full"
+                            }
+                        >
+                            <AnimatePresence mode="popLayout">
                                 {initialCards.map(card => (
-                                    <TestimonialCard key={card.id} data={card} />
+                                    <motion.div 
+                                        layout
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.95 }}
+                                        transition={{ 
+                                            layout: { type: "spring", bounce: 0, duration: 0.4 },
+                                            opacity: { duration: 0.2 }
+                                        }}
+                                        key={card.id} 
+                                        className={viewMode === "grid" ? "break-inside-avoid" : ""}
+                                    >
+                                        <TestimonialCard data={card} />
+                                    </motion.div>
                                 ))}
-                            </div>
-                        )
+                            </AnimatePresence>
+                        </motion.div>
                     ) : (
                         <EmptyState
                             icon={MessageSquareText}
