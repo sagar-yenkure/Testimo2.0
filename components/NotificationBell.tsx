@@ -9,8 +9,6 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bell, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import Link from "next/link";
-import clsx from "clsx";
 
 const notifications = [
     {
@@ -43,11 +41,9 @@ export function NotificationBell() {
         <div className="flex justify-center  items-center gap-2">
             <Popover>
                 <PopoverTrigger>
-                    <Button variant="outline" className="rounded-full hover:cursor-pointer w-10 h-10 border-gray-200 dark:border-white/20 bg-white dark:bg-[#111] hover:bg-gray-100 dark:hover:bg-[#222] transition-all duration-300 relative overflow-hidden group"
-                    >
-                        <Bell size={16} />
-                        <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500" />
-
+                    <Button variant="outline" className="rounded-full hover:cursor-pointer w-10 h-10 border-gray-200 dark:border-white/20 bg-white dark:bg-[#111] hover:bg-gray-100 dark:hover:bg-[#222] transition-all duration-300 relative overflow-hidden group">
+                        <Bell className="!w-[20px] !h-[20px] text-gray-700 dark:text-gray-300" strokeWidth={2} />
+                        <span className="absolute top-2 right-[8px] h-2 w-2 rounded-full bg-red-500 border border-white dark:border-[#111]" />
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent

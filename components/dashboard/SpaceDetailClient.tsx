@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { DetailSidebar } from "@/components/dashboard/DetailSidebar";
 import { TestimonialCard } from "@/components/dashboard/TestimonialCard";
 import { DetailStatsBar } from "@/components/dashboard/DetailStatsBar";
+import { MagneticButton } from "@/components/ui/magnetic-button";
 import { SPACE_DETAIL_TABS } from "@/constants";
 import { Testimonial, ViewMode } from "@/types";
 import { EmptyState } from "./EmptyState";
@@ -55,8 +56,8 @@ export default function SpaceDetailClient({ initialCards }: SpaceDetailClientPro
         <div className="flex font-sans overflow-hidden transition-colors duration-300 relative">
             <DetailSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-            <main className="flex-1 flex flex-col relative h-full min-w-0 transition-colors duration-300">
-                <div className="px-6 shrink-0 py-2 z-20">
+            <main className="flex-1 overflow-y-auto relative h-full min-w-0 transition-colors duration-300 no-scrollbar">
+                <div className="sticky top-0 z-40 px-6 shrink-0 pt-4 pb-2 bg-slate-50/70 dark:bg-[#09090C]/70 backdrop-blur-xl border-b border-slate-200/50 dark:border-white/5 shadow-sm dark:shadow-none">
                     <div className="pt-2">
                         <BreadcrumbNav items={[{ label: spaceName }]} />
                     </div>
@@ -100,7 +101,7 @@ export default function SpaceDetailClient({ initialCards }: SpaceDetailClientPro
                                             onClick={() => handleTabClick(tab)}
                                             className={`relative px-5 py-2 rounded-full text-[12px] font-semibold transition-colors flex items-center gap-1.5 ${isActive
                                                 ? 'text-white'
-                                                : 'bg-white dark:bg-[#18181D] hover:bg-slate-100 dark:hover:bg-[#202025] text-slate-600 dark:text-[#82828C] border border-slate-200 dark:border-[#222228]'
+                                                : 'bg-white/50 dark:bg-[#18181D]/50 hover:bg-slate-100 dark:hover:bg-[#202025] text-slate-600 dark:text-[#82828C] border border-slate-200 dark:border-[#222228]'
                                                 }`}
                                         >
                                             {isActive && (
@@ -123,7 +124,7 @@ export default function SpaceDetailClient({ initialCards }: SpaceDetailClientPro
                                         onClick={() => handleTabClick(tab)}
                                         className={`relative px-5 py-2 rounded-full text-[12px] font-semibold transition-colors ${isActive
                                             ? 'text-white'
-                                            : 'bg-white dark:bg-[#18181D] hover:bg-slate-100 dark:hover:bg-[#202025] text-slate-600 dark:text-[#82828C] border border-slate-200 dark:border-[#222228]'
+                                            : 'bg-white/50 dark:bg-[#18181D]/50 hover:bg-slate-100 dark:hover:bg-[#202025] text-slate-600 dark:text-[#82828C] border border-slate-200 dark:border-[#222228]'
                                             }`}
                                     >
                                         {isActive && (
@@ -139,7 +140,7 @@ export default function SpaceDetailClient({ initialCards }: SpaceDetailClientPro
                             })}
                         </div>
 
-                        <div className="hidden md:flex bg-white dark:bg-[#131316] rounded-xl p-1 mb-1 border border-slate-200 dark:border-[#1F1F24] shrink-0 ml-4 shadow-sm dark:shadow-none">
+                        <div className="hidden md:flex bg-white/50 dark:bg-[#131316]/80 rounded-xl p-1 mb-1 border border-slate-200 dark:border-[#1F1F24] shrink-0 ml-4 shadow-sm dark:shadow-none">
                             <button
                                 onClick={() => setViewMode("grid")}
                                 className={`rounded-lg p-1.5 transition-all ${viewMode === "grid" ? "bg-slate-100 dark:bg-[#222228] text-blue-600 dark:text-white shadow-sm" : "text-slate-400 dark:text-[#6A6A75] hover:text-slate-900 dark:hover:text-white"}`}
@@ -156,7 +157,7 @@ export default function SpaceDetailClient({ initialCards }: SpaceDetailClientPro
                     </div>
                 </div>
 
-                <div className="flex-1 overflow-y-auto px-6 pb-32">
+                <div className="px-6 pb-32 pt-6">
                     {initialCards.length > 0 ? (
                         <motion.div 
                             layout
@@ -197,9 +198,11 @@ export default function SpaceDetailClient({ initialCards }: SpaceDetailClientPro
                     )}
                 </div>
 
-                <button className="fixed bottom-10 right-10 w-[60px] h-[60px] rounded-full bg-slate-900 dark:bg-black hover:bg-black dark:hover:bg-slate-900 flex items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.3)] dark:shadow-[0_15px_40px_rgba(37,99,235,0.2)] border border-white/10 transition-all hover:scale-110 active:scale-95 z-50 group">
-                    <Plus className="w-7 h-7 text-blue-600 dark:text-[#6C85FF] transition-transform group-hover:rotate-90 duration-300" />
-                </button>
+                <MagneticButton className="fixed bottom-10 right-10 z-50">
+                    <button className="w-[60px] h-[60px] rounded-full bg-slate-900 dark:bg-black hover:bg-black dark:hover:bg-slate-900 flex items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.3)] dark:shadow-[0_15px_40px_rgba(37,99,235,0.2)] border border-white/10 transition-colors active:scale-95 group">
+                        <Plus className="w-7 h-7 text-blue-600 dark:text-[#6C85FF] transition-transform group-hover:rotate-90 duration-300" />
+                    </button>
+                </MagneticButton>
             </main>
 
             <style dangerouslySetInnerHTML={{

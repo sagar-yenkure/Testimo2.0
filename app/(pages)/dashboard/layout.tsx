@@ -6,6 +6,7 @@ export const metadata: Metadata = {
 };
 
 import { UserNavbar } from "@/components/user-navbar";
+import { GlobalCommandPalette } from "@/components/dashboard/GlobalCommandPalette";
 
 export default function DashboardLayout({
     children,
@@ -18,6 +19,7 @@ export default function DashboardLayout({
             <main className="flex-1 max-w-[1600px] mx-auto w-full relative min-h-0 flex flex-col overflow-hidden">
                 {children}
             </main>
+            <GlobalCommandPalette />
         </div>
     );
 }

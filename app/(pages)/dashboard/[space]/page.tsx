@@ -8,7 +8,7 @@ const CARDS: Testimonial[] = [
         avatar: "https://i.pravatar.cc/150?u=sagar",
         ratingPos: "name",
         rating: 5,
-        badge: { label: "LIKED", css: "text-blue-600 dark:text-[#6C85FF] bg-blue-50 dark:bg-[#1A1C2E]" },
+        badge: { label: "LIKED", css: "text-amber-600 dark:text-[#F3B664] bg-amber-50 dark:bg-amber-500/10 border border-amber-200/50 dark:border-amber-500/20 shadow-sm" },
         content: "TestimonialPro has completely changed how we collect social proof. The workflow is seamless, and the widgets look amazing on our landing page. Highly recommended for any SaaS founder.",
         date: "Sep 28, 2023",
         action: null,
@@ -53,7 +53,7 @@ const CARDS: Testimonial[] = [
         avatar: "https://i.pravatar.cc/150?img=11",
         ratingPos: "name",
         rating: 5,
-        badge: { label: "LIKED", css: "text-blue-600 dark:text-[#6C85FF] bg-blue-50 dark:bg-[#1A1C2E]" },
+        badge: { label: "LIKED", css: "text-amber-600 dark:text-[#F3B664] bg-amber-50 dark:bg-amber-500/10 border border-amber-200/50 dark:border-amber-500/20 shadow-sm" },
         content: "The best tool for gathering video testimonials. Simple, effective, and beautiful.",
     },
     {

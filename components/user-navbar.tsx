@@ -33,7 +33,7 @@ export function UserNavbar() {
         </Link>
 
         <div className="flex items-center gap-2 md:gap-4">
-          <NotificationBell />
+          {/* <NotificationBell /> */}
           <ThemeToggle />
           <div className="flex items-center justify-center w-10 h-10 rounded-full border border-gray-200 dark:border-white/20 bg-white dark:bg-[#111] overflow-hidden">
             <UserButton
