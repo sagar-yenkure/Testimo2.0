@@ -10,6 +10,10 @@ import { Button } from '@/components/ui/button'
 import { TestimonialForm } from '@/components/testimonial-form'
 import { ThankYouPreview } from '@/components/thank-you-preview'
 import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { createSpaceSchema, type CreateSpaceInput } from '@/zod'
+import { THEMES, FONT_STYLES, LANGUAGES } from '@/constants'
 import {
     Select, SelectContent, SelectItem,
     SelectTrigger, SelectValue,
@@ -95,38 +99,50 @@ export default function CreateSpaceForm() {
     const [isDragging, setIsDragging] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null)
 
-    const [formData, setFormData] = useState({
-        collectionName: '',
-        logo: null as string | null,
-        brandName: 'Testimo',
-        formTitle: "Love us? Roast us? Let's hear it! 📢",
-        description: "Your feedback is our secret sauce. Whether we made your day or need a reality check, don't hold back!",
-        collectStarRatings: true,
-        collectCompany: false,
-        collectEmail: false,
-        collectUserRole: false,
-        collectSocialLink: false,
-        language: 'English',
-        theme: 'Light',
-        bgPattern: 'none' as 'none' | 'dots' | 'grid' | 'waves' | 'circles',
-        fontFamily: 'Inter' as 'Inter' | 'Outfit' | 'Playfair' | 'Mono',
-        accentColor: '#6C85FF',
-        consent: '',
-        showConsent: true,
-        thankYou: {
-            title: 'Thank you!',
-            message: 'Thank you so much for your shoutout! It means a ton for us! 🙏',
-            allowSocialShare: true,
-            redirectEnabled: false,
-            redirectUrl: '',
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        trigger,
+        formState: { errors, isValid },
+    } = useForm<CreateSpaceInput>({
+        resolver: zodResolver(createSpaceSchema),
+        defaultValues: {
+            spaceName: '',
+            logo: null,
+            brandName: 'Testimo',
+            formTitle: "Love us? Roast us? Let's hear it! 📢",
+            description: "Your feedback is our secret sauce. Whether we made your day or need a reality check, don't hold back!",
+            collectStarRatings: true,
+            collectCompany: false,
+            collectEmail: false,
+            collectUserRole: false,
+            collectSocialLink: false,
+            language: 'en',
+            theme: 'light',
+            bgPattern: 'none',
+            fontFamily: 'inter',
+            accentColor: '#6C85FF',
+            consent: '',
+            showConsent: true,
+            thankYou: {
+                title: 'Thank you!',
+                message: 'Thank you so much for your shoutout! It means a ton for us! 🙏',
+                allowSocialShare: true,
+                redirectEnabled: false,
+                redirectUrl: '',
+            },
         },
     })
 
-    const updateFormData = (key: keyof typeof formData, value: any) =>
-        setFormData(prev => ({ ...prev, [key]: value }))
+    const formData = watch()
 
-    const updateThankYou = (key: keyof typeof formData.thankYou, value: any) =>
-        setFormData(prev => ({ ...prev, thankYou: { ...prev.thankYou, [key]: value } }))
+    const updateFormData = (key: any, value: any) =>
+        setValue(key, value, { shouldValidate: true })
+
+    const updateThankYou = (key: any, value: any) =>
+        setValue(`thankYou.${key}` as any, value, { shouldValidate: true })
 
     const steps = [
         { id: 1, label: 'Basic Info', desc: 'Name & branding', icon: Settings },
@@ -135,10 +151,28 @@ export default function CreateSpaceForm() {
         { id: 4, label: 'Share', desc: 'Get your link', icon: Check },
     ]
 
-    const nextStep = () => setStep(prev => Math.min(prev + 1, 4))
+    const nextStep = async () => {
+        let fields: any[] = []
+        if (step === 1) {
+            fields = ['spaceName', 'brandName', 'formTitle', 'description']
+        } else if (step === 2) {
+            fields = ['language', 'theme', 'accentColor']
+        } else if (step === 3) {
+            fields = ['thankYou.title', 'thankYou.message']
+            if (formData.thankYou.redirectEnabled) fields.push('thankYou.redirectUrl')
+        }
+
+        const isValid = await trigger(fields)
+        if (isValid) {
+            if (step === 3) {
+                console.log('🚀 Launching Space with Data:', watch())
+            }
+            setStep(prev => Math.min(prev + 1, 4))
+        }
+    }
     const prevStep = () => setStep(prev => Math.max(prev - 1, 1))
 
-    const slug = formData.collectionName.toLowerCase().replace(/\s+/g, '-') || 'new-space'
+    const slug = formData.spaceName.toLowerCase().replace(/\s+/g, '-') || 'new-space'
     const shareLink = `testimo.io/${slug}`
 
     const handleCopy = () => {
@@ -294,10 +328,10 @@ export default function CreateSpaceForm() {
                                             <input
                                                 type="text"
                                                 placeholder="e.g., Product Launch Testimonials"
-                                                className="w-full bg-slate-50/50 dark:bg-[#131316] border border-slate-200 dark:border-[#2A2A35] rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20 transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
-                                                value={formData.collectionName}
-                                                onChange={(e) => updateFormData('collectionName', e.target.value)}
+                                                className={`w-full bg-slate-50/50 dark:bg-[#131316] border rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 ${errors.spaceName ? 'border-rose-500 focus:ring-rose-500/20' : 'border-slate-200 dark:border-[#2A2A35] focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20'}`}
+                                                {...register('spaceName')}
                                             />
+                                            {errors.spaceName && <p className="text-[10px] text-rose-500 font-bold uppercase tracking-wider ml-1">{errors.spaceName.message}</p>}
                                             <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider ml-1">Internal reference only — not shown to customers.</p>
                                         </div>
 
@@ -309,10 +343,10 @@ export default function CreateSpaceForm() {
                                                 <input
                                                     type="text"
                                                     placeholder="e.g., Testimo"
-                                                    className="w-full bg-slate-50/50 dark:bg-[#131316] border border-slate-200 dark:border-[#2A2A35] rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20 transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
-                                                    value={formData.brandName}
-                                                    onChange={(e) => updateFormData('brandName', e.target.value)}
+                                                    className={`w-full bg-slate-50/50 dark:bg-[#131316] border rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 ${errors.brandName ? 'border-rose-500 focus:ring-rose-500/20' : 'border-slate-200 dark:border-[#2A2A35] focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20'}`}
+                                                    {...register('brandName')}
                                                 />
+                                                {errors.brandName && <p className="text-[10px] text-rose-500 font-bold uppercase tracking-wider ml-1">{errors.brandName.message}</p>}
                                             </div>
                                             <div className="space-y-1.5">
                                                 <label className="text-[11px] font-black tracking-[0.2em] uppercase text-blue-600 dark:text-[#6C85FF] ml-0.5">
@@ -321,10 +355,10 @@ export default function CreateSpaceForm() {
                                                 <input
                                                     type="text"
                                                     placeholder="Share Your Experience"
-                                                    className="w-full bg-slate-50/50 dark:bg-[#131316] border border-slate-200 dark:border-[#2A2A35] rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20 transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
-                                                    value={formData.formTitle}
-                                                    onChange={(e) => updateFormData('formTitle', e.target.value)}
+                                                    className={`w-full bg-slate-50/50 dark:bg-[#131316] border rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 ${errors.formTitle ? 'border-rose-500 focus:ring-rose-500/20' : 'border-slate-200 dark:border-[#2A2A35] focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20'}`}
+                                                    {...register('formTitle')}
                                                 />
+                                                {errors.formTitle && <p className="text-[10px] text-rose-500 font-bold uppercase tracking-wider ml-1">{errors.formTitle.message}</p>}
                                             </div>
                                         </div>
 
@@ -333,10 +367,10 @@ export default function CreateSpaceForm() {
                                             <textarea
                                                 placeholder="We'd love to hear about your experience..."
                                                 rows={3}
-                                                className="w-full bg-slate-50/50 dark:bg-[#131316] border border-slate-200 dark:border-[#2A2A35] rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20 transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 resize-none"
-                                                value={formData.description}
-                                                onChange={(e) => updateFormData('description', e.target.value)}
+                                                className={`w-full bg-slate-50/50 dark:bg-[#131316] border rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 resize-none ${errors.description ? 'border-rose-500 focus:ring-rose-500/20' : 'border-slate-200 dark:border-[#2A2A35] focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20'}`}
+                                                {...register('description')}
                                             />
+                                            {errors.description && <p className="text-[10px] text-rose-500 font-bold uppercase tracking-wider ml-1">{errors.description.message}</p>}
                                         </div>
 
                                         {/* Logo Upload */}
@@ -405,8 +439,10 @@ export default function CreateSpaceForm() {
                                                             <SelectValue />
                                                         </SelectTrigger>
                                                         <SelectContent className="rounded-xl border-slate-200 dark:border-white/10 dark:bg-[#1A1A20] shadow-2xl">
-                                                            {['English', 'Arabic', 'Japanese'].map(o => (
-                                                                <SelectItem key={o} value={o} className="text-sm font-medium cursor-pointer py-2.5">{o}</SelectItem>
+                                                            {LANGUAGES.map(l => (
+                                                                <SelectItem key={l} value={l} className="text-sm font-medium cursor-pointer py-2.5">
+                                                                    {l === 'en' ? 'English (en)' : l === 'ar' ? 'Arabic (ar)' : 'Japanese (jn)'}
+                                                                </SelectItem>
                                                             ))}
                                                             <div className="flex items-center justify-between px-2 py-2.5 mx-1 rounded-lg cursor-not-allowed opacity-60 select-none border-t border-slate-100 dark:border-white/5 mt-1">
                                                                 <div className="flex items-center gap-2 text-[12px] font-semibold text-slate-400 dark:text-slate-500">
@@ -425,8 +461,9 @@ export default function CreateSpaceForm() {
                                                             <SelectValue />
                                                         </SelectTrigger>
                                                         <SelectContent className="rounded-xl border-slate-200 dark:border-white/10 dark:bg-[#1A1A20] shadow-2xl">
-                                                            <SelectItem value="Light" className="text-sm font-medium cursor-pointer py-2.5">Light</SelectItem>
-                                                            <SelectItem value="Dark" className="text-sm font-medium cursor-pointer py-2.5">Dark</SelectItem>
+                                                            {THEMES.map(t => (
+                                                                <SelectItem key={t} value={t} className="text-sm font-medium cursor-pointer py-2.5 capitalize">{t}</SelectItem>
+                                                            ))}
                                                         </SelectContent>
                                                     </Select>
                                                 </div>
@@ -532,10 +569,9 @@ export default function CreateSpaceForm() {
                                             <h3 className="text-[11px] font-black tracking-[0.2em] uppercase text-blue-600 dark:text-[#6C85FF] ml-0.5">Font Style</h3>
                                             <div className="grid grid-cols-4 gap-3">
                                                 {([
-                                                    { id: 'Inter', label: 'Inter', preview: 'Aa', cls: 'font-sans' },
-                                                    { id: 'Outfit', label: 'Outfit', preview: 'Aa', cls: 'font-sans tracking-wide' },
-                                                    { id: 'Playfair', label: 'Serif', preview: 'Aa', cls: 'font-serif' },
-                                                    { id: 'Mono', label: 'Mono', preview: 'Aa', cls: 'font-mono' },
+                                                    { id: 'inter', label: 'Inter', preview: 'Aa', cls: 'font-sans' },
+                                                    { id: 'outfit', label: 'Outfit', preview: 'Aa', cls: 'font-sans tracking-wide' },
+                                                    { id: 'roboto', label: 'Roboto', preview: 'Aa', cls: 'font-sans' },
                                                 ] as const).map((f) => {
                                                     const active = formData.fontFamily === f.id
                                                     return (
@@ -659,20 +695,20 @@ export default function CreateSpaceForm() {
                                                     <input
                                                         type="text"
                                                         placeholder="Thank you!"
-                                                        className="w-full bg-slate-50/50 dark:bg-[#131316] border border-slate-200 dark:border-[#2A2A35] rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20 transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
-                                                        value={formData.thankYou.title}
-                                                        onChange={(e) => updateThankYou('title', e.target.value)}
+                                                        className={`w-full bg-slate-50/50 dark:bg-[#131316] border rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 ${errors.thankYou?.title ? 'border-rose-500 focus:ring-rose-500/20' : 'border-slate-200 dark:border-[#2A2A35] focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20'}`}
+                                                        {...register('thankYou.title')}
                                                     />
+                                                    {errors.thankYou?.title && <p className="text-[10px] text-rose-500 font-bold uppercase tracking-wider ml-1">{errors.thankYou.title.message}</p>}
                                                 </div>
                                                 <div className="space-y-1.5">
                                                     <label className="text-[11px] font-black tracking-[0.2em] uppercase text-blue-600 dark:text-[#6C85FF] ml-0.5">Thank You Message</label>
                                                     <textarea
                                                         placeholder="Thank you so much for your shoutout!"
                                                         rows={4}
-                                                        className="w-full bg-slate-50/50 dark:bg-[#131316] border border-slate-200 dark:border-[#2A2A35] rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20 transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 resize-none"
-                                                        value={formData.thankYou.message}
-                                                        onChange={(e) => updateThankYou('message', e.target.value)}
+                                                        className={`w-full bg-slate-50/50 dark:bg-[#131316] border rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 resize-none ${errors.thankYou?.message ? 'border-rose-500 focus:ring-rose-500/20' : 'border-slate-200 dark:border-[#2A2A35] focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20'}`}
+                                                        {...register('thankYou.message')}
                                                     />
+                                                    {errors.thankYou?.message && <p className="text-[10px] text-rose-500 font-bold uppercase tracking-wider ml-1">{errors.thankYou.message.message}</p>}
                                                 </div>
                                             </div>
                                         </div>
@@ -735,10 +771,10 @@ export default function CreateSpaceForm() {
                                                         <input
                                                             type="url"
                                                             placeholder="https://yourwebsite.com/thank-you"
-                                                            className="w-full bg-slate-50/50 dark:bg-[#131316] border border-slate-200 dark:border-[#2A2A35] rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20 transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
-                                                            value={formData.thankYou.redirectUrl}
-                                                            onChange={(e) => updateThankYou('redirectUrl', e.target.value)}
+                                                            className={`w-full bg-slate-50/50 dark:bg-[#131316] border rounded-xl px-4 py-3 text-[13px] font-medium focus:outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 ${errors.thankYou?.redirectUrl ? 'border-rose-500 focus:ring-rose-500/20' : 'border-slate-200 dark:border-[#2A2A35] focus:ring-blue-600/20 dark:focus:ring-[#6C85FF]/20'}`}
+                                                            {...register('thankYou.redirectUrl')}
                                                         />
+                                                        {errors.thankYou?.redirectUrl && <p className="text-[10px] text-rose-500 font-bold uppercase tracking-wider ml-1">{errors.thankYou.redirectUrl.message}</p>}
                                                     </div>
                                                 )}
                                             </div>
@@ -843,7 +879,7 @@ export default function CreateSpaceForm() {
                 <div className="hidden lg:flex lg:w-[38%] flex-shrink-0 order-2 flex-col h-full min-h-0 relative pt-4 lg:pt-0">
 
 
-                    <div className={`relative flex-1 rounded-[24px] overflow-hidden border transition-all duration-500 min-h-0 shadow-2xl                        ${formData.theme === 'Dark' ? 'bg-[#0A0A0A] border-white/5' : 'bg-white border-slate-200 shadow-slate-200/50'}`}>
+                    <div className={`relative flex-1 rounded-[24px] overflow-hidden border transition-all duration-500 min-h-0 shadow-2xl                        ${formData.theme === 'dark' ? 'bg-[#0A0A0A] border-white/5' : 'bg-white border-slate-200 shadow-slate-200/50'}`}>
 
                         {/* Pattern layer */}
                         {formData.bgPattern !== 'none' && (
@@ -851,7 +887,7 @@ export default function CreateSpaceForm() {
                                 {formData.bgPattern === 'dots' && (
                                     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                                         <defs><pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-                                            <circle cx="2" cy="2" r="1.5" fill={formData.theme === 'Dark' ? 'rgba(255,255,255,0.07)' : 'rgba(45,108,255,0.12)'} />
+                                            <circle cx="2" cy="2" r="1.5" fill={formData.theme === 'dark' ? 'rgba(255,255,255,0.07)' : 'rgba(45,108,255,0.12)'} />
                                         </pattern></defs>
                                         <rect width="100%" height="100%" fill="url(#dots)" />
                                     </svg>
@@ -859,7 +895,7 @@ export default function CreateSpaceForm() {
                                 {formData.bgPattern === 'grid' && (
                                     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                                         <defs><pattern id="grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-                                            <path d="M 32 0 L 0 0 0 32" fill="none" stroke={formData.theme === 'Dark' ? 'rgba(255,255,255,0.06)' : 'rgba(45,108,255,0.1)'} strokeWidth="0.75" />
+                                            <path d="M 32 0 L 0 0 0 32" fill="none" stroke={formData.theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(45,108,255,0.1)'} strokeWidth="0.75" />
                                         </pattern></defs>
                                         <rect width="100%" height="100%" fill="url(#grid)" />
                                     </svg>
@@ -867,7 +903,7 @@ export default function CreateSpaceForm() {
                                 {formData.bgPattern === 'waves' && (
                                     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                                         <defs><pattern id="waves" x="0" y="0" width="80" height="24" patternUnits="userSpaceOnUse">
-                                            <path d="M0 12 C 20 4, 40 20, 80 12" fill="none" stroke={formData.theme === 'Dark' ? 'rgba(255,255,255,0.07)' : 'rgba(45,108,255,0.12)'} strokeWidth="1" />
+                                            <path d="M0 12 C 20 4, 40 20, 80 12" fill="none" stroke={formData.theme === 'dark' ? 'rgba(255,255,255,0.07)' : 'rgba(45,108,255,0.12)'} strokeWidth="1" />
                                         </pattern></defs>
                                         <rect width="100%" height="100%" fill="url(#waves)" />
                                     </svg>
@@ -875,7 +911,7 @@ export default function CreateSpaceForm() {
                                 {formData.bgPattern === 'circles' && (
                                     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                                         <defs><pattern id="circles" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                                            <circle cx="20" cy="20" r="14" fill="none" stroke={formData.theme === 'Dark' ? 'rgba(255,255,255,0.06)' : 'rgba(45,108,255,0.1)'} strokeWidth="0.75" />
+                                            <circle cx="20" cy="20" r="14" fill="none" stroke={formData.theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(45,108,255,0.1)'} strokeWidth="0.75" />
                                         </pattern></defs>
                                         <rect width="100%" height="100%" fill="url(#circles)" />
                                     </svg>
@@ -885,8 +921,8 @@ export default function CreateSpaceForm() {
 
                         {/* Ambient blobs */}
                         <div className="pointer-events-none absolute inset-0 overflow-hidden z-0">
-                            <div className={`absolute -top-16 -left-16 w-64 h-64 rounded-full blur-[100px] opacity-30 ${formData.theme === 'Dark' ? 'bg-blue-600/20' : 'bg-blue-600/10'}`} />
-                            <div className={`absolute -bottom-16 -right-16 w-64 h-64 rounded-full blur-[100px] opacity-30 ${formData.theme === 'Dark' ? 'bg-indigo-600/20' : 'bg-indigo-600/10'}`} />
+                            <div className={`absolute -top-16 -left-16 w-64 h-64 rounded-full blur-[100px] opacity-30 ${formData.theme === 'dark' ? 'bg-blue-600/20' : 'bg-blue-600/10'}`} />
+                            <div className={`absolute -bottom-16 -right-16 w-64 h-64 rounded-full blur-[100px] opacity-30 ${formData.theme === 'dark' ? 'bg-indigo-600/20' : 'bg-indigo-600/10'}`} />
                         </div>
 
                         <div className="relative z-10 h-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

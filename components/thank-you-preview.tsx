@@ -1,6 +1,6 @@
 "use client";
 
-import { Link2, Check, ExternalLink, Image as ImageIcon } from "lucide-react";
+import { Check, ExternalLink, Image as ImageIcon } from "lucide-react";
 import { useState } from "react";
 
 export interface ThankYouData {
@@ -15,22 +15,23 @@ interface ThankYouPreviewProps {
     thankYou: ThankYouData;
     theme: string;
     accentColor?: string;
-    fontFamily?: 'Inter' | 'Outfit' | 'Playfair' | 'Mono';
+    fontFamily?: string;
     logo: string | null;
     brandName: string;
 }
 
 export function ThankYouPreview({ thankYou, theme, accentColor, fontFamily, logo, brandName }: ThankYouPreviewProps) {
     const [linkCopied, setLinkCopied] = useState(false);
-    const isDark = theme === "Dark";
+    const isDark = theme === "dark";
     const accent = accentColor || '#2D6CFF';
     const fontFamilies = {
-        Inter: '"Inter", sans-serif',
-        Outfit: '"Outfit", sans-serif',
-        Playfair: '"Playfair Display", serif',
-        Mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-    };
-    const fontStyle = fontFamilies[fontFamily || 'Inter'];
+        inter: '"Inter", sans-serif',
+        outfit: '"Outfit", sans-serif',
+        roboto: '"Roboto", sans-serif',
+        playfair: '"Playfair Display", serif',
+        mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+    }
+    const fontStyle = fontFamilies[(fontFamily?.toLowerCase() as keyof typeof fontFamilies) || 'inter'];
 
     // Simple markdown-like rendering (bold, italic only)
     const renderMessage = (text: string) => {

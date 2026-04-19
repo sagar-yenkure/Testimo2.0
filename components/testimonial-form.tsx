@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 interface TestimonialFormProps {
   formData: {
-    collectionName: string;
+    spaceName: string;
     logo: string | null;
     brandName: string;
     formTitle: string;
@@ -19,7 +19,7 @@ interface TestimonialFormProps {
     language: string;
     theme: string;
     bgPattern?: string;
-    fontFamily?: 'Inter' | 'Outfit' | 'Playfair' | 'Mono';
+    fontFamily?: string;
     accentColor?: string;
     consent?: string;
     showConsent?: boolean;
@@ -34,15 +34,16 @@ export function TestimonialForm({ formData, isPreview = false }: TestimonialForm
   const [testimonial, setTestimonial] = useState("");
   const [consentChecked, setConsentChecked] = useState(false);
   const MAX_CHARS = 500;
-  const isDark = formData.theme === "Dark";
+  const isDark = formData.theme === "dark";
   const accent = formData.accentColor || '#2D6CFF';
   const fontFamilies = {
-    Inter: '"Inter", sans-serif',
-    Outfit: '"Outfit", sans-serif',
-    Playfair: '"Playfair Display", serif',
-    Mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+    inter: '"Inter", sans-serif',
+    outfit: '"Outfit", sans-serif',
+    roboto: '"Roboto", sans-serif',
+    playfair: '"Playfair Display", serif',
+    mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
   };
-  const fontStyle = fontFamilies[formData.fontFamily || 'Inter'];
+  const fontStyle = fontFamilies[(formData.fontFamily as any)?.toLowerCase() || 'inter'];
   const consentText = formData.consent || 'I agree that my testimonial may be used in marketing materials.';
   const submitDisabled = isPreview || (!!formData.showConsent && !consentChecked);
 
@@ -79,9 +80,9 @@ export function TestimonialForm({ formData, isPreview = false }: TestimonialForm
           <h3 className="text-[25px] font-extrabold leading-tight tracking-tight">
             {formData.formTitle || "Share Your Experience"}
           </h3>
-          {formData.collectionName && (
+          {formData.spaceName && (
             <p className={`text-[11px] mt-1.5 font-medium ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-              {formData.collectionName}
+              {formData.spaceName}
             </p>
           )}
         </div>

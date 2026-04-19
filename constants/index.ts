@@ -11,7 +11,7 @@ export const SIDEBAR_SPACES = [
 
 export const NAVIGATION_GROUPS = {
     MANAGEMENT: [
-        { label: "Inbox", icon: "Monitor" }, // Note: We'll map strings to icons in the component
+        { label: "Inbox", icon: "Monitor" },
         { label: "Embed Widgets", icon: "LayoutGrid" },
         { label: "Integrations", icon: "Sparkles" },
     ],
@@ -20,3 +20,8 @@ export const NAVIGATION_GROUPS = {
         { label: "What's New", icon: "Star" },
     ]
 };
+
+export const THEMES = ["light", "dark", "system"] as const;
+export const BG_STYLES = ["none", "dots", "grid", "waves", "circles"] as const;
+export const FONT_STYLES = ["inter", "roboto", "outfit"] as const;
+export const LANGUAGES = ["en", "ar", "jn"] as const;

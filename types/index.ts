@@ -39,3 +39,5 @@ export interface Testimonial {
 }
 
 export type ViewMode = 'grid' | 'list';
+
+export type ThemeType = 'light' | 'dark' | 'system';
