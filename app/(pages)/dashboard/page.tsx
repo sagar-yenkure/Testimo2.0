@@ -75,7 +75,7 @@ const DashboardPage = () => {
     ]
 
     return (
-        <div className="space-y-8 px-6 md:space-y-10 py-6 overflow-y-auto h-full [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-full">
+        <div className="space-y-4 px-6 md:space-y-10 py-3 overflow-y-auto h-full [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-full">
 
             {/* ── Page Header ── */}
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -93,7 +93,7 @@ const DashboardPage = () => {
             <DashboardStatsBar />
 
             {/* ── Collections Grid with Sidebar ── */}
-            <div className="grid lg:grid-cols-3 gap-10 lg:gap-12 pt-4">
+            <div className="grid lg:grid-cols-3 gap-10 lg:gap-12 pt-2">
                 {/* Main Content */}
                 <div className="lg:col-span-2">
                     <div className="flex items-center justify-between mb-6">
@@ -132,10 +132,7 @@ const DashboardPage = () => {
                     </div>
 
                     {/* Pagination */}
-                    <div className="flex items-center justify-between mt-6 pt-6 border-t border-slate-200 dark:border-white/5">
-                        <span className="text-[12px] font-bold text-slate-500 dark:text-[#82828C]">
-                            Showing 1 to 3 of 12 spaces
-                        </span>
+                    <div className="flex items-center justify-end mt-3 ">
                         <div className="flex items-center gap-2">
                             <button disabled className="px-3 py-1.5 rounded-lg text-[12px] font-bold text-slate-400 dark:text-[#666] transition-colors cursor-not-allowed">
                                 Prev
