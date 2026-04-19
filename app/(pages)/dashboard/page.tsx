@@ -13,6 +13,7 @@ import { ActivityTray } from '@/components/dashboard/ActivityTray'
 import { Space, ActivityItem } from '@/types'
 import { EmptyState } from '@/components/dashboard/EmptyState'
 import DashboardLoading from './loading'
+import BreadcrumbNav from '@/components/breadrcrumb'
 
 const DashboardPage = () => {
 
@@ -78,12 +79,10 @@ const DashboardPage = () => {
         <div className="space-y-4 px-6 md:space-y-10 py-3 overflow-y-auto h-full [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-full">
 
             {/* ── Page Header ── */}
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                <div>
-                    <div className="text-[11px] font-black tracking-[0.2em] uppercase mb-1 text-blue-600 dark:text-[#6C85FF]">
-                        WORKSPACE OVERVIEW
-                    </div>
-                    <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div className="w-full">
+                    <BreadcrumbNav items={[]} />
+                    <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
                         Your Spaces
                     </h1>
                 </div>
@@ -115,7 +114,7 @@ const DashboardPage = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-2">
                         {spaces && spaces.length > 0 ? (
                             spaces.map((space, idx) => (
                                 <SpaceCard key={idx} space={space} />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useParams } from "next/navigation";
 import {
     Heart, Plus, LayoutGrid, AlignJustify, Menu, Layers, Link as LinkIcon, Check, MessageSquareText
 } from "lucide-react";
@@ -12,12 +13,14 @@ import { DetailStatsBar } from "@/components/dashboard/DetailStatsBar";
 import { SPACE_DETAIL_TABS } from "@/constants";
 import { Testimonial, ViewMode } from "@/types";
 import { EmptyState } from "./EmptyState";
+import BreadcrumbNav from "@/components/breadrcrumb";
 
 interface SpaceDetailClientProps {
     initialCards: Testimonial[];
 }
 
 export default function SpaceDetailClient({ initialCards }: SpaceDetailClientProps) {
+    const { space } = useParams();
     const [activeTab, setActiveTab] = useState("All");
     const [viewMode, setViewMode] = useState<ViewMode>("grid");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -29,12 +32,18 @@ export default function SpaceDetailClient({ initialCards }: SpaceDetailClientPro
         setTimeout(() => setIsCopied(false), 3000);
     };
 
+    const spaceName = typeof space === 'string' ? space.replace(/-/g, ' ') : 'Space';
+
     return (
-        <div className="flex h-screen font-sans overflow-hidden transition-colors duration-300 relative">
+        <div className="flex font-sans overflow-hidden transition-colors duration-300 relative">
             <DetailSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
             <main className="flex-1 flex flex-col relative h-full min-w-0 transition-colors duration-300">
                 <div className="px-6 shrink-0 py-2 z-20">
+                    <div className="pt-2">
+                        <BreadcrumbNav items={[{ label: spaceName }]} />
+                    </div>
+
                     {/* Mobile Top Bar (Placed after stats) */}
                     <div className="lg:hidden flex items-center justify-between py-4 border-y border-slate-200 dark:border-[#1F1F24] bg-transparent shrink-0 mb-6">
                         <button

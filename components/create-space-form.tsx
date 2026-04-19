@@ -183,8 +183,8 @@ export default function CreateSpaceForm() {
                 {/* ══════════════════════════════════════════
                     LEFT COLUMN  →  Sidebar  +  Form panel
                 ══════════════════════════════════════════ */}
-                <div className="lg:w-[62%] flex-1 order-1 flex flex-col h-full min-h-0 overflow-hidden">
-                    <div className="flex-1 bg-white dark:bg-[#1A1A20] border border-slate-200 dark:border-[#2A2A35] rounded-[24px] flex h-full min-h-0 overflow-hidden shadow-sm">
+                <div className="lg:w-[62%] flex-1 order-1 flex flex-col min-h-0 overflow-hidden lg:h-full">
+                    <div className="flex-1 bg-white dark:bg-[#1A1A20] border border-slate-200 dark:border-[#2A2A35] rounded-[24px] flex lg:h-full min-h-0 overflow-hidden shadow-sm">
 
                         {/* ── Sidebar ── */}
                         <aside className="w-[180px] flex-shrink-0 border-r border-slate-200 dark:border-[#2A2A35] bg-slate-50 dark:bg-[#131316] flex flex-col p-4 gap-1 hidden lg:flex">
@@ -233,7 +233,7 @@ export default function CreateSpaceForm() {
                         </aside>
 
                         {/* ── Form content ── */}
-                        <div className="flex-1 min-w-0 flex flex-col h-full min-h-0 overflow-hidden p-4 lg:p-5">
+                        <div className="flex-1 min-w-0 flex flex-col lg:h-full min-h-0 overflow-hidden p-4 lg:p-5">
 
                             {/* Step header */}
                             <div className="mb-4 shrink-0">
@@ -840,7 +840,7 @@ export default function CreateSpaceForm() {
                     RIGHT COLUMN  →  Live Preview
                     (100% unchanged from your original)
                 ══════════════════════════════════════════ */}
-                <div className="lg:w-[38%] flex-shrink-0 order-2 flex flex-col h-full min-h-0 relative pt-4 lg:pt-0">
+                <div className="hidden lg:flex lg:w-[38%] flex-shrink-0 order-2 flex-col h-full min-h-0 relative pt-4 lg:pt-0">
 
 
                     <div className={`relative flex-1 rounded-[24px] overflow-hidden border transition-all duration-500 min-h-0 shadow-2xl                        ${formData.theme === 'Dark' ? 'bg-[#0A0A0A] border-white/5' : 'bg-white border-slate-200 shadow-slate-200/50'}`}>

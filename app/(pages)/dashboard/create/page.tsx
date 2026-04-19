@@ -1,4 +1,5 @@
 import CreateSpaceForm from '@/components/create-space-form'
+import BreadcrumbNav from '@/components/breadrcrumb'
 
 export default function CreateSpacePage() {
     return (
@@ -6,9 +7,7 @@ export default function CreateSpacePage() {
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
-                    <div className="text-[11px] font-black tracking-[0.2em] uppercase mb-1 text-blue-600 dark:text-[#6C85FF]">
-                        NEW SPACE
-                    </div>
+                    <BreadcrumbNav items={[{ label: 'Create' }]} />
                     <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
                         Let&apos;s get started
                     </h1>
