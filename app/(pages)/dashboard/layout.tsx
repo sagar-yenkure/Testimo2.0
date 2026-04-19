@@ -15,7 +15,7 @@ export default function DashboardLayout({
     return (
         <div className="h-screen flex flex-col bg-background transition-colors duration-300 overflow-hidden">
             <UserNavbar />
-            <main className="flex-1 max-w-400 mx-auto w-full relative min-h-0 flex flex-col overflow-hidden">
+            <main className="flex-1 max-w-[1440px] mx-auto w-full relative min-h-0 flex flex-col overflow-hidden">
                 {children}
             </main>
         </div>
