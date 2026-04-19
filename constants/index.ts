@@ -1,5 +1,8 @@
 export const SPACE_DETAIL_TABS = ["All", "Video", "Text", "Highlighted", "Liked", "Archived", "Spam"];
 
+export const SEND_MSG_MIN_LIMIT = 100;
+export const SEND_MSG_MAX_LIMIT = 500;
+
 export const SIDEBAR_SPACES = [
     { label: "Gojo Satoru's Space", value: "gojo" },
     { label: "Obsidian Logic App", value: "obsidian" },

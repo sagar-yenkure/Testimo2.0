@@ -12,6 +12,7 @@ import { DetailSidebar } from "@/components/dashboard/DetailSidebar";
 import { TestimonialCard } from "@/components/dashboard/TestimonialCard";
 import { DetailStatsBar } from "@/components/dashboard/DetailStatsBar";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+import { toast } from "sonner";
 import { SPACE_DETAIL_TABS } from "@/constants";
 import { Testimonial, ViewMode } from "@/types";
 import { EmptyState } from "./EmptyState";
@@ -47,6 +48,7 @@ export default function SpaceDetailClient({ initialCards }: SpaceDetailClientPro
     const handleCopy = () => {
         setIsCopied(true);
         // navigator.clipboard.writeText('...'); // actual copy logic would go here
+        toast.success("Link Copied!", { description: "The public link has been safely copied to your clipboard." });
         setTimeout(() => setIsCopied(false), 3000);
     };
 
@@ -199,7 +201,10 @@ export default function SpaceDetailClient({ initialCards }: SpaceDetailClientPro
                 </div>
 
                 <MagneticButton className="fixed bottom-10 right-10 z-50">
-                    <button className="w-[60px] h-[60px] rounded-full bg-slate-900 dark:bg-black hover:bg-black dark:hover:bg-slate-900 flex items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.3)] dark:shadow-[0_15px_40px_rgba(37,99,235,0.2)] border border-white/10 transition-colors active:scale-95 group">
+                    <button 
+                        onClick={() => toast.success("Action Triggered", { description: "Ready to create a new testimonial." })}
+                        className="w-[60px] h-[60px] rounded-full bg-slate-900 dark:bg-black hover:bg-black dark:hover:bg-slate-900 flex items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.3)] dark:shadow-[0_15px_40px_rgba(37,99,235,0.2)] border border-white/10 transition-colors active:scale-95 group cursor-pointer"
+                    >
                         <Plus className="w-7 h-7 text-blue-600 dark:text-[#6C85FF] transition-transform group-hover:rotate-90 duration-300" />
                     </button>
                 </MagneticButton>

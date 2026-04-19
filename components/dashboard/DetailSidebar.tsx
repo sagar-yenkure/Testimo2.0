@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Layers, ChevronDown, Plus, Monitor, LayoutGrid, Sparkles, HelpCircle, Star, LogOut } from "lucide-react";
+import { Layers, ChevronDown, Plus, Monitor, LayoutGrid, Sparkles, HelpCircle, Star, LogOut, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { SIDEBAR_SPACES } from "@/constants";
 
@@ -14,6 +15,16 @@ interface DetailSidebarProps {
 export const DetailSidebar = ({ isOpen, onClose }: DetailSidebarProps) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeSpace, setActiveSpace] = useState(SIDEBAR_SPACES[0]);
+    const [isCreatingSpace, setIsCreatingSpace] = useState(false);
+
+    const handleCreateSpace = async () => {
+        setIsCreatingSpace(true);
+        // Simulate network request
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setIsCreatingSpace(false);
+        setIsDropdownOpen(false);
+        toast.success("New Space Created!", { description: "Your workspace has been set up successfully." });
+    };
 
     return (
         <>
@@ -79,8 +90,16 @@ export const DetailSidebar = ({ isOpen, onClose }: DetailSidebarProps) => {
                                     </div>
                                     <div className="p-2 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-transparent">
                                         <MagneticButton intensity={0.15}>
-                                            <button className="flex items-center gap-2 px-3 py-2 w-full rounded-lg text-left text-[13px] font-semibold text-blue-600 dark:text-[#8CB4FC] hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                                                <Plus className="w-4 h-4" /> Create new space
+                                            <button 
+                                                disabled={isCreatingSpace}
+                                                onClick={handleCreateSpace}
+                                                className="flex items-center gap-2 px-3 py-2 w-full rounded-lg text-left text-[13px] font-semibold text-blue-600 dark:text-[#8CB4FC] hover:bg-slate-100 dark:hover:bg-white/5 transition-colors disabled:opacity-70 disabled:pointer-events-none cursor-pointer"
+                                            >
+                                                {isCreatingSpace ? (
+                                                    <><Loader2 className="w-4 h-4 animate-spin" /> Creating...</>
+                                                ) : (
+                                                    <><Plus className="w-4 h-4" /> Create new space</>
+                                                )}
                                             </button>
                                         </MagneticButton>
                                     </div>
