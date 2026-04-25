@@ -12,7 +12,7 @@ export const SpaceCard = ({ space }: SpaceCardProps) => {
         <div className="bg-white dark:bg-[#131316] border border-slate-200 dark:border-[#1F1F24] rounded-2xl p-5 md:p-6 flex flex-col xl:flex-row xl:items-center justify-between gap-6 md:gap-8 transition-all hover:border-slate-300 dark:hover:border-[#2A2A35] group shadow-sm dark:shadow-none">
             <div className="flex gap-5 flex-1 min-w-0">
                 <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl shrink-0 border border-slate-200 dark:border-[#2A2A35] overflow-hidden bg-slate-100 dark:bg-[#1A1A20] shadow-inner">
-                    <img src={space.avatar} alt={space.name} className="w-full h-full object-cover" />
+                    <img src={space?.avatar || "/placeholder.png"} alt={space.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex flex-col flex-1 min-w-0 justify-center">
                     <h3 className="text-[17px] font-bold text-slate-900 dark:text-white truncate">{space.name}</h3>

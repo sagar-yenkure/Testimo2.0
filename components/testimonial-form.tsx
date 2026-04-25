@@ -43,7 +43,7 @@ export function TestimonialForm({ formData, isPreview = false }: TestimonialForm
     playfair: '"Playfair Display", serif',
     mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
   };
-  const fontStyle = fontFamilies[(formData.fontFamily as any)?.toLowerCase() || 'inter'];
+  const fontStyle = fontFamilies[(formData.fontFamily?.toLowerCase() as keyof typeof fontFamilies) || 'inter'] || fontFamilies.inter;
   const consentText = formData.consent || 'I agree that my testimonial may be used in marketing materials.';
   const submitDisabled = isPreview || (!!formData.showConsent && !consentChecked);
 

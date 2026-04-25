@@ -1,21 +1,18 @@
 "use client"
 
 import React from 'react'
-import { 
+import {
     Settings,
     Zap,
-    Github,
-    Slack,
-    Chrome
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 
 export const IntegrationsView = () => {
     const integrations = [
-        { name: 'Slack', icon: Slack, desc: 'Get instant notifications for new testimonials.', status: 'Connected', color: 'text-purple-500' },
-        { name: 'GitHub', icon: Github, desc: 'Sync your social proof with your repositories.', status: 'Available', color: 'text-gray-900 dark:text-white' },
-        { name: 'Chrome Extension', icon: Chrome, desc: 'Capture testimonials from anywhere on the web.', status: 'Available', color: 'text-blue-500' },
+        { name: 'Slack', icon: Zap, desc: 'Get instant notifications for new testimonials.', status: 'Connected', color: 'text-purple-500' },
+        { name: 'GitHub', icon: Zap, desc: 'Sync your social proof with your repositories.', status: 'Available', color: 'text-gray-900 dark:text-white' },
+        { name: 'Chrome Extension', icon: Zap, desc: 'Capture testimonials from anywhere on the web.', status: 'Available', color: 'text-blue-500' },
         { name: 'Zapier', icon: Zap, desc: 'Connect with 5000+ apps using Zapier.', status: 'Beta', color: 'text-orange-500' },
     ]
 
@@ -44,9 +41,8 @@ export const IntegrationsView = () => {
                                 <div className={`w-12 h-12 rounded-2xl bg-gray-50 dark:bg-white/5 flex items-center justify-center ${item.color}`}>
                                     <item.icon className="w-6 h-6" />
                                 </div>
-                                <div className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${
-                                    item.status === 'Connected' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-500'
-                                }`}>
+                                <div className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${item.status === 'Connected' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-500'
+                                    }`}>
                                     {item.status}
                                 </div>
                             </div>
