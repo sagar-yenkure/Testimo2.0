@@ -7,7 +7,7 @@ export interface ActivityItem {
 
 export interface Space {
     name: string;
-    avatar: string;
+    avatar?: string | null;
     description: string;
     textCount: number;
     videoCount: number;

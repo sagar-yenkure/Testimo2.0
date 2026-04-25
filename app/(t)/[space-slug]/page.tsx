@@ -5,7 +5,7 @@ const page = () => {
 
     return (
         <TestimonialForm formData={{
-            collectionName: 'Testimo',
+            spaceName: 'Testimo',
             logo: null,
             brandName: 'Testimo',
             formTitle: 'Testimonial Form',

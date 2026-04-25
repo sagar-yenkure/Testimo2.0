@@ -13,6 +13,8 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createSpaceSchema, type CreateSpaceInput } from '@/zod'
+import { useCreateSpace } from '@/hooks/space/useCreateSpace'
+import { Loader2 } from 'lucide-react'
 import { THEMES, FONT_STYLES, LANGUAGES } from '@/constants'
 import {
     Select, SelectContent, SelectItem,
@@ -98,10 +100,10 @@ export default function CreateSpaceForm() {
     const [logoPreview, setLogoPreview] = useState<string | null>(null)
     const [isDragging, setIsDragging] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null)
+    const { createSpace, isLoading: isCreating } = useCreateSpace()
 
     const {
         register,
-        handleSubmit,
         watch,
         setValue,
         trigger,
@@ -165,7 +167,8 @@ export default function CreateSpaceForm() {
         const isValid = await trigger(fields)
         if (isValid) {
             if (step === 3) {
-                console.log('🚀 Launching Space with Data:', watch())
+                // calling create space api
+                const response = await createSpace(watch())
             }
             setStep(prev => Math.min(prev + 1, 4))
         }
@@ -841,32 +844,39 @@ export default function CreateSpaceForm() {
                                 <Button
                                     variant="outline"
                                     onClick={prevStep}
+                                    disabled={step === 1 || step === 4 || isCreating}
                                     className={`rounded-full px-6 h-10 font-black uppercase tracking-wider flex items-center gap-2 border-slate-200 dark:border-white/10 text-[11px] hover:bg-slate-50 dark:hover:bg-white/5 transition-all active:scale-95
                                         ${step === 1 || step === 4 ? 'invisible pointer-events-none' : ''}`}
                                 >
                                     <ChevronLeft className="w-4 h-4" /> Back
                                 </Button>
 
-                                {step === 1 && (
-                                    <Button onClick={nextStep} className="bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 rounded-full px-7 h-10 font-black uppercase tracking-widest flex items-center gap-2 text-[11px] shadow-lg active:scale-95 transition-all">
-                                        Next Step <ChevronRight className="w-4 h-4" />
-                                    </Button>
-                                )}
-                                {step === 2 && (
-                                    <Button onClick={nextStep} className="bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 rounded-full px-7 h-10 font-black uppercase tracking-widest flex items-center gap-2 text-[11px] shadow-lg active:scale-95 transition-all">
-                                        Next Step <ChevronRight className="w-4 h-4" />
-                                    </Button>
-                                )}
-                                {step === 3 && (
-                                    <Button onClick={nextStep} className="bg-blue-600 dark:bg-[#6C85FF] hover:bg-blue-700 dark:hover:bg-[#5C75FF] text-white rounded-full px-8 h-10 font-black uppercase tracking-widest flex items-center gap-2 text-[11px] shadow-lg shadow-blue-500/20 active:scale-95 transition-all">
-                                        <Check className="w-4 h-4" /> Launch Space
-                                    </Button>
-                                )}
-                                {step === 4 && (
-                                    <Button onClick={() => router.push('/dashboard')} className="bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 rounded-full px-7 h-10 font-black uppercase tracking-widest flex items-center gap-2 text-[11px] shadow-lg active:scale-95 transition-all">
-                                        Dashboard <ChevronRight className="w-4 h-4" />
-                                    </Button>
-                                )}
+                                <Button
+                                    onClick={nextStep}
+                                    disabled={isCreating}
+                                    className={`rounded-full px-7 h-10 font-black uppercase tracking-widest flex items-center gap-2 text-[11px] shadow-lg active:scale-95 transition-all
+                                        ${step === 3
+                                            ? 'bg-blue-600 dark:bg-[#6C85FF] hover:bg-blue-700 dark:hover:bg-[#5C75FF] text-white shadow-blue-500/20 px-8'
+                                            : 'bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900'
+                                        }`}
+                                >
+                                    {isCreating ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                            Launching...
+                                        </>
+                                    ) : (
+                                        <>
+                                            {step === 3 ? (
+                                                <><Check className="w-4 h-4" /> Launch Space</>
+                                            ) : step === 4 ? (
+                                                <>Dashboard <ChevronRight className="w-4 h-4" /></>
+                                            ) : (
+                                                <>Next Step <ChevronRight className="w-4 h-4" /></>
+                                            )}
+                                        </>
+                                    )}
+                                </Button>
                             </div>
                         </div>
                     </div>

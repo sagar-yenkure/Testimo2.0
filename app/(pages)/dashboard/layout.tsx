@@ -7,12 +7,19 @@ export const metadata: Metadata = {
 
 import { UserNavbar } from "@/components/user-navbar";
 import { GlobalCommandPalette } from "@/components/dashboard/GlobalCommandPalette";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const { userId } = await auth();
+
+    if (!userId) {
+        redirect("/sign-in");
+    }
     return (
         <div className="h-screen flex flex-col bg-background transition-colors duration-300 overflow-hidden">
             <UserNavbar />
