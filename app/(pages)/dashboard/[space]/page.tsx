@@ -66,6 +66,15 @@ const CARDS: Testimonial[] = [
     }
 ]
 
-export default async function SpaceDetailPage({ params }: { params: { space: string } }) {
-    return <SpaceDetailClient initialCards={CARDS} />;
+export default async function SpaceDetailPage({ 
+    params,
+    searchParams 
+}: { 
+    params: Promise<{ space: string }>,
+    searchParams: Promise<{ view?: string }>
+}) {
+    const { space } = await params;
+    const { view: viewParam } = await searchParams;
+    const view = viewParam || "inbox";
+    return <SpaceDetailClient initialCards={CARDS} initialView={view} />;
 }

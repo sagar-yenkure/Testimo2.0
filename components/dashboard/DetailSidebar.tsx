@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { SIDEBAR_SPACES } from "@/constants";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface DetailSidebarProps {
     isOpen?: boolean;
@@ -18,6 +18,7 @@ export const DetailSidebar = ({ isOpen, onClose }: DetailSidebarProps) => {
     const [activeSpace, setActiveSpace] = useState(SIDEBAR_SPACES[0]);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const router = useRouter()
+    const searchParams = useSearchParams()
 
     return (
         <>
@@ -99,13 +100,19 @@ export const DetailSidebar = ({ isOpen, onClose }: DetailSidebarProps) => {
 
                 <div className="px-4 mt-6 flex flex-col gap-1 flex-1 relative z-10 w-full">
                     <div className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-[#666] px-3 mb-2">Management</div>
-                    <button className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-500/10 text-blue-600 dark:text-[#6C85FF] transition-all w-full text-left">
-                        <Monitor className="w-[20px] h-[20px] shrink-0" />
+                    <button 
+                        onClick={() => router.push(`/dashboard/${activeSpace.value}?view=inbox`)}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all w-full text-left group ${(!searchParams.get("view") || searchParams.get("view") === "inbox") ? 'bg-blue-50/80 dark:bg-blue-500/10 text-blue-600 dark:text-[#6C85FF]' : 'text-slate-600 dark:text-[#82828C] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'}`}
+                    >
+                        <Monitor className={`w-[20px] h-[20px] shrink-0 ${(!searchParams.get("view") || searchParams.get("view") === "inbox") ? 'text-blue-600 dark:text-[#6C85FF]' : 'text-slate-400 dark:text-[#666] group-hover:text-slate-900 dark:group-hover:text-white'}`} />
                         <span className="text-[13px] font-semibold">Inbox</span>
                     </button>
-                    <button className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-[#82828C] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all w-full text-left group">
-                        <LayoutGrid className="w-[20px] h-[20px] shrink-0 text-slate-400 dark:text-[#666] group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
-                        <span className="text-[13px] font-medium group-hover:font-semibold transition-all">Embed Widgets</span>
+                    <button 
+                        onClick={() => router.push(`/dashboard/${activeSpace.value}?view=wall-of-love`)}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all w-full text-left group ${searchParams.get("view") === "wall-of-love" ? 'bg-blue-50/80 dark:bg-blue-500/10 text-blue-600 dark:text-[#6C85FF]' : 'text-slate-600 dark:text-[#82828C] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'}`}
+                    >
+                        <LayoutGrid className={`w-[20px] h-[20px] shrink-0 ${searchParams.get("view") === "wall-of-love" ? 'text-blue-600 dark:text-[#6C85FF]' : 'text-slate-400 dark:text-[#666] group-hover:text-slate-900 dark:group-hover:text-white'}`} />
+                        <span className="text-[13px] font-medium group-hover:font-semibold transition-all">Wall of Love</span>
                     </button>
                     <button className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-[#82828C] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all w-full text-left group">
                         <Sparkles className="w-[20px] h-[20px] shrink-0 text-slate-400 dark:text-[#666] group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
