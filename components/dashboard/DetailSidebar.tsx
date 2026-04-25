@@ -114,18 +114,27 @@ export const DetailSidebar = ({ isOpen, onClose }: DetailSidebarProps) => {
                         <LayoutGrid className={`w-[20px] h-[20px] shrink-0 ${searchParams.get("view") === "wall-of-love" ? 'text-blue-600 dark:text-[#6C85FF]' : 'text-slate-400 dark:text-[#666] group-hover:text-slate-900 dark:group-hover:text-white'}`} />
                         <span className="text-[13px] font-medium group-hover:font-semibold transition-all">Wall of Love</span>
                     </button>
-                    <button className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-[#82828C] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all w-full text-left group">
-                        <Sparkles className="w-[20px] h-[20px] shrink-0 text-slate-400 dark:text-[#666] group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+                    <button 
+                        onClick={() => router.push(`/dashboard/${activeSpace.value}?view=integrations`)}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all w-full text-left group ${searchParams.get("view") === "integrations" ? 'bg-blue-50/80 dark:bg-blue-500/10 text-blue-600 dark:text-[#6C85FF]' : 'text-slate-600 dark:text-[#82828C] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'}`}
+                    >
+                        <Sparkles className={`w-[20px] h-[20px] shrink-0 ${searchParams.get("view") === "integrations" ? 'text-blue-600 dark:text-[#6C85FF]' : 'text-slate-400 dark:text-[#666] group-hover:text-slate-900 dark:hover:text-white'}`} />
                         <span className="text-[13px] font-medium group-hover:font-semibold transition-all">Integrations</span>
                     </button>
 
                     <div className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-[#666] px-3 mb-2 mt-6">Support</div>
-                    <button className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-[#82828C] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all w-full text-left group">
-                        <HelpCircle className="w-[20px] h-[20px] shrink-0 text-slate-400 dark:text-[#666] group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+                    <button 
+                        onClick={() => router.push(`/dashboard/${activeSpace.value}?view=help`)}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all w-full text-left group ${searchParams.get("view") === "help" ? 'bg-blue-50/80 dark:bg-blue-500/10 text-blue-600 dark:text-[#6C85FF]' : 'text-slate-600 dark:text-[#82828C] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'}`}
+                    >
+                        <HelpCircle className={`w-[20px] h-[20px] shrink-0 ${searchParams.get("view") === "help" ? 'text-blue-600 dark:text-[#6C85FF]' : 'text-slate-400 dark:text-[#666] group-hover:text-slate-900 dark:group-hover:text-white'}`} />
                         <span className="text-[13px] font-medium group-hover:font-semibold transition-all">Help Center</span>
                     </button>
-                    <button className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-[#82828C] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all w-full text-left group">
-                        <Star className="w-[20px] h-[20px] shrink-0 text-slate-400 dark:text-[#666] group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+                    <button 
+                        onClick={() => router.push(`/dashboard/${activeSpace.value}?view=whats-new`)}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all w-full text-left group ${searchParams.get("view") === "whats-new" ? 'bg-blue-50/80 dark:bg-blue-500/10 text-blue-600 dark:text-[#6C85FF]' : 'text-slate-600 dark:text-[#82828C] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'}`}
+                    >
+                        <Star className={`w-[20px] h-[20px] shrink-0 ${searchParams.get("view") === "whats-new" ? 'text-blue-600 dark:text-[#6C85FF]' : 'text-slate-400 dark:text-[#666] group-hover:text-slate-900 dark:group-hover:text-white'}`} />
                         <span className="text-[13px] font-medium group-hover:font-semibold transition-all">What's New</span>
                     </button>
                 </div>

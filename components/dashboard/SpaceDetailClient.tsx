@@ -18,6 +18,9 @@ import { Testimonial, ViewMode } from "@/types";
 import { EmptyState } from "./EmptyState";
 import BreadcrumbNav from "@/components/breadrcrumb";
 import { WallOfLoveCustomizer } from "./WallOfLoveCustomizer";
+import { IntegrationsView } from "./IntegrationsView";
+import { HelpCenterView } from "./HelpCenterView";
+import { WhatsNewView } from "./WhatsNewView";
 import { useSearchParams } from "next/navigation";
 
 interface SpaceDetailClientProps {
@@ -60,7 +63,7 @@ export default function SpaceDetailClient({ initialCards, initialView }: SpaceDe
     const spaceName = typeof space === 'string' ? space.replace(/-/g, ' ') : 'Space';
 
     return (
-        <div className="flex font-sans overflow-hidden transition-colors duration-300 relative">
+        <div className="flex font-sans h-screen w-screen overflow-hidden transition-colors duration-300 relative bg-slate-50 dark:bg-[#09090C]">
             <DetailSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
             <main className="flex-1 overflow-y-auto relative h-full min-w-0 transition-colors duration-300 no-scrollbar">
@@ -166,7 +169,7 @@ export default function SpaceDetailClient({ initialCards, initialView }: SpaceDe
                     )}
                 </div>
 
-                <div className={`flex-1 ${currentView === 'wall-of-love' ? 'p-0' : 'px-6 pb-32 pt-6'}`}>
+                <div className={`flex-1 ${currentView === 'inbox' ? 'px-6 pb-32 pt-6' : 'p-0'}`}>
                     {currentView === "inbox" ? (
                         initialCards.length > 0 ? (
                             <motion.div 
@@ -206,9 +209,15 @@ export default function SpaceDetailClient({ initialCards, initialView }: SpaceDe
                                 className="max-w-3xl mx-auto border-0 bg-transparent dark:bg-transparent"
                             />
                         )
-                    ) : (
+                    ) : currentView === "wall-of-love" ? (
                         <WallOfLoveCustomizer spaceId={typeof space === 'string' ? space : 'default'} initialTestimonials={initialCards} />
-                    )}
+                    ) : currentView === "integrations" ? (
+                        <IntegrationsView />
+                    ) : currentView === "help" ? (
+                        <HelpCenterView />
+                    ) : currentView === "whats-new" ? (
+                        <WhatsNewView />
+                    ) : null}
                 </div>
 
                 {currentView === 'inbox' && (
