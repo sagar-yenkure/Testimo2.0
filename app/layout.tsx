@@ -20,8 +20,6 @@ export const metadata: Metadata = {
     images: [
       {
         url: config.public.opengraph_image,
-        width: 1200,
-        height: 630,
         alt: "Praised - Collect Video Testimonials Effortlessly",
       },
     ],
