@@ -9,7 +9,7 @@ export function Footer() {
           <div className="bg-[#3B6FF1] p-1 rounded-md flex items-center justify-center">
             <Box className="w-4 h-4 text-white" />
           </div>
-          <span className="text-lg font-bold tracking-tight transition-colors text-gray-900 dark:text-white">Testimo</span>
+          <span className="text-lg font-bold tracking-tight transition-colors text-gray-900 dark:text-white">Praised</span>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-8 text-[13px] text-gray-500 dark:text-gray-400">
@@ -18,7 +18,7 @@ export function Footer() {
           <Link href="#" className="hover:text-gray-900 dark:hover:text-white transition-colors text-sm">Contact</Link>
           <div className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-700 hidden md:block" />
           <span className="text-xs">
-            © {new Date().getFullYear()} Testimo
+            © {new Date().getFullYear()} Praised
           </span>
         </div>
 

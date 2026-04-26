@@ -25,7 +25,7 @@ export function Hero() {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="text-[15px] md:text-[16px] max-w-xl mb-10 leading-relaxed text-gray-500 dark:text-gray-400 transition-colors"
       >
-        Testimo helps SaaS teams build smarter onboarding, qualification, and
+        Praised helps SaaS teams build smarter onboarding, qualification, and
         testimonial collection forms — with AI-powered logic and real-time analytics.
       </motion.p>
 
@@ -84,7 +84,7 @@ export function Hero() {
           <iframe
             src="/testimo-hero-video.html"
             className="w-full h-full border-none block"
-            title="Testimo Product Preview"
+            title="Praised Product Preview"
             scrolling="no"
           />
         </div>

@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 export function Showcase() {
   const reviews = [
-    { name: 'Sarah Jenkins', role: 'Product Manager', img: '43', text: 'Testimo has completely transformed how we collect feedback. The UI is stunning and our customers love it.', grad: 'from-blue-400 to-purple-400' },
+    { name: 'Sarah Jenkins', role: 'Product Manager', img: '43', text: 'Praised has completely transformed how we collect feedback. The UI is stunning and our customers love it.', grad: 'from-blue-400 to-purple-400' },
     { name: 'Mark Davis', role: 'Freelance Developer', img: '33', text: 'Setting up my first collection form took less than 2 minutes. The embed code works perfectly on Webflow.', grad: 'from-green-400 to-emerald-600', offset: true },
     { name: 'Elena Rodriguez', role: 'Marketing Director', img: '44', text: 'The video testimonial feature is a game changer. Seeing real faces builds so much more trust.', grad: 'from-orange-400 to-red-500' }
   ];

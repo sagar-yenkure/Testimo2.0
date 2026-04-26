@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Testimo - Collect Video Testimonials Effortlessly",
+  title: "Praised - Collect Video Testimonials Effortlessly",
   description: "The most intuitive platform to collect, manage, and showcase video testimonials that convert. Build trust with authentic customer stories.",
 };
 
