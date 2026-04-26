@@ -2,8 +2,8 @@ import { SignUp } from "@clerk/nextjs"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Get Started | Testimo",
-    description: "Create a Testimo account and start collecting video testimonials from your customers today.",
+    title: "Get Started | Praised",
+    description: "Create a Praised account and start collecting video testimonials from your customers today.",
 }
 
 

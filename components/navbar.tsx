@@ -4,11 +4,18 @@ import Link from "next/link";
 import { Box } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "./theme-toggle";
+import { useTheme } from "next-themes";
+import Image from "next/image";
+import { config } from "@/config";
 
 export function Navbar({ isAuthenticated }: { isAuthenticated: boolean }) {
 
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -33,12 +40,15 @@ export function Navbar({ isAuthenticated }: { isAuthenticated: boolean }) {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 pointer-events-none ${scrolled ? "py-3" : "py-5"}`}>
       <div className="flex items-center justify-between px-4 md:px-8 mx-auto max-w-[1500px] pointer-events-auto">
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="bg-[#3B6FF1] p-1.5 rounded-md flex items-center justify-center transition-transform group-hover:scale-110">
-            <Box className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white transition-colors">
-            Praised
-          </span>
+          {mounted && (
+            <Image 
+              src={resolvedTheme === 'dark' ? config.public.logo_moto_dark : config.public.logo_moto_light} 
+              alt="Praised" 
+              width={140} 
+              height={40} 
+              className="w-[140px] md:w-[160px] h-auto object-contain" 
+            />
+          )}
         </Link>
 
         <div className="hidden md:flex items-center gap-1 text-[14px] font-medium px-2 py-1.5 rounded-full shadow-sm backdrop-blur-md border bg-white/60 border-gray-200/50 text-gray-600 dark:bg-white/10 dark:border-white/10 dark:text-gray-300 transition-colors">

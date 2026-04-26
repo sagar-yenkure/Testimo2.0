@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Dashboard | Testimo",
+    title: "Dashboard | Praised",
     description: "Manage your video testimonial campaigns, view submissions, and track your social proof performance.",
 };
 

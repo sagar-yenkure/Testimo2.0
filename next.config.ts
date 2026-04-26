@@ -1,10 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+
   images: {
-    domains: ['api.dicebear.com'],
-  },
+    remotePatterns: [
+      {
+        // for s3 bucket
+        protocol: 'https',
+        hostname: 'd3fdmhjq3dfmk6.cloudfront.net',
+      },
+      {
+        // for dicebear api
+        hostname: 'api.dicebear.com',
+      }
+    ]
+  }
 };
 
 export default nextConfig;
